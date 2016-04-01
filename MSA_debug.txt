@@ -1,0 +1,12 @@
+Macroscopic steps executed: 0
+KMC time: 0 s
+
+Macroscopic steps executed: 3
+KMC time: 2.529656e-02 s
+
+Macroscopic steps executed: 4
+KMC time: 5.328087e-02 s
+
+Macroscopic steps executed: 9
+KMC time: 8.288164e-02 s
+

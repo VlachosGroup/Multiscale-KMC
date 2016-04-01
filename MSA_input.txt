@@ -1,0 +1,45 @@
+# Example input file
+# Not yet functional
+
+Species
+A*, B*, *
+
+Reactions
+* -> A*
+A* -> *
+A* -> B*
+B* -> A*
+B* -> *
+* -> B*
+
+Rate constants
+1
+1.5
+2
+1
+0.4
+0
+
+Fast reactions
+1, 2
+
+epsilon
+0.01
+
+Initial population
+30, 60, 10
+
+Time horizon (s)
+100
+
+Record points
+1001
+
+Replicate simulations
+100
+
+Number of batches
+50
+
+delta
+0.05

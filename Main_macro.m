@@ -1,25 +1,10 @@
-% This script simulates the following chemical reaction network
+% The multi-scale sensitivity analysis of M. Núñez and D.G. Vlachos, J. Chem. Phys. 142 (4), 044108 (2015) is used.
 
-% 1. A(g) -> A*               k1
-% 2.   A* -> A(g)             k2
-% 3.   A* -> B*               k3
-% 4.   B* -> A*               k4
-% 5.   B* -> B(g)             k5
+clc; clear; fclose('all');  t_cpu_start = cputime;
 
-% All reactions are on the same time scale. Use this to analyze the
-% effectiveness of the batch stopping criteria.
+%% User Input
 
-% The multi-scale sensitivity analysis of (M. Núñez and D.G. Vlachos, J. Chem. Phys. 142 (4), 044108 (2015)) is used.
-
-clc; clear;
-t_cpu_start = cputime;
-
-% Change random seed to folder name
-% currentDirectory = pwd;
-% [upperPath, deepestFolder, ~] = fileparts(currentDirectory);
-% rng(str2num(deepestFolder));
-
-%% System Definition
+rng(12345);     % Set random seed
 
 % Inputs: Consider having all system specifications (parameters, stoichiometric matrix, N_initial, time scale? (can estimate from STS sim)) be read from an external file        
 k = [1, 1.5, 2, 1, 0.4, 0];                                                         % Rate constants
@@ -29,14 +14,18 @@ stoich = [1 0 -1
     1 -1 0
     0 -1 1];                                                                        % stoichiometric matrix
 N_initial = [30 60 10];                                                             % Initial state
-%t_final = 4;
-N_record = 1001;                                                                    % Arbitrary with no implications on the numerics, just used for visualizing average trajectories and checking it against the algebraic ODE solution 
+N_record = 5;                                                                    % Arbitrary with no implications on the numerics, just used for visualizing average trajectories and checking it against the algebraic ODE solution 
 fast_rxns = [1,2];
-t_final = 100;
+t_final = 0.1;
 num_batches = 50;                   % Use 100 if you need even better sampling
 delta = 0.05;
 
-% System info
+out_file_name = 'MSA_debug.txt';
+out_file = fopen(out_file_name,'w');
+
+%% Stochastic Simulation Loop
+
+% System Information
 [n_params, n_specs] = size(stoich);
 slow_rxns = linspace(1,n_params,n_params);
 slow_rxns(fast_rxns) = [];                                                          % All the reactions which are not fast are slow
@@ -49,8 +38,6 @@ N_int = zeros(1,n_specs);
 N_int_r = zeros(N_record,n_specs);
 N_int_prev = N_int;
 t_r = linspace(0, t_final, N_record);                                               % Recording times, remains constant
-
-%% Stochastic Simulation Loop
 
 % Simulation initialization
 N = N_initial;
@@ -71,11 +58,13 @@ dNbar_dtheta_r = zeros(n_params, n_specs, N_record);
 
 while t < t_final                                                                   % (macro) Termination time controls the sampling
     
-    disp(['Event # ' num2str(n_events)])
-    disp(['Time: ' num2str(t) ' s'])
+    
     
     % Record the current state as long as time >= t_sample
     while t >= t_r(ind_rec)
+        
+        fprintf(out_file, 'Macroscopic steps executed: %d\n', n_events);               % Eventually write this into an output file
+        fprintf(out_file, 'KMC time: %d s\n\n', t);
         
         % Record the species numbers
         N_r(ind_rec,:) = N_prev;
@@ -113,6 +102,9 @@ end
 % Fill in the recording times that were missed
 while ind_rec < N_record + 1
     
+    fprintf(out_file, 'Macroscopic steps executed: %d\n', n_events);               % Eventually write this into an output file
+    fprintf(out_file, 'KMC time: %d s\n\n', t);
+    
     N_r(ind_rec,:) = N_prev;
     N_int_r(ind_rec,:) = N_int_prev + N_prev * (t_r(ind_rec) - t_prev);
     W_r(ind_rec,:) = W_prev - sum(da_betabar_dtheta) * (t_r(ind_rec) - t_prev);
@@ -121,11 +113,13 @@ while ind_rec < N_record + 1
     ind_rec = ind_rec + 1;                                          % Increment the recording index
 end
 
-
-disp('CPU time')
-elapsed_cpu = cputime-t_cpu_start
+elapsed_cpu = cputime-t_cpu_start;
+fprintf(out_file, 'Elapsed CPU time: %d seconds\n', elapsed_cpu)
 
 %% Print Data into Output File
+
+fclose('all');
+return
 
 fidout = fopen('MSA_output.bin','w');
 output_mat = [t_r', N_r, N_int_r, W_r];
@@ -136,4 +130,4 @@ fidout = fopen('micro_derivs.bin','w');
 fwrite(fidout,dNbar_dtheta_r,'double');
 fclose(fidout);
 
-
+fclose('all');
