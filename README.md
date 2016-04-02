@@ -11,13 +11,14 @@ To Do
 - Put modes for steady-state vs. transient
 
 Desired functionality
-- User inputs reaction network in input files
-- User chooses single time-scale or two time-scale mode
-- User specifies which reactions are fast and slow
+- Input reaction network in input files
+- Choose between deterministic (ODE) and stochastic (KMC)
+- Choose single time-scale or two time-scale mode
+- Specify which reactions are fast and slow
 - Choose simulation parameters (time horizon, sampling times, number or replicates, etc.)
-- Do averageing over replicates for transient, don't do macro steady-state because that's more complicated
+- Averageing over replicates for transient (don't do macro steady-state because that's more complicated)
 - Simple post-processing scripts which read the output files and output trajectories and sensitivity estimates with error estimates
 
 - Need this to by nice and user friendly so I can quickly test different reaction networks in my thesis
 - Do not include analytical solutions. Make the code general
-- long term: Consider a Fortran implementation for speed
+- long term: Consider a Fortran implementation for speed, code first in Matlab and port later if needed
