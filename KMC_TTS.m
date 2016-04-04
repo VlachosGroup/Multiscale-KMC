@@ -2,7 +2,7 @@
 
 clc; clear; fclose('all');  t_cpu_start = cputime;
 
-%% User Input
+%% User Input - change to read everything from the input files
 
 rng(12345);     % Set random seed
 

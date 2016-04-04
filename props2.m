@@ -1,20 +1,42 @@
 % Kinetic information on reaction rates/propensities along with their
-% parameter derivatives
-% Used in all model types
+% parameter and species derivatives
 
-function [a, der] = props2(S_react, N,k)
+function [rxn_rates, dr_dk, dr_dN] = props2(S_rcnt, spec_pops, rate_conts)
 
-% Compute a by going through the stoichiometry matrix and populations, use
-% lines from your "PDE" code
+% Inputs
+% S_rcnt: n_rxns x n_species
+% spec_pops: 1 x n_species
+% rate_conts: 1 x n_rxns
 
-    a = [k(1) * N(3)
-         k(2) * N(1)
-         k(3) * N(1)
-         k(4) * N(2)
-         k(5) * N(2)];      % Based on rate equations
+% Outputs
+% rxn_rates: n_rxns x 1
+% dr_dk: n_rxns x n_rxns 
+% dr_dN: n_rxns x n_species
 
-    der = diag(a ./ k);
-    % der = grad(a), the gradient of the rate equations
-    % rows: reaction, cols: parameter
-       
+n_rxns = length(rate_conts);
+n_species = length(spec_pops);
+
+% Compute rate constants/propensities
+rxn_rates = rate_conts' .* prod(repmat(spec_pops, n_rxns, 1) .^ S_rcnt, 2);           % Uses reaction rate formula: r = k * N1 ^ n1 * N2 ^ n2 * ...
+
+% Compute gradient of reaction rates with respect to rate constants
+dr_dk = diag(prod(repmat(spec_pops, n_rxns, 1) .^ S_rcnt, 2));
+
+% Compute gradient of reaction rates with respect to species populations
+% Should find a faster, vectorized way of doing this
+% Also put a flag so it only evaluates in ODE mode
+dr_dN = zeros(n_rxns,n_species);
+for i = 1:n_rxns
+    for j = 1:n_species
+        if S_rcnt(i,j) == 0
+            dr_dN(i,j) = 0;
+        else
+            vector = zeros(1,n_species);
+            vector(j) = 1;
+            prod(spec_pops .^ (S_rcnt(i,:) - vector) )
+            dr_dN(i,j) = S_rcnt(i,j) * rate_conts(i) * prod(spec_pops .^ (S_rcnt(i,:) - vector) );
+        end
+    end
+end
+
 end

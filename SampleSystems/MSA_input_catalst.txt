@@ -2,33 +2,35 @@
 # Not yet functional
 
 Species
-A,B,C
+A*, B*, *
 
 Reactions
-3
-A -> B
-B -> A
-B -> C
+* -> A*
+A* -> *
+A* -> B*
+B* -> A*
+B* -> *
+* -> B*
 
 Rate constants
 1
+1.5
 2
 1
+0.4
+0
 
 Fast reactions
-1
-2
+1, 2
 
 epsilon
 0.01
 
 Initial population
-100
-0
-0
+30, 60, 10
 
 Time horizon (s)
-10
+100
 
 Record points
 1001
