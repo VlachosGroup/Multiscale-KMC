@@ -9,6 +9,7 @@ Includes the simulation code as well as post-processing scripts. Simualtions cre
 To Do
 - Read reaction network and rate information from an input file.
 - Put modes for steady-state vs. transient
+- fix rateeqns and props so that it works for a general network and is consistent between ODE and KMC
 
 Desired functionality
 - Input reaction network in input files
