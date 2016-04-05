@@ -1,9 +1,13 @@
-% This version is meant to present the stand-alone analytical solution
-% (without comparison to anything else) and generate the relevant graphs.
+% Differential algebraic equation (DAE), two time-scale ODE
+% Two time scale (TTS)
 
-%function [N_final, ders] = DD_TTS_DAE(N_initial, k)
-function [T,Yorig] = DD_TTS_DAE
-% Example: Automated TTS D-D simulation
+function [T,Yorig] = ODE_TTS
+
+clc; clear; fclose('all');
+
+%% System inputs
+% Need to read this in from an input file and automate the creation of
+% system parameters
 
 N_initial = [30; 60; 10];
 %k = [1, 1.5, 2, 1.5, 0.4];

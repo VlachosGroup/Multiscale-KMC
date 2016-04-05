@@ -1,7 +1,7 @@
 % Kinetic information on reaction rates/propensities along with their
 % parameter and species derivatives
 
-function [rxn_rates, dr_dk, dr_dN] = props2(S_rcnt, spec_pops, rate_conts)
+function [rxn_rates, dr_dk, dr_dN] = rxn_rates(S_rcnt, spec_pops, rate_conts)
 
 % Inputs
 % S_rcnt: n_rxns x n_species
@@ -33,7 +33,6 @@ for i = 1:n_rxns
         else
             vector = zeros(1,n_species);
             vector(j) = 1;
-            prod(spec_pops .^ (S_rcnt(i,:) - vector) )
             dr_dN(i,j) = S_rcnt(i,j) * rate_conts(i) * prod(spec_pops .^ (S_rcnt(i,:) - vector) );
         end
     end
