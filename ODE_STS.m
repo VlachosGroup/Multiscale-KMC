@@ -7,24 +7,13 @@ function ODE_STS
 
 clc; clear; fclose('all');
 
-%% System specifications - read this from input file
-spec_names = {'A*','B*','*'};
-N_0 = [30, 10, 60];                  % initial condition 
-t_final = 2;
-epsilon = 10^-(3);
-k = [1, 1.5, 2, 1, 0.4, 0];
-k(1:2) = k(1:2) / epsilon;
-S = [1 -1 -1 1 0 0
-    0 0 1 -1 -1 1
-    -1 1 0 0 1 -1]';            % rows: rxns, cols: species
+% System specifications - read this from input file
+[spec_names, N_0, S, S_react, k, t_final, N_record, fast_rxns, eps] = FauxInputRead;
+k(fast_rxns) = k(fast_rxns) / eps;
 [n_rxns, n_specs] = size(S);
 
-S_react = [0 1 1 0 0 0
-     0 0 0 1 1 0
-     1 0 0 0 0 1]';
-
 %% Solve the ODE system
-[T,Y] = ode15s(@rate_eqns_param, [0, t_final], [N_0, zeros(1, n_specs*n_rxns)]);
+[T,Y] = ode15s(@rate_eqns_param, linspace(0,t_final,N_record), [N_0, zeros(1, n_specs*n_rxns)]);
 
     function dNdt = rate_eqns_param(t,z) 
 
@@ -44,13 +33,11 @@ S_react = [0 1 1 0 0 0
 
     end
 
-% Scale the sensitivities by epsilon, this saves us from having to code in
-% additional functional dependence on epsilon
-Y(:,4:9) = Y(:,4:9) / epsilon;
+%% Plot Results
+
+% Separate population and sensitivity data
 spec_pop_traj = Y(:,1:n_specs);
 sens_traj = Y(:,n_specs+1:end);
-
-%% Plot Results
 
 % Plot species populations
 figure
@@ -71,10 +58,13 @@ legend('A','B','*');
 for spec = 1:n_specs
     
     inds = linspace(spec, n_rxns * n_specs - n_specs + spec, n_rxns);
+    sens = sens_traj(:,inds);
+    sens(:,fast_rxns) = sens(:,fast_rxns) / eps;        % Scale the sensitivities to eliminate dependence on eps
+    
     
     figure
     hold on
-    plot(T, sens_traj(:,inds) )
+    plot(T, sens )
     hold off
     box('on')
     xlabel('time (s)','FontSize',18)
