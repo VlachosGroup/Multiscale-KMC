@@ -10,6 +10,7 @@ Includes the simulation code as well as post-processing scripts. Simualtion code
 To Do
 - Read reaction network and rate information from an input file.
 - Put modes for steady-state vs. transient and STS vs. TTS
+- Need to automate finding the variable transformation for two time-scale versions
 - Include a latex document with a simple example worked out (with data)
 
 Desired functionality
