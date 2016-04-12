@@ -10,8 +10,11 @@ Includes the simulation code as well as post-processing scripts. Simualtion code
 To Do
 - Read reaction network and rate information from an input file.
 - Put modes for steady-state vs. transient and STS vs. TTS
-- Include a latex document with a simple example worked out (with data)
-
+- Include a latex document with a simple example worked out (with data). There is an example in Research_Files/Thesis/MultiscaleSA
+- Complete automaton for arbitrary networks in ODE_TTS
+- Make the graph analysis in each function consistent, complete, and general for arbitrary networks. 
+	May want to just have each function output a trajectory of population averages and sensitivities.
+	
 Desired functionality
 - Input reaction network in input files
 - Choose between deterministic (ODE) and stochastic (KMC)

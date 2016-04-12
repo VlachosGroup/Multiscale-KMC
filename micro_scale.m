@@ -14,7 +14,7 @@
 %(fast and slow, for ALL parameters) will be used for sensitivity analysis
 % on the macro scale (two contributions)
 
-function [N_int_avg, N_origin, betabar, slow_rxn_to_fire, dt_macro, da_betabar_dtheta, dNbar_dtheta] = micro_scale(N, k, fast_rxns, slow_rxns, stoich_fast, batch_length_orig, num_batches, delta)
+function [N_int_avg, N_origin, betabar, slow_rxn_to_fire, dt_macro, da_betabar_dtheta, dNbar_dtheta] = micro_scale(N, k, fast_rxns, slow_rxns, stoich_fast, S_react, batch_length_orig, num_batches, delta)
 
 % This script takes in system information from a macro solver and 
 
@@ -55,7 +55,7 @@ N_int_r = zeros(N_record,n_specs);
 N_int_prev = N_int;
 
 % Slow propensities
-[a, der] = props(N, k);                                                             % a_slow for the Chosen State
+[a, der] = rxn_rates(S_react, N, k);
 a_slow = a(slow_rxns);
 a_slow_r = zeros(N_record,n_rxns_slow);
 a_slow_int = zeros(1,n_rxns_slow);
@@ -110,7 +110,7 @@ while ~converged
         end
         
         % Fire a reaction
-        [a, der] = props(N, k);                                                                                 
+        [a, der] = rxn_rates(S_react, N, k);
         a_fast = a(fast_rxns);                                                                                 % For choosing the next reaction
         a_sum = sum(a_fast);
         rxn_ind = min(find(rand(1)<cumsum(a_fast/sum(a_sum))));

@@ -1,35 +1,23 @@
 % Differential algebraic equation (DAE), two time-scale ODE
 % Two time scale (TTS)
 
-function [T,Yorig] = ODE_TTS
+function ODE_TTS
 
 clc; clear; fclose('all');
 
 %% System inputs
-% Need to read this in from an input file and automate the creation of
-% system parameters
 
-N_initial = [30; 60; 10];
-%k = [1, 1.5, 2, 1.5, 0.4];
-%k = [1, 1.5, 2, 1.9, 0];
-k = [1, 1.5, 2, 1, 0.4];
-t_final = 4;                                                   % seconds
+[spec_names, N_0, stoich, S_react, k, t_final, N_record, fast_rxns, eps, num_batches, delta] = FauxInputRead
 
-% System specifications
-%N_0 = N_initial / sum(N_initial);                               % initial condition is normalized
-N_0 = N_initial;
 
-% Split S according to which reactions are fast/slow
-% Stoichiometric matrices. Reactions 3,4,5 are slow. Reactions 1,2 are
-% fast
-Ss = [0 0 -1  1  0 
-      0 0  1 -1 -1 
-      0 0  0  0  1 ];
-Sf = [1 -1 0 0 0
-      0  0 0 0 0
-     -1  1 0 0 0];
-S = Ss + Sf;
-[M,R] = size(S);
+N_0 = N_0';     % make it a column vector for convenience
+stoich = stoich';
+[M,R] = size(stoich);
+
+% Split the stoichiometry matrix into fast and slow components
+Ss = stoich;
+Ss(:,fast_rxns) = 0;
+Sf = stoich - Ss;
 
 % Do some sort of Gaussian elimination procedure on soich_fast to get Tr, Tr_fast,
 % and Tr_slow
@@ -37,6 +25,13 @@ S = Ss + Sf;
 % which reactions are fast/slow
 
 % Transformation matrix for the variables to a new system
+
+Ts = null(Sf','r')';
+
+Tf = [1 0 0]            % How to get this in an automated way? Need to compute Tf so that it is linearly independent from Ts (and is not in the null space of Tf)
+T = [Tf; Ts]            % Need to use some sorft of basis set, row echelon form? linear algebra techniques
+return
+
 T = [1 0 0; 0 1 0; 1 1 1];                        % Need to be able to compute this transform matrix from the stoich_fast matrix
 mf = 1;
 ms = M - mf;
@@ -71,8 +66,8 @@ options = odeset('Mass',mass);
         dz_dt = zeros(num_eqns,1);
         
         % Get rate info
-        [rates,dr_dN,dr_dtheta] = rate_eqns(Tinv * z(1:M),k);        
-       
+        [rates,dr_dtheta,dr_dN] = rxn_rates(S_react, (Tinv * z(1:M))', k);
+        
         % Differentials of y
         dz_dt(1:mf) = Tf * Sf * rates;              % fast
         dz_dt(mf+1:M) = Ts * Ss * rates;            % slow
@@ -97,7 +92,7 @@ axislabelfontsize = 24;
 
 % Transform back to original 
 Tinv_aug = blkdiag(Tinv(:,1:mf),Tinv);                                                  % Add additional inverse lines because of the extra variables we have
-Tbig = blkdiag(Tinv,Tinv_aug,Tinv_aug,Tinv_aug,Tinv_aug,Tinv_aug);
+Tbig = blkdiag(Tinv,Tinv_aug,Tinv_aug,Tinv_aug,Tinv_aug,Tinv_aug,Tinv_aug);             % Need to automate this line so it works for different systems
 Yorig = Y * Tbig';
 
 % Return the values of the averages and derivatives at termination time

@@ -1,7 +1,7 @@
 % Use this common function common to all models as a temporary substitute
 % to reading the input file
 
-function [spec_names, N_0, stoich, S_react, k, t_final, N_record, fast_rxns, eps] = FauxInputRead
+function [spec_names, N_0, stoich, S_react, k, t_final, N_record, fast_rxns, eps, num_batches, delta] = FauxInputRead
 
 spec_names = {'A*','B*','*'};
 N_0 = [30 10 60];                                                             % Initial state
@@ -25,5 +25,8 @@ S_react(S_react > 0) = 0;
 S_react = -S_react;
 
 % Need to check that the choice of fast reactions is appropriate
+
+num_batches = 50;                   % Use 100 if you need even better sampling
+delta = 0.05;
 
 end

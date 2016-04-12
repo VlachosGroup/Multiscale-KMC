@@ -5,23 +5,8 @@ clc; clear; fclose('all');  t_cpu_start = cputime;
 %% User Input - change to read everything from the input files
 
 rng(12345);     % Set random seed
-
-% Inputs: Consider having all system specifications (parameters, stoichiometric matrix, N_initial, time scale? (can estimate from STS sim)) be read from an external file        
-k = [1, 1.5, 2, 1, 0.4, 0];                                                         % Rate constants
-stoich = [1 0 -1
-    -1 0 1
-    -1 1 0
-    1 -1 0
-    0 -1 1];                                                                        % stoichiometric matrix
-N_initial = [30 60 10];                                                             % Initial state
-N_record = 5;                                                                    % Arbitrary with no implications on the numerics, just used for visualizing average trajectories and checking it against the algebraic ODE solution 
-fast_rxns = [1,2];
-t_final = 0.1;
-num_batches = 50;                   % Use 100 if you need even better sampling
-delta = 0.05;
-
-out_file_name = 'MSA_debug.txt';
-out_file = fopen(out_file_name,'w');
+[spec_names, N_0, stoich, S_react, k, t_final, N_record, fast_rxns, eps, num_batches, delta] = FauxInputRead;
+out_file = fopen('MSA_debug.txt','w');
 
 %% Stochastic Simulation Loop
 
@@ -40,7 +25,7 @@ N_int_prev = N_int;
 t_r = linspace(0, t_final, N_record);                                               % Recording times, remains constant
 
 % Simulation initialization
-N = N_initial;
+N = N_0;
 N_prev = N;                                                                         % An initialization, will be truncated in taking statistics
 t = 0;                                                                              % Initial macro time
 N_int = zeros(1,n_specs);
@@ -78,7 +63,7 @@ while t < t_final                                                               
     % Visit micro scale to get fast-class averages and choice of macro
     % reaction
     batch_length_orig = 2;                                                          % Guess of the time-scale of the fast class
-    [N_int_avg, N_origin, betabar, slow_rxn_to_fire, dt_macro, da_betabar_dtheta, dNbar_dtheta] = micro_scale(N, k, fast_rxns, slow_rxns, stoich_fast, batch_length_orig, num_batches, delta);
+    [N_int_avg, N_origin, betabar, slow_rxn_to_fire, dt_macro, da_betabar_dtheta, dNbar_dtheta] = micro_scale(N, k, fast_rxns, slow_rxns, stoich_fast, S_react, batch_length_orig, num_batches, delta);
     N_prev = N_int_avg;
     N = N_origin + stoich_slow(slow_rxn_to_fire,:);                                 % which reaction will fire? And from which state?
     
