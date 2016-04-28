@@ -19,8 +19,13 @@ To Do
 - Read reaction network and rate information from an input file.
 - Include a latex document with a simple example worked out (with data). There is an example in Research_Files/Thesis/MultiscaleSA
 - Update the KMC analysis to be general for any reaction network (and read in the input file)
+<<<<<<< HEAD
 - Post example output on google drive and share the link here.
 - Create sample data for KMC STS
+=======
+- Make separate functions for reading KMC output files and returning the information as variables
+- Post example output on google drive and share the link here.
+>>>>>>> origin/master
 
 Future Work
 - Port the STS and TTS KMC implementations into Fortran for speed
