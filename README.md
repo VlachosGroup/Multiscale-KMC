@@ -2,7 +2,7 @@
 Two time-scale well-mixed kinetic Monte Carlo. Multiscale likelihood ratio sensitivity analysis is done on the fly. Implemented in Matlab. Single time-scale and ODE analogues are also included.
 
 **Citations**  
-See license or regerences page in the wiki.
+See license or references page in the wiki.
 
 **Workflow**  
 Please see wiki page for detailed instructions.
