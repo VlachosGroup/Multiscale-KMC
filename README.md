@@ -5,25 +5,23 @@ Journal Articles
 - Code used in A. Hashemi, M. Nunez, P. Plechac, D.G. Vlachos, “Stochastic Averaging and Sensitivity Analysis for Two Scale Reaction Networks” Journal of Chemical Physics 144, 074104 (2016)
 - Two-time scale sensitivity analysis method developed in M. Núñez and D.G. Vlachos, J. Chem. Phys. 142 (4), 044108 (2015)
 
-Includes the simulation code as well as post-processing scripts. Simualtion codes create data files which are read and analyzed by the post-processing scripts. The ODE scripts combine both into a single m files because the ODEs are fast.
+Please see wiki page for workflow instructions.
 
-To Do
-- Read reaction network and rate information from an input file.
-- Put modes for steady-state vs. transient and STS vs. TTS
-- Include a latex document with a simple example worked out (with data). There is an example in Research_Files/Thesis/MultiscaleSA
-- Complete automaton for arbitrary networks in ODE_TTS
-- Make the graph analysis in each function consistent, complete, and general for arbitrary networks. 
-	May want to just have each function output a trajectory of population averages and sensitivities.
-- Update the KMC analysis to be general for any reaction network (and read in the input file)
-	
-Desired functionality
+Workflow
 - Input reaction network in input files
-- Choose between deterministic (ODE) and stochastic (KMC)
-- Choose single time-scale (STS) or two time-scale mode (TTS)
 - Specify which reactions are fast and slow
-- Choose simulation parameters (time horizon, sampling times, number or replicates, etc.)
+- Choose numerical parameters (time horizon, sampling times, number or replicates, etc.)
+- Choose a model: deterministic (ODE) vs. stochastic (KMC), single time-scale (STS) vs. two time-scale mode (TTS)
 - Averageing over replicates for transient (don't do macro steady-state because that's more complicated)
 - Simple post-processing scripts which read the output files and output trajectories and sensitivity estimates with error estimates
 
+To Do
+- Read reaction network and rate information from an input file.
+- Include a latex document with a simple example worked out (with data). There is an example in Research_Files/Thesis/MultiscaleSA
+- Make the graph analysis in each function consistent, complete, and general for arbitrary networks. 
+	May want to just have each function output a trajectory of population averages and sensitivities.
+- Update the KMC analysis to be general for any reaction network (and read in the input file)
+- Make separate functions for reading KMC output files and returning the information as variables
+
 Future Work
-- Port to a Fortran implementation for speed
+- Port the STS and TTS KMC implementations into Fortran for speed
