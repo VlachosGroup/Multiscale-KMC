@@ -2,6 +2,8 @@
 % You also need a version which reads through many files and averages/takes
 % sensitivities
 
+% Do for steady-state
+
 clear; clc;
 
 n_params = 5;

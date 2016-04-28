@@ -6,13 +6,21 @@ function [spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, f
 spec_names = {'A*','B*','*'};
 N_0 = [30 10 60];                                                             % Initial state
 
+% stoich = [1 0 -1
+%     -1 0 1
+%     -1 1 0
+%     1 -1 0
+%     0 -1 1
+%     0 1 -1];         % stoichiometric matrix
+% k = [1, 1.5, 2, 1, 0.4, 0];                                                         % Rate constants
+
 stoich = [1 0 -1
     -1 0 1
     -1 1 0
     1 -1 0
-    0 -1 1
-    0 1 -1];         % stoichiometric matrix
-k = [1, 1.5, 2, 1, 0.4, 0];                                                         % Rate constants
+    0 -1 1];         % stoichiometric matrix
+k = [1, 1.5, 2, 1, 0.4];
+
 param_names = {};
 for i = 1:length(k)
     param_names = [param_names ['k_' num2str(i)]];

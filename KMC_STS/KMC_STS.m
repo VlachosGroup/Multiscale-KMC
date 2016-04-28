@@ -4,7 +4,7 @@ clc; clear;
 t_cpu_start = cputime;
 
 % System info
-[spec_names, N_0, stoich, S_react, k, t_final, N_record, fast_rxns, eps] = FauxInputRead;
+[spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, eps] = FauxInputRead;
 k(fast_rxns) = k(fast_rxns) / eps;
 [n_params, n_specs] = size(stoich);
 N_r = zeros(N_record,n_specs); 
