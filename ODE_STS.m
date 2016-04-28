@@ -8,7 +8,7 @@ function ODE_STS
 clc; clear; fclose('all');
 
 % System specifications - read this from input file
-[spec_names, N_0, S, S_react, k, t_final, N_record, fast_rxns, eps] = FauxInputRead;
+[spec_names, N_0, S, S_react, k, param_names, t_final, N_record, fast_rxns, eps] = FauxInputRead2
 k(fast_rxns) = k(fast_rxns) / eps;
 [n_rxns, n_specs] = size(S);
 
@@ -49,10 +49,9 @@ hold off
 box('on')
 ax = gca;
 ax.FontSize = 18;
-title('Species Populations')
 xlabel('time (s)','FontSize',18)
-ylabel('population','FontSize',18)
-legend('A','B','*');
+ylabel('spec. pop.','FontSize',18)
+legend(spec_names);
 
 % Plot sensitivities for each species
 for spec = 1:n_specs
@@ -68,11 +67,10 @@ for spec = 1:n_specs
     hold off
     box('on')
     xlabel('time (s)','FontSize',18)
-    ylabel('sensitivity','FontSize',18)
-    title([spec_names{spec} ' sensitivities'])
+    ylabel([spec_names{spec} ' sensitivities'],'FontSize',18)
     ax = gca;
     ax.FontSize = 18;
-    legend('k1','k2','k3','k4','k5','k6');
+    legend(param_names);
 end
 
 
