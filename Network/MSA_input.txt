@@ -2,30 +2,22 @@
 # Not yet functional
 
 Species
-A,B,C
+A, B, C
 
-Reactions
-3
-A -> B
-B -> A
-B -> C
+Reactio
+A -> B, B -> A, B -> C
 
 Rate constants
-1
-2
-1
+1, 2, 1
 
 Fast reactions
-1
-2
+1, 2
 
 epsilon
 0.01
 
 Initial population
-100
-0
-0
+100, 0, 0
 
 Time horizon (s)
 10

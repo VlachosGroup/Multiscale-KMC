@@ -3,20 +3,16 @@
 
 % Incomplete, not yet functional
 
-function system_info = InputRead()
+function InputRead()
 
 fid = fopen('MSA_input.txt');
 
-fgetl(fid);
-fgetl(fid);
-fgetl(fid);
-fgetl(fid);
-line = fgetl(fid);
+textLine = fgetl(fid); 
+    
 
-species = strsplit(line,',')
+
+fclose(fid);
 
 system_info = [];
-
-fclose('all');
 
 end

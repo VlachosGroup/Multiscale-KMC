@@ -2,18 +2,18 @@
 % You also need a version which reads through many files and averages/takes
 % sensitivities
 
-clear; clc; fclose('all');
+function Analyze_outputs_trans
 
+clear; clc; fclose('all');
 addpath('../Network');
+basefldr = textread('Directory.txt','%c')';
 [spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, eps, num_batches, delta] = FauxInputRead2;
 
 [n_params, n_specs] = size(stoich);
-cols = 1 + 2 * n_specs + n_params;                       % t, species, integral species, trajectory derivatives
 Y1 = [];
 Y2 = [];
 
 % Reads the names of the folders within the directory
-basefldr = 'C:\Users\Marcel\Desktop\MSA\example_data';
 d = dir(basefldr);
 isub = [d(:).isdir];
 nameFolds = {d(isub).name}';
@@ -21,7 +21,7 @@ nameFolds(ismember(nameFolds,{'.','..'})) = [];         % ignore current and par
 havedata = 0;
 
 for file = 1:length(nameFolds)
-
+    
     [data1, data2] = Read_KMCTTS_output([basefldr '/' nameFolds{file}], N_record, n_params, n_specs);
     
     fclose('all');
@@ -82,31 +82,31 @@ total_sens = micro_sens + macro_sens;
 % s_1_3s_vars_CELR = zeros(5,3);
 % s_100s_vars_CLR = zeros(5,3);
 % s_100s_vars_CELR = zeros(5,3);
-% 
+%
 % s_1_3s_CI_CLR = zeros(5,3);
 % s_1_3s_CI_CELR = zeros(5,3);
 % s_100s_CI_CLR = zeros(5,3);
 % s_100s_CI_CELR = zeros(5,3);
-% 
+%
 % N_bs = 1000;
-% 
+%
 % for i = 1:n_specs
 %     for j = 1:n_params
 %         b_test = bootstrp(N_bs,@cov_calc, Y1(:,1+i,13), Y1(:,7+j,13));
 %         b_test = sort(b_test);
 %         s_1_3s_vars_CLR(j,i) = var(b_test);
 %         s_1_3s_CI_CLR(j,i) = (b_test(round(0.975*N_bs)) - b_test(round(0.025*N_bs)))/2; % 95% confidence interval
-%         
+%
 %         b_test = bootstrp(N_bs,@cov_calc, Y1(:,4+i,13), Y1(:,7+j,13));
 %         b_test = sort(b_test);
 %         s_1_3s_vars_CELR(j,i) = var(b_test);
 %         s_1_3s_CI_CELR(j,i) = (b_test(round(0.975*N_bs)) - b_test(round(0.025*N_bs)))/2; % 95% confidence interval
-%         
+%
 %         b_test = bootstrp(N_bs,@cov_calc, Y1(:,1+i,1000), Y1(:,7+j,1000));
 %         b_test = sort(b_test);
 %         s_100s_vars_CLR(j,i) = var(b_test);
 %         s_100s_CI_CLR(j,i) = (b_test(round(0.975*N_bs)) - b_test(round(0.025*N_bs)))/2; % 95% confidence interval
-%         
+%
 %         b_test = bootstrp(N_bs,@cov_calc, Y1(:,4+i,1000), Y1(:,7+j,1000));
 %         b_test = sort(b_test);
 %         s_100s_vars_CELR(j,i) = var(b_test);
@@ -126,3 +126,22 @@ fclose(fidout);
 fidout = fopen([basefldr '/total_sens.bin'],'w');
 fwrite(fidout,total_sens,'double');
 fclose(fidout);
+
+end
+
+% Reads the output files from MSA
+
+function [Y, Y2] = Read_KMCTTS_output(dir, N_record, n_params, n_specs)
+
+cols = 1 + 2 * n_specs + n_params;                       % t, species, integral species, trajectory derivatives
+
+fidread = fopen([dir '/MSA_output.bin'],'r');
+Y = fread(fidread,[N_record,cols],'double');
+fclose(fidread);
+
+fidread = fopen([dir '/micro_derivs.bin'],'r');
+Y2 = fread(fidread, n_params * n_specs * N_record, 'double');       % parameters * species * time points
+Y2 = reshape(Y2, [n_params, n_specs, N_record]);
+fclose('all');
+
+end
