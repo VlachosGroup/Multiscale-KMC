@@ -3,6 +3,8 @@
 clc; clear;
 t_cpu_start = cputime;
 
+addpath('../Network')
+
 % System info
 [spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, eps] = FauxInputRead;
 k(fast_rxns) = k(fast_rxns) / eps;

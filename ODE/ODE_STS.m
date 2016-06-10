@@ -8,12 +8,13 @@ function ODE_STS
 clc; clear; fclose('all');
 
 % System specifications - read this from input file
-[spec_names, N_0, S, S_react, k, param_names, t_final, N_record, fast_rxns, eps] = FauxInputRead2
-k(fast_rxns) = k(fast_rxns) / eps;
-[n_rxns, n_specs] = size(S);
+addpath('../Network')
+input_specs = FauxInputRead2;
+input_specs.k(input_specs.fast_rxns) = input_specs.k(input_specs.fast_rxns) / input_specs.eps;
+[n_rxns, n_specs] = size(input_specs.stoich);
 
 %% Solve the ODE system
-[T,Y] = ode15s(@rate_eqns_param, linspace(0,t_final,N_record), [N_0, zeros(1, n_specs*n_rxns)]);
+[T,Y] = ode15s(@rate_eqns_param, linspace(0,input_specs.t_final,input_specs.N_record), [input_specs.N_0, zeros(1, n_specs*n_rxns)]);
 
     function dNdt = rate_eqns_param(t,z) 
 
@@ -21,14 +22,14 @@ k(fast_rxns) = k(fast_rxns) / eps;
         N = z(1:n_specs)';               % species populations
         C = z(n_specs+1:end);           % sensitivities
         
-        [r, dr_dtheta, dr_dN] = rxn_rates(S_react, N, k);               % Get rate law information
-        dNdt(1:n_specs) = S' * r;                                                           % Get differential changes in species populations
+        [r, dr_dtheta, dr_dN] = rxn_rates(input_specs.stoich_react, N, input_specs.k);               % Get rate law information
+        dNdt(1:n_specs) = input_specs.stoich' * r;                                                           % Get differential changes in species populations
         
         % Indexes the matrix elements of dNdk into a vector for
         % differential equation
         % Try to vectorize this
         for i = 1:n_rxns                   
-            dNdt(i*n_specs+1:(i+1)*n_specs) = S' * (dr_dN * C((i-1)*n_specs+1:i*n_specs) + dr_dtheta(:,i));
+            dNdt(i*n_specs+1:(i+1)*n_specs) = input_specs.stoich' * (dr_dN * C((i-1)*n_specs+1:i*n_specs) + dr_dtheta(:,i));
         end
 
     end
@@ -51,14 +52,14 @@ ax = gca;
 ax.FontSize = 18;
 xlabel('time (s)','FontSize',18)
 ylabel('spec. pop.','FontSize',18)
-legend(spec_names);
+legend(input_specs.spec_names);
 
 % Plot sensitivities for each species
 for spec = 1:n_specs
     
     inds = linspace(spec, n_rxns * n_specs - n_specs + spec, n_rxns);
     sens = sens_traj(:,inds);
-    sens(:,fast_rxns) = sens(:,fast_rxns) / eps;        % Scale the sensitivities to eliminate dependence on eps
+    sens(:,input_specs.fast_rxns) = sens(:,input_specs.fast_rxns) / input_specs.eps;        % Scale the sensitivities to eliminate dependence on eps
     
     
     figure
@@ -67,11 +68,16 @@ for spec = 1:n_specs
     hold off
     box('on')
     xlabel('time (s)','FontSize',18)
-    ylabel([spec_names{spec} ' sensitivities'],'FontSize',18)
+    ylabel([input_specs.spec_names{spec} ' sensitivities'],'FontSize',18)
     ax = gca;
     ax.FontSize = 18;
-    legend(param_names);
+    legend(input_specs.param_names);
 end
 
+disp('final species pops')
+spec_pop_traj(end,:)
+
+disp('final sensitivities')
+sens_traj(end,:)
 
 end

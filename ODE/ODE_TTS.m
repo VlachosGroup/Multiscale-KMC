@@ -6,7 +6,7 @@ function ODE_TTS
 clc; clear; fclose('all');
 
 %% System inputs
-
+addpath('../Network')
 [spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, ~, ~, ~] = FauxInputRead2;
 
 
