@@ -7,7 +7,7 @@ clc; clear; fclose('all');
 
 %% System inputs
 addpath('../Network')
-[spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, ~, ~, ~] = FauxInputRead2;
+[spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, ~, ~, ~] = InputRead_ABcat;
 
 
 N_0 = N_0';     % make it a column vector for convenience

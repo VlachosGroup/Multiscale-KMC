@@ -9,7 +9,7 @@ clc; clear; fclose('all');
 
 % System specifications - read this from input file
 addpath('../Network')
-input_specs = FauxInputRead2;
+input_specs = InputRead_ABcat;
 input_specs.k(input_specs.fast_rxns) = input_specs.k(input_specs.fast_rxns) / input_specs.eps;
 [n_rxns, n_specs] = size(input_specs.stoich);
 
@@ -73,6 +73,9 @@ for spec = 1:n_specs
     ax.FontSize = 18;
     legend(input_specs.param_names);
 end
+
+disp('final time')
+T(end)
 
 disp('final species pops')
 spec_pop_traj(end,:)

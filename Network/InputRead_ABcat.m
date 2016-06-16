@@ -1,7 +1,7 @@
 % Use this common function common to all models as a temporary substitute
 % to reading the input file
 
-function input_specs = FauxInputRead2
+function input_specs = InputRead_ABcat
 % [spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, eps, num_batches, delta]
 input_specs.spec_names = {'A*','B*','*'};
 %input_specs.N_0 = [30 10 60];                                                             % Initial state
@@ -27,7 +27,7 @@ for i = 1:length(input_specs.k)
     input_specs.param_names = [input_specs.param_names ['k_' num2str(i)]];
 end
 
-input_specs.t_final = 1;
+input_specs.t_final = 0.5;
 input_specs.N_record = 1001;                                                                    % Arbitrary with no implications on the numerics, just used for visualizing average trajectories and checking it against the algebraic ODE solution
 input_specs.fast_rxns = [1,2];
 input_specs.eps = 0.01;                                                                        % Stiffness parameter

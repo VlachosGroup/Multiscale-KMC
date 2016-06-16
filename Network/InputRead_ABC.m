@@ -1,7 +1,7 @@
 % Use this common function common to all models as a temporary substitute
 % to reading the input file
 
-function [spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, eps, num_batches, delta] = FauxInputRead
+function [spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, eps, num_batches, delta] = InputRead_ABC
 
 spec_names = {'A','B','C'};
 N_0 = [100 0 0];                                                             % Initial state
