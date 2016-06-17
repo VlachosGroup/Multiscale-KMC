@@ -5,19 +5,15 @@ function ODE_TTS
 
 clc; clear; fclose('all');
 
-%% System inputs
+% System inputs
 addpath('../Network')
-[spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, ~, ~, ~] = InputRead_ABcat;
-
-
-N_0 = N_0';     % make it a column vector for convenience
-stoich = stoich';
-[M,R] = size(stoich);
+input_specs = InputRead_ABcat;
+[M,R] = size(input_specs.stoich');
 
 % Split the stoichiometry matrix into fast and slow components
-Ss = stoich;
-Ss(:,fast_rxns) = 0;
-Sf = stoich - Ss;
+Ss = input_specs.stoich';
+Ss(:,input_specs.fast_rxns) = 0;
+Sf = input_specs.stoich' - Ss;
 
 % Transformation matrix for the variables to a new system
 Ts = null(Sf','r')';
@@ -32,7 +28,7 @@ Ts = T(mf+1:end,:);
 fse = 2*mf + ms;                        % number of fast-scale equations
 
 % Initial conditions
-y_0 = T * N_0;
+y_0 = T * input_specs.N_0';
 Cy_0 = zeros(fse*R,1);
 
 %% Solve the ODE system
@@ -48,7 +44,7 @@ end
 
 % Call ODE solver
 options = odeset('Mass',mass);
-[T,Y] = ode15s(@rate_eqns_param_TTS,linspace(0,t_final,N_record),[y_0;Cy_0],options);
+[T,Y] = ode15s(@rate_eqns_param_TTS,linspace(0, input_specs.t_final, input_specs.N_record),[y_0; Cy_0],options);
 
     % Function for ODE solver
     function dz_dt = rate_eqns_param_TTS(t,z)
@@ -56,7 +52,7 @@ options = odeset('Mass',mass);
         dz_dt = zeros(num_eqns,1);
         
         % Get rate info
-        [rates,dr_dtheta,dr_dN] = rxn_rates(S_react, (Tinv * z(1:M))', k);
+        [rates,dr_dtheta,dr_dN] = rxn_rates(input_specs.stoich_react, (Tinv * z(1:M))', input_specs.k);
         
         % Differentials of y
         dz_dt(1:mf) = Tf * Sf * rates;              % fast
@@ -76,7 +72,7 @@ options = odeset('Mass',mass);
 % Convert back to oringinal variables
 Tinv_aug = blkdiag(Tinv(:,1:mf),Tinv);                                                  % Add additional inverse lines because of the extra variables we have
 Tbig = Tinv;
-for h = 1:length(k)
+for h = 1:length(input_specs.k)
     Tbig = blkdiag(Tbig,Tinv_aug);
 end
 Yorig = Y * Tbig';
@@ -101,7 +97,7 @@ ax = gca;
 ax.FontSize = 18;
 xlabel('time (s)','FontSize',18)
 ylabel('spec. pop.','FontSize',18)
-legend(spec_names);
+legend(input_specs.spec_names);
 
 % Plot sensitivities for each species
 for spec = 1:M
@@ -120,10 +116,10 @@ for spec = 1:M
     hold off
     box('on')
     xlabel('time (s)','FontSize',18)
-    ylabel([spec_names{spec} ' sensitivities'],'FontSize',18)
+    ylabel([input_specs.spec_names{spec} ' sensitivities'],'FontSize',18)
     ax = gca;
     ax.FontSize = 18;
-    legend(param_names);
+    legend(input_specs.param_names);
 end
 
 end

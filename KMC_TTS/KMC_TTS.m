@@ -5,27 +5,27 @@ clc; clear; fclose('all');  t_cpu_start = cputime;
 %% User Input - change to read everything from the input files
 
 rng(12345);     % Set random seed
-[spec_names, N_0, stoich, S_react, k, t_final, N_record, fast_rxns, eps, num_batches, delta] = FauxInputRead;
+input_specs = InputRead_ABcat;
 out_file = fopen('MSA_debug.txt','w');
 
 %% Stochastic Simulation Loop
 
 % System Information
-[n_params, n_specs] = size(stoich);
-slow_rxns = linspace(1,n_params,n_params);
-slow_rxns(fast_rxns) = [];                                                          % All the reactions which are not fast are slow
+[n_params, n_specs] = size(input_specs.stoich);
+slow_rxns = linspace(1, n_params, n_params);
+slow_rxns(input_specs.fast_rxns) = [];                                                          % All the reactions which are not fast are slow
 n_rxns_slow = length(slow_rxns);
-n_rxns_fast = length(fast_rxns);
-stoich_fast = stoich(fast_rxns,:);
-stoich_slow = stoich(slow_rxns,:);
-N_r = zeros(N_record,n_specs); 
+n_rxns_fast = length(input_specs.fast_rxns);
+stoich_fast = input_specs.stoich(input_specs.fast_rxns,:);
+stoich_slow = input_specs.stoich(slow_rxns,:);
+N_r = zeros(input_specs.N_record,n_specs); 
 N_int = zeros(1,n_specs);
-N_int_r = zeros(N_record,n_specs);
+N_int_r = zeros(input_specs.N_record,n_specs);
 N_int_prev = N_int;
-t_r = linspace(0, t_final, N_record);                                               % Recording times, remains constant
+t_r = linspace(0, input_specs.t_final, input_specs.N_record);                                               % Recording times, remains constant
 
 % Simulation initialization
-N = N_0;
+N = input_specs.N_0;
 N_prev = N;                                                                         % An initialization, will be truncated in taking statistics
 t = 0;                                                                              % Initial macro time
 N_int = zeros(1,n_specs);
@@ -36,12 +36,12 @@ n_events = 0;
 % Sensitivity analysis Parameters
 da_betabar_dtheta = zeros(n_rxns_slow,n_params);
 W = zeros(1,n_params);
-W_r = zeros(N_record,n_params);
+W_r = zeros(input_specs.N_record,n_params);
 W_prev = W;
 dNbar_dtheta = zeros(n_params, n_specs);
-dNbar_dtheta_r = zeros(n_params, n_specs, N_record);
+dNbar_dtheta_r = zeros(n_params, n_specs, input_specs.N_record);
 
-while t < t_final                                                                   % (macro) Termination time controls the sampling
+while t < input_specs.t_final                                                                   % (macro) Termination time controls the sampling
     
     
     
@@ -63,7 +63,7 @@ while t < t_final                                                               
     % Visit micro scale to get fast-class averages and choice of macro
     % reaction
     batch_length_orig = 2;                                                          % Guess of the time-scale of the fast class
-    [N_int_avg, N_origin, betabar, slow_rxn_to_fire, dt_macro, da_betabar_dtheta, dNbar_dtheta] = micro_scale(N, k, fast_rxns, slow_rxns, stoich_fast, S_react, batch_length_orig, num_batches, delta);
+    [N_int_avg, N_origin, betabar, slow_rxn_to_fire, dt_macro, da_betabar_dtheta, dNbar_dtheta] = micro_scale(N, input_specs.k, input_specs.fast_rxns, slow_rxns, stoich_fast, input_specs.stoich_react, batch_length_orig, input_specs.num_batches, input_specs.delta);
     N_prev = N_int_avg;
     N = N_origin + stoich_slow(slow_rxn_to_fire,:);                                 % which reaction will fire? And from which state?
     
@@ -85,7 +85,7 @@ while t < t_final                                                               
 end
 
 % Fill in the recording times that were missed
-while ind_rec < N_record + 1
+while ind_rec < input_specs.N_record + 1
     
     fprintf(out_file, 'Macroscopic steps executed: %d\n', n_events);               % Eventually write this into an output file
     fprintf(out_file, 'KMC time: %d s\n\n', t);

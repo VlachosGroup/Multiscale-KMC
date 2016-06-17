@@ -6,19 +6,20 @@ t_cpu_start = cputime;
 addpath('../Network')
 
 % System info
-[spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, eps] = FauxInputRead;
-k(fast_rxns) = k(fast_rxns) / eps;
-[n_params, n_specs] = size(stoich);
-N_r = zeros(N_record,n_specs); 
+input_specs = InputRead_ABcat;
+
+input_specs.k(input_specs.fast_rxns) = input_specs.k(input_specs.fast_rxns) / input_specs.eps;
+[n_params, n_specs] = size(input_specs.stoich);
+N_r = zeros(input_specs.N_record,n_specs); 
 N_int = zeros(1,n_specs);
-N_int_r = zeros(N_record,n_specs);
+N_int_r = zeros(input_specs.N_record,n_specs);
 N_int_prev = N_int;
-t_r = linspace(0, t_final, N_record);                                               % Recording times, remains constant
+t_r = linspace(0, input_specs.t_final, input_specs.N_record);                                               % Recording times, remains constant
 
 %% Stochastic Simulation Loop
 
 % Simulation initialization
-N = N_0;
+N = input_specs.N_0;
 N_prev = N;                                                                         % An initialization, will be truncated in taking statistics
 t = 0;                                                                              % Initial macro time
 N_int = zeros(1,n_specs);
@@ -29,10 +30,10 @@ n_events = 0;
 % Sensitivity analysis Parameters
 da_dtheta = zeros(n_params,n_params);
 W = zeros(1,n_params);
-W_r = zeros(N_record,n_params);
+W_r = zeros(input_specs.N_record,n_params);
 W_prev = W;
 
-while t < t_final                                                                   % (macro) Termination time controls the sampling
+while t < input_specs.t_final                                                                   % (macro) Termination time controls the sampling
     
     disp(['Event # ' num2str(n_events)])
     disp(['Time: ' num2str(t) ' s'])
@@ -48,11 +49,11 @@ while t < t_final                                                               
         ind_rec = ind_rec + 1;                                                                              % Increment the recording index
     end
         
-    [a, da_dtheta, ~] = rxn_rates(S_react, N, k);
+    [a, da_dtheta, ~] = rxn_rates(input_specs.stoich_react, N, input_specs.k);
     a_sum = sum(a);
     rxn_to_fire = min(find(rand(1)<cumsum(a/sum(a_sum))));     
     N_prev = N;
-    N = N + stoich(rxn_to_fire,:);                                 % which reaction will fire? And from which state?
+    N = N + input_specs.stoich(rxn_to_fire,:);                                 % which reaction will fire? And from which state?
     
     % Update time
     dt = log(1/rand(1))/a_sum;
@@ -73,7 +74,7 @@ while t < t_final                                                               
 end
 
 % Fill in the recording times that were missed
-while ind_rec < N_record + 1
+while ind_rec < input_specs.N_record + 1
     
     N_r(ind_rec,:) = N_prev;
     N_int_r(ind_rec,:) = N_int_prev + N_prev * (t_r(ind_rec) - t_prev);

@@ -2,7 +2,7 @@
 % to reading the input file
 
 function input_specs = InputRead_ABcat
-% [spec_names, N_0, stoich, S_react, k, param_names, t_final, N_record, fast_rxns, eps, num_batches, delta]
+
 input_specs.spec_names = {'A*','B*','*'};
 %input_specs.N_0 = [30 10 60];                                                             % Initial state
 input_specs.N_0 = [0 0 100];       
