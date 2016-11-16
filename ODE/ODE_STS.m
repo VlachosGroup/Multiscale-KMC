@@ -84,9 +84,10 @@ disp('final sensitivities')
 sens_traj(end,:)
 
 %% Further analyze sensitivities
-sens = sens_traj(end,:)
+sens = sens_traj(end,:);
 sens = reshape(sens,[n_specs, n_rxns]);
 sens = sens(2,:) .* input_specs.k / spec_pop_traj(end,2)
 NSCs = sens([1,3,5]) + sens([2,4,6]);
-NSCs(3) = NSCs(3) + 1
+NSCs(3) = NSCs(3) + 1;
+NSCs
 end

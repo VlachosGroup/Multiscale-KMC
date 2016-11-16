@@ -120,7 +120,11 @@ for spec = 1:M
     ax = gca;
     ax.FontSize = 18;
     legend(input_specs.param_names);
+    legend('boxoff')
 end
+
+%% Output file
+
 
 end
 

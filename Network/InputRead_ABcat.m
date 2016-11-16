@@ -13,7 +13,7 @@ input_specs.stoich = [1 0 -1
     1 -1 0
     0 -1 1
     0 1 -1];         % stoichiometric matrix
-input_specs.k = [1, 1.5, 2, 1, 0.4, 0];                                                         % Rate constants
+input_specs.k = [4.72, 4.72/6.67, 2, 1, 0.4, 0];                                                         % Rate constants
 
 % input_specs.stoich = [1 0 -1
 %     -1 0 1
@@ -27,10 +27,10 @@ for i = 1:length(input_specs.k)
     input_specs.param_names = [input_specs.param_names ['k_' num2str(i)]];
 end
 
-input_specs.t_final = 0.5;
+input_specs.t_final = 5;
 input_specs.N_record = 1001;                                                                    % Arbitrary with no implications on the numerics, just used for visualizing average trajectories and checking it against the algebraic ODE solution
 input_specs.fast_rxns = [1,2];
-input_specs.eps = 0.01;                                                                        % Stiffness parameter
+input_specs.eps = 1;                                                                        % Stiffness parameter
 
 % Compute reactant matrix
 input_specs.stoich_react = input_specs.stoich;

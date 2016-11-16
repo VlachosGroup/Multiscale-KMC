@@ -4,7 +4,7 @@
 Species
 A, B, C
 
-Reactio
+Reaction
 A -> B, B -> A, B -> C
 
 Rate constants
