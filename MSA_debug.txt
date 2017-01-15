@@ -1,0 +1,2124 @@
+Macroscopic steps executed: 0
+KMC time: 0 s
+
+Macroscopic steps executed: 2
+KMC time: 1.117178e-02 s
+
+Macroscopic steps executed: 2
+KMC time: 1.117178e-02 s
+
+Macroscopic steps executed: 5
+KMC time: 1.999728e-02 s
+
+Macroscopic steps executed: 6
+KMC time: 2.947849e-02 s
+
+Macroscopic steps executed: 6
+KMC time: 2.947849e-02 s
+
+Macroscopic steps executed: 7
+KMC time: 3.307360e-02 s
+
+Macroscopic steps executed: 8
+KMC time: 4.034449e-02 s
+
+Macroscopic steps executed: 8
+KMC time: 4.034449e-02 s
+
+Macroscopic steps executed: 10
+KMC time: 5.196966e-02 s
+
+Macroscopic steps executed: 10
+KMC time: 5.196966e-02 s
+
+Macroscopic steps executed: 12
+KMC time: 5.588210e-02 s
+
+Macroscopic steps executed: 13
+KMC time: 7.025972e-02 s
+
+Macroscopic steps executed: 13
+KMC time: 7.025972e-02 s
+
+Macroscopic steps executed: 13
+KMC time: 7.025972e-02 s
+
+Macroscopic steps executed: 15
+KMC time: 8.350150e-02 s
+
+Macroscopic steps executed: 15
+KMC time: 8.350150e-02 s
+
+Macroscopic steps executed: 17
+KMC time: 9.000590e-02 s
+
+Macroscopic steps executed: 17
+KMC time: 9.000590e-02 s
+
+Macroscopic steps executed: 19
+KMC time: 9.783404e-02 s
+
+Macroscopic steps executed: 20
+KMC time: 1.043390e-01 s
+
+Macroscopic steps executed: 21
+KMC time: 1.069281e-01 s
+
+Macroscopic steps executed: 22
+KMC time: 1.199981e-01 s
+
+Macroscopic steps executed: 22
+KMC time: 1.199981e-01 s
+
+Macroscopic steps executed: 23
+KMC time: 1.281952e-01 s
+
+Macroscopic steps executed: 23
+KMC time: 1.281952e-01 s
+
+Macroscopic steps executed: 24
+KMC time: 1.323853e-01 s
+
+Macroscopic steps executed: 25
+KMC time: 1.387585e-01 s
+
+Macroscopic steps executed: 26
+KMC time: 1.540598e-01 s
+
+Macroscopic steps executed: 26
+KMC time: 1.540598e-01 s
+
+Macroscopic steps executed: 26
+KMC time: 1.540598e-01 s
+
+Macroscopic steps executed: 27
+KMC time: 1.689560e-01 s
+
+Macroscopic steps executed: 27
+KMC time: 1.689560e-01 s
+
+Macroscopic steps executed: 27
+KMC time: 1.689560e-01 s
+
+Macroscopic steps executed: 28
+KMC time: 1.707885e-01 s
+
+Macroscopic steps executed: 30
+KMC time: 1.834691e-01 s
+
+Macroscopic steps executed: 30
+KMC time: 1.834691e-01 s
+
+Macroscopic steps executed: 32
+KMC time: 1.916471e-01 s
+
+Macroscopic steps executed: 32
+KMC time: 1.916471e-01 s
+
+Macroscopic steps executed: 34
+KMC time: 1.988632e-01 s
+
+Macroscopic steps executed: 36
+KMC time: 2.007150e-01 s
+
+Macroscopic steps executed: 37
+KMC time: 2.070621e-01 s
+
+Macroscopic steps executed: 38
+KMC time: 2.230471e-01 s
+
+Macroscopic steps executed: 38
+KMC time: 2.230471e-01 s
+
+Macroscopic steps executed: 38
+KMC time: 2.230471e-01 s
+
+Macroscopic steps executed: 39
+KMC time: 2.439490e-01 s
+
+Macroscopic steps executed: 39
+KMC time: 2.439490e-01 s
+
+Macroscopic steps executed: 39
+KMC time: 2.439490e-01 s
+
+Macroscopic steps executed: 39
+KMC time: 2.439490e-01 s
+
+Macroscopic steps executed: 40
+KMC time: 2.481359e-01 s
+
+Macroscopic steps executed: 41
+KMC time: 2.514871e-01 s
+
+Macroscopic steps executed: 42
+KMC time: 2.758949e-01 s
+
+Macroscopic steps executed: 42
+KMC time: 2.758949e-01 s
+
+Macroscopic steps executed: 42
+KMC time: 2.758949e-01 s
+
+Macroscopic steps executed: 42
+KMC time: 2.758949e-01 s
+
+Macroscopic steps executed: 42
+KMC time: 2.758949e-01 s
+
+Macroscopic steps executed: 43
+KMC time: 2.810804e-01 s
+
+Macroscopic steps executed: 45
+KMC time: 2.945473e-01 s
+
+Macroscopic steps executed: 45
+KMC time: 2.945473e-01 s
+
+Macroscopic steps executed: 46
+KMC time: 2.973989e-01 s
+
+Macroscopic steps executed: 47
+KMC time: 3.125863e-01 s
+
+Macroscopic steps executed: 47
+KMC time: 3.125863e-01 s
+
+Macroscopic steps executed: 47
+KMC time: 3.125863e-01 s
+
+Macroscopic steps executed: 48
+KMC time: 3.151507e-01 s
+
+Macroscopic steps executed: 49
+KMC time: 3.206384e-01 s
+
+Macroscopic steps executed: 51
+KMC time: 3.297564e-01 s
+
+Macroscopic steps executed: 52
+KMC time: 3.306206e-01 s
+
+Macroscopic steps executed: 55
+KMC time: 3.504790e-01 s
+
+Macroscopic steps executed: 55
+KMC time: 3.504790e-01 s
+
+Macroscopic steps executed: 55
+KMC time: 3.504790e-01 s
+
+Macroscopic steps executed: 55
+KMC time: 3.504790e-01 s
+
+Macroscopic steps executed: 56
+KMC time: 3.571493e-01 s
+
+Macroscopic steps executed: 57
+KMC time: 3.731031e-01 s
+
+Macroscopic steps executed: 57
+KMC time: 3.731031e-01 s
+
+Macroscopic steps executed: 57
+KMC time: 3.731031e-01 s
+
+Macroscopic steps executed: 58
+KMC time: 3.770566e-01 s
+
+Macroscopic steps executed: 59
+KMC time: 3.824105e-01 s
+
+Macroscopic steps executed: 61
+KMC time: 4.215242e-01 s
+
+Macroscopic steps executed: 61
+KMC time: 4.215242e-01 s
+
+Macroscopic steps executed: 61
+KMC time: 4.215242e-01 s
+
+Macroscopic steps executed: 61
+KMC time: 4.215242e-01 s
+
+Macroscopic steps executed: 61
+KMC time: 4.215242e-01 s
+
+Macroscopic steps executed: 61
+KMC time: 4.215242e-01 s
+
+Macroscopic steps executed: 61
+KMC time: 4.215242e-01 s
+
+Macroscopic steps executed: 61
+KMC time: 4.215242e-01 s
+
+Macroscopic steps executed: 62
+KMC time: 4.299878e-01 s
+
+Macroscopic steps executed: 63
+KMC time: 4.310762e-01 s
+
+Macroscopic steps executed: 64
+KMC time: 4.392206e-01 s
+
+Macroscopic steps executed: 65
+KMC time: 4.439357e-01 s
+
+Macroscopic steps executed: 66
+KMC time: 4.501696e-01 s
+
+Macroscopic steps executed: 66
+KMC time: 4.501696e-01 s
+
+Macroscopic steps executed: 67
+KMC time: 4.587240e-01 s
+
+Macroscopic steps executed: 68
+KMC time: 4.811393e-01 s
+
+Macroscopic steps executed: 68
+KMC time: 4.811393e-01 s
+
+Macroscopic steps executed: 68
+KMC time: 4.811393e-01 s
+
+Macroscopic steps executed: 68
+KMC time: 4.811393e-01 s
+
+Macroscopic steps executed: 68
+KMC time: 4.811393e-01 s
+
+Macroscopic steps executed: 70
+KMC time: 4.853845e-01 s
+
+Macroscopic steps executed: 72
+KMC time: 4.922957e-01 s
+
+Macroscopic steps executed: 73
+KMC time: 5.112861e-01 s
+
+Macroscopic steps executed: 73
+KMC time: 5.112861e-01 s
+
+Macroscopic steps executed: 73
+KMC time: 5.112861e-01 s
+
+Macroscopic steps executed: 73
+KMC time: 5.112861e-01 s
+
+Macroscopic steps executed: 75
+KMC time: 5.179007e-01 s
+
+Macroscopic steps executed: 76
+KMC time: 5.206688e-01 s
+
+Macroscopic steps executed: 78
+KMC time: 5.260940e-01 s
+
+Macroscopic steps executed: 81
+KMC time: 5.330984e-01 s
+
+Macroscopic steps executed: 83
+KMC time: 5.380133e-01 s
+
+Macroscopic steps executed: 85
+KMC time: 5.402204e-01 s
+
+Macroscopic steps executed: 87
+KMC time: 5.550419e-01 s
+
+Macroscopic steps executed: 87
+KMC time: 5.550419e-01 s
+
+Macroscopic steps executed: 87
+KMC time: 5.550419e-01 s
+
+Macroscopic steps executed: 88
+KMC time: 5.601032e-01 s
+
+Macroscopic steps executed: 89
+KMC time: 5.655186e-01 s
+
+Macroscopic steps executed: 90
+KMC time: 5.804759e-01 s
+
+Macroscopic steps executed: 90
+KMC time: 5.804759e-01 s
+
+Macroscopic steps executed: 90
+KMC time: 5.804759e-01 s
+
+Macroscopic steps executed: 93
+KMC time: 5.859116e-01 s
+
+Macroscopic steps executed: 95
+KMC time: 5.919474e-01 s
+
+Macroscopic steps executed: 96
+KMC time: 5.957330e-01 s
+
+Macroscopic steps executed: 98
+KMC time: 6.081956e-01 s
+
+Macroscopic steps executed: 98
+KMC time: 6.081956e-01 s
+
+Macroscopic steps executed: 99
+KMC time: 6.154806e-01 s
+
+Macroscopic steps executed: 99
+KMC time: 6.154806e-01 s
+
+Macroscopic steps executed: 100
+KMC time: 6.212164e-01 s
+
+Macroscopic steps executed: 102
+KMC time: 6.264105e-01 s
+
+Macroscopic steps executed: 103
+KMC time: 6.367129e-01 s
+
+Macroscopic steps executed: 103
+KMC time: 6.367129e-01 s
+
+Macroscopic steps executed: 104
+KMC time: 6.494873e-01 s
+
+Macroscopic steps executed: 104
+KMC time: 6.494873e-01 s
+
+Macroscopic steps executed: 105
+KMC time: 6.528109e-01 s
+
+Macroscopic steps executed: 107
+KMC time: 6.565254e-01 s
+
+Macroscopic steps executed: 109
+KMC time: 6.726177e-01 s
+
+Macroscopic steps executed: 109
+KMC time: 6.726177e-01 s
+
+Macroscopic steps executed: 109
+KMC time: 6.726177e-01 s
+
+Macroscopic steps executed: 110
+KMC time: 6.773705e-01 s
+
+Macroscopic steps executed: 111
+KMC time: 7.049307e-01 s
+
+Macroscopic steps executed: 111
+KMC time: 7.049307e-01 s
+
+Macroscopic steps executed: 111
+KMC time: 7.049307e-01 s
+
+Macroscopic steps executed: 111
+KMC time: 7.049307e-01 s
+
+Macroscopic steps executed: 111
+KMC time: 7.049307e-01 s
+
+Macroscopic steps executed: 112
+KMC time: 7.060919e-01 s
+
+Macroscopic steps executed: 115
+KMC time: 7.184444e-01 s
+
+Macroscopic steps executed: 115
+KMC time: 7.184444e-01 s
+
+Macroscopic steps executed: 117
+KMC time: 7.223416e-01 s
+
+Macroscopic steps executed: 119
+KMC time: 7.337118e-01 s
+
+Macroscopic steps executed: 119
+KMC time: 7.337118e-01 s
+
+Macroscopic steps executed: 120
+KMC time: 7.353023e-01 s
+
+Macroscopic steps executed: 122
+KMC time: 7.555245e-01 s
+
+Macroscopic steps executed: 122
+KMC time: 7.555245e-01 s
+
+Macroscopic steps executed: 122
+KMC time: 7.555245e-01 s
+
+Macroscopic steps executed: 122
+KMC time: 7.555245e-01 s
+
+Macroscopic steps executed: 123
+KMC time: 7.603135e-01 s
+
+Macroscopic steps executed: 126
+KMC time: 7.807264e-01 s
+
+Macroscopic steps executed: 126
+KMC time: 7.807264e-01 s
+
+Macroscopic steps executed: 126
+KMC time: 7.807264e-01 s
+
+Macroscopic steps executed: 126
+KMC time: 7.807264e-01 s
+
+Macroscopic steps executed: 127
+KMC time: 7.925357e-01 s
+
+Macroscopic steps executed: 127
+KMC time: 7.925357e-01 s
+
+Macroscopic steps executed: 128
+KMC time: 7.975503e-01 s
+
+Macroscopic steps executed: 129
+KMC time: 8.076030e-01 s
+
+Macroscopic steps executed: 129
+KMC time: 8.076030e-01 s
+
+Macroscopic steps executed: 130
+KMC time: 8.111638e-01 s
+
+Macroscopic steps executed: 132
+KMC time: 8.150250e-01 s
+
+Macroscopic steps executed: 134
+KMC time: 8.247278e-01 s
+
+Macroscopic steps executed: 135
+KMC time: 8.283274e-01 s
+
+Macroscopic steps executed: 136
+KMC time: 8.321646e-01 s
+
+Macroscopic steps executed: 138
+KMC time: 8.454222e-01 s
+
+Macroscopic steps executed: 138
+KMC time: 8.454222e-01 s
+
+Macroscopic steps executed: 138
+KMC time: 8.454222e-01 s
+
+Macroscopic steps executed: 139
+KMC time: 8.521196e-01 s
+
+Macroscopic steps executed: 141
+KMC time: 8.637119e-01 s
+
+Macroscopic steps executed: 141
+KMC time: 8.637119e-01 s
+
+Macroscopic steps executed: 142
+KMC time: 8.659080e-01 s
+
+Macroscopic steps executed: 145
+KMC time: 8.759982e-01 s
+
+Macroscopic steps executed: 145
+KMC time: 8.759982e-01 s
+
+Macroscopic steps executed: 147
+KMC time: 8.938266e-01 s
+
+Macroscopic steps executed: 147
+KMC time: 8.938266e-01 s
+
+Macroscopic steps executed: 147
+KMC time: 8.938266e-01 s
+
+Macroscopic steps executed: 150
+KMC time: 8.972155e-01 s
+
+Macroscopic steps executed: 151
+KMC time: 9.034970e-01 s
+
+Macroscopic steps executed: 152
+KMC time: 9.051164e-01 s
+
+Macroscopic steps executed: 153
+KMC time: 9.335058e-01 s
+
+Macroscopic steps executed: 153
+KMC time: 9.335058e-01 s
+
+Macroscopic steps executed: 153
+KMC time: 9.335058e-01 s
+
+Macroscopic steps executed: 153
+KMC time: 9.335058e-01 s
+
+Macroscopic steps executed: 153
+KMC time: 9.335058e-01 s
+
+Macroscopic steps executed: 154
+KMC time: 9.460602e-01 s
+
+Macroscopic steps executed: 154
+KMC time: 9.460602e-01 s
+
+Macroscopic steps executed: 154
+KMC time: 9.460602e-01 s
+
+Macroscopic steps executed: 155
+KMC time: 9.534295e-01 s
+
+Macroscopic steps executed: 156
+KMC time: 9.755828e-01 s
+
+Macroscopic steps executed: 156
+KMC time: 9.755828e-01 s
+
+Macroscopic steps executed: 156
+KMC time: 9.755828e-01 s
+
+Macroscopic steps executed: 156
+KMC time: 9.755828e-01 s
+
+Macroscopic steps executed: 156
+KMC time: 9.755828e-01 s
+
+Macroscopic steps executed: 158
+KMC time: 9.861132e-01 s
+
+Macroscopic steps executed: 158
+KMC time: 9.861132e-01 s
+
+Macroscopic steps executed: 160
+KMC time: 9.930588e-01 s
+
+Macroscopic steps executed: 161
+KMC time: 1.017755e+00 s
+
+Macroscopic steps executed: 161
+KMC time: 1.017755e+00 s
+
+Macroscopic steps executed: 161
+KMC time: 1.017755e+00 s
+
+Macroscopic steps executed: 161
+KMC time: 1.017755e+00 s
+
+Macroscopic steps executed: 161
+KMC time: 1.017755e+00 s
+
+Macroscopic steps executed: 162
+KMC time: 1.058065e+00 s
+
+Macroscopic steps executed: 162
+KMC time: 1.058065e+00 s
+
+Macroscopic steps executed: 162
+KMC time: 1.058065e+00 s
+
+Macroscopic steps executed: 162
+KMC time: 1.058065e+00 s
+
+Macroscopic steps executed: 162
+KMC time: 1.058065e+00 s
+
+Macroscopic steps executed: 162
+KMC time: 1.058065e+00 s
+
+Macroscopic steps executed: 162
+KMC time: 1.058065e+00 s
+
+Macroscopic steps executed: 162
+KMC time: 1.058065e+00 s
+
+Macroscopic steps executed: 163
+KMC time: 1.065661e+00 s
+
+Macroscopic steps executed: 163
+KMC time: 1.065661e+00 s
+
+Macroscopic steps executed: 164
+KMC time: 1.074996e+00 s
+
+Macroscopic steps executed: 165
+KMC time: 1.077904e+00 s
+
+Macroscopic steps executed: 166
+KMC time: 1.089231e+00 s
+
+Macroscopic steps executed: 166
+KMC time: 1.089231e+00 s
+
+Macroscopic steps executed: 167
+KMC time: 1.095814e+00 s
+
+Macroscopic steps executed: 167
+KMC time: 1.095814e+00 s
+
+Macroscopic steps executed: 169
+KMC time: 1.106940e+00 s
+
+Macroscopic steps executed: 169
+KMC time: 1.106940e+00 s
+
+Macroscopic steps executed: 170
+KMC time: 1.115571e+00 s
+
+Macroscopic steps executed: 170
+KMC time: 1.115571e+00 s
+
+Macroscopic steps executed: 173
+KMC time: 1.127846e+00 s
+
+Macroscopic steps executed: 173
+KMC time: 1.127846e+00 s
+
+Macroscopic steps executed: 174
+KMC time: 1.137829e+00 s
+
+Macroscopic steps executed: 174
+KMC time: 1.137829e+00 s
+
+Macroscopic steps executed: 175
+KMC time: 1.140416e+00 s
+
+Macroscopic steps executed: 176
+KMC time: 1.147582e+00 s
+
+Macroscopic steps executed: 177
+KMC time: 1.151290e+00 s
+
+Macroscopic steps executed: 178
+KMC time: 1.156431e+00 s
+
+Macroscopic steps executed: 179
+KMC time: 1.172554e+00 s
+
+Macroscopic steps executed: 179
+KMC time: 1.172554e+00 s
+
+Macroscopic steps executed: 179
+KMC time: 1.172554e+00 s
+
+Macroscopic steps executed: 180
+KMC time: 1.181882e+00 s
+
+Macroscopic steps executed: 180
+KMC time: 1.181882e+00 s
+
+Macroscopic steps executed: 181
+KMC time: 1.208733e+00 s
+
+Macroscopic steps executed: 181
+KMC time: 1.208733e+00 s
+
+Macroscopic steps executed: 181
+KMC time: 1.208733e+00 s
+
+Macroscopic steps executed: 181
+KMC time: 1.208733e+00 s
+
+Macroscopic steps executed: 181
+KMC time: 1.208733e+00 s
+
+Macroscopic steps executed: 182
+KMC time: 1.213373e+00 s
+
+Macroscopic steps executed: 183
+KMC time: 1.219176e+00 s
+
+Macroscopic steps executed: 184
+KMC time: 1.226486e+00 s
+
+Macroscopic steps executed: 184
+KMC time: 1.226486e+00 s
+
+Macroscopic steps executed: 186
+KMC time: 1.233455e+00 s
+
+Macroscopic steps executed: 188
+KMC time: 1.240219e+00 s
+
+Macroscopic steps executed: 188
+KMC time: 1.240219e+00 s
+
+Macroscopic steps executed: 190
+KMC time: 1.257578e+00 s
+
+Macroscopic steps executed: 190
+KMC time: 1.257578e+00 s
+
+Macroscopic steps executed: 190
+KMC time: 1.257578e+00 s
+
+Macroscopic steps executed: 191
+KMC time: 1.263458e+00 s
+
+Macroscopic steps executed: 192
+KMC time: 1.266542e+00 s
+
+Macroscopic steps executed: 194
+KMC time: 1.294485e+00 s
+
+Macroscopic steps executed: 194
+KMC time: 1.294485e+00 s
+
+Macroscopic steps executed: 194
+KMC time: 1.294485e+00 s
+
+Macroscopic steps executed: 194
+KMC time: 1.294485e+00 s
+
+Macroscopic steps executed: 194
+KMC time: 1.294485e+00 s
+
+Macroscopic steps executed: 195
+KMC time: 1.298827e+00 s
+
+Macroscopic steps executed: 196
+KMC time: 1.301588e+00 s
+
+Macroscopic steps executed: 198
+KMC time: 1.305116e+00 s
+
+Macroscopic steps executed: 199
+KMC time: 1.311144e+00 s
+
+Macroscopic steps executed: 202
+KMC time: 1.318971e+00 s
+
+Macroscopic steps executed: 203
+KMC time: 1.333166e+00 s
+
+Macroscopic steps executed: 203
+KMC time: 1.333166e+00 s
+
+Macroscopic steps executed: 203
+KMC time: 1.333166e+00 s
+
+Macroscopic steps executed: 206
+KMC time: 1.345000e+00 s
+
+Macroscopic steps executed: 206
+KMC time: 1.345000e+00 s
+
+Macroscopic steps executed: 206
+KMC time: 1.345000e+00 s
+
+Macroscopic steps executed: 208
+KMC time: 1.352487e+00 s
+
+Macroscopic steps executed: 209
+KMC time: 1.362927e+00 s
+
+Macroscopic steps executed: 209
+KMC time: 1.362927e+00 s
+
+Macroscopic steps executed: 210
+KMC time: 1.366508e+00 s
+
+Macroscopic steps executed: 211
+KMC time: 1.372562e+00 s
+
+Macroscopic steps executed: 212
+KMC time: 1.377676e+00 s
+
+Macroscopic steps executed: 213
+KMC time: 1.394655e+00 s
+
+Macroscopic steps executed: 213
+KMC time: 1.394655e+00 s
+
+Macroscopic steps executed: 213
+KMC time: 1.394655e+00 s
+
+Macroscopic steps executed: 214
+KMC time: 1.395185e+00 s
+
+Macroscopic steps executed: 215
+KMC time: 1.409801e+00 s
+
+Macroscopic steps executed: 215
+KMC time: 1.409801e+00 s
+
+Macroscopic steps executed: 216
+KMC time: 1.411916e+00 s
+
+Macroscopic steps executed: 217
+KMC time: 1.422594e+00 s
+
+Macroscopic steps executed: 217
+KMC time: 1.422594e+00 s
+
+Macroscopic steps executed: 218
+KMC time: 1.432756e+00 s
+
+Macroscopic steps executed: 218
+KMC time: 1.432756e+00 s
+
+Macroscopic steps executed: 220
+KMC time: 1.440117e+00 s
+
+Macroscopic steps executed: 220
+KMC time: 1.440117e+00 s
+
+Macroscopic steps executed: 221
+KMC time: 1.445835e+00 s
+
+Macroscopic steps executed: 223
+KMC time: 1.455298e+00 s
+
+Macroscopic steps executed: 223
+KMC time: 1.455298e+00 s
+
+Macroscopic steps executed: 225
+KMC time: 1.461327e+00 s
+
+Macroscopic steps executed: 227
+KMC time: 1.465424e+00 s
+
+Macroscopic steps executed: 230
+KMC time: 1.474605e+00 s
+
+Macroscopic steps executed: 231
+KMC time: 1.481990e+00 s
+
+Macroscopic steps executed: 231
+KMC time: 1.481990e+00 s
+
+Macroscopic steps executed: 233
+KMC time: 1.486795e+00 s
+
+Macroscopic steps executed: 236
+KMC time: 1.497720e+00 s
+
+Macroscopic steps executed: 236
+KMC time: 1.497720e+00 s
+
+Macroscopic steps executed: 239
+KMC time: 1.510259e+00 s
+
+Macroscopic steps executed: 239
+KMC time: 1.510259e+00 s
+
+Macroscopic steps executed: 239
+KMC time: 1.510259e+00 s
+
+Macroscopic steps executed: 241
+KMC time: 1.522589e+00 s
+
+Macroscopic steps executed: 241
+KMC time: 1.522589e+00 s
+
+Macroscopic steps executed: 243
+KMC time: 1.526811e+00 s
+
+Macroscopic steps executed: 244
+KMC time: 1.532261e+00 s
+
+Macroscopic steps executed: 245
+KMC time: 1.535194e+00 s
+
+Macroscopic steps executed: 247
+KMC time: 1.549114e+00 s
+
+Macroscopic steps executed: 247
+KMC time: 1.549114e+00 s
+
+Macroscopic steps executed: 248
+KMC time: 1.552442e+00 s
+
+Macroscopic steps executed: 250
+KMC time: 1.593399e+00 s
+
+Macroscopic steps executed: 250
+KMC time: 1.593399e+00 s
+
+Macroscopic steps executed: 250
+KMC time: 1.593399e+00 s
+
+Macroscopic steps executed: 250
+KMC time: 1.593399e+00 s
+
+Macroscopic steps executed: 250
+KMC time: 1.593399e+00 s
+
+Macroscopic steps executed: 250
+KMC time: 1.593399e+00 s
+
+Macroscopic steps executed: 250
+KMC time: 1.593399e+00 s
+
+Macroscopic steps executed: 250
+KMC time: 1.593399e+00 s
+
+Macroscopic steps executed: 251
+KMC time: 1.596130e+00 s
+
+Macroscopic steps executed: 253
+KMC time: 1.603055e+00 s
+
+Macroscopic steps executed: 254
+KMC time: 1.610439e+00 s
+
+Macroscopic steps executed: 254
+KMC time: 1.610439e+00 s
+
+Macroscopic steps executed: 256
+KMC time: 1.632663e+00 s
+
+Macroscopic steps executed: 256
+KMC time: 1.632663e+00 s
+
+Macroscopic steps executed: 256
+KMC time: 1.632663e+00 s
+
+Macroscopic steps executed: 256
+KMC time: 1.632663e+00 s
+
+Macroscopic steps executed: 257
+KMC time: 1.639105e+00 s
+
+Macroscopic steps executed: 259
+KMC time: 1.643277e+00 s
+
+Macroscopic steps executed: 260
+KMC time: 1.672592e+00 s
+
+Macroscopic steps executed: 260
+KMC time: 1.672592e+00 s
+
+Macroscopic steps executed: 260
+KMC time: 1.672592e+00 s
+
+Macroscopic steps executed: 260
+KMC time: 1.672592e+00 s
+
+Macroscopic steps executed: 260
+KMC time: 1.672592e+00 s
+
+Macroscopic steps executed: 260
+KMC time: 1.672592e+00 s
+
+Macroscopic steps executed: 263
+KMC time: 1.687388e+00 s
+
+Macroscopic steps executed: 263
+KMC time: 1.687388e+00 s
+
+Macroscopic steps executed: 263
+KMC time: 1.687388e+00 s
+
+Macroscopic steps executed: 264
+KMC time: 1.691368e+00 s
+
+Macroscopic steps executed: 267
+KMC time: 1.698519e+00 s
+
+Macroscopic steps executed: 268
+KMC time: 1.705029e+00 s
+
+Macroscopic steps executed: 268
+KMC time: 1.705029e+00 s
+
+Macroscopic steps executed: 270
+KMC time: 1.726016e+00 s
+
+Macroscopic steps executed: 270
+KMC time: 1.726016e+00 s
+
+Macroscopic steps executed: 270
+KMC time: 1.726016e+00 s
+
+Macroscopic steps executed: 270
+KMC time: 1.726016e+00 s
+
+Macroscopic steps executed: 271
+KMC time: 1.736035e+00 s
+
+Macroscopic steps executed: 271
+KMC time: 1.736035e+00 s
+
+Macroscopic steps executed: 272
+KMC time: 1.740801e+00 s
+
+Macroscopic steps executed: 273
+KMC time: 1.753230e+00 s
+
+Macroscopic steps executed: 273
+KMC time: 1.753230e+00 s
+
+Macroscopic steps executed: 275
+KMC time: 1.759708e+00 s
+
+Macroscopic steps executed: 276
+KMC time: 1.779325e+00 s
+
+Macroscopic steps executed: 276
+KMC time: 1.779325e+00 s
+
+Macroscopic steps executed: 276
+KMC time: 1.779325e+00 s
+
+Macroscopic steps executed: 276
+KMC time: 1.779325e+00 s
+
+Macroscopic steps executed: 277
+KMC time: 1.792401e+00 s
+
+Macroscopic steps executed: 277
+KMC time: 1.792401e+00 s
+
+Macroscopic steps executed: 277
+KMC time: 1.792401e+00 s
+
+Macroscopic steps executed: 278
+KMC time: 1.801359e+00 s
+
+Macroscopic steps executed: 278
+KMC time: 1.801359e+00 s
+
+Macroscopic steps executed: 280
+KMC time: 1.807598e+00 s
+
+Macroscopic steps executed: 281
+KMC time: 1.813926e+00 s
+
+Macroscopic steps executed: 282
+KMC time: 1.815704e+00 s
+
+Macroscopic steps executed: 284
+KMC time: 1.842241e+00 s
+
+Macroscopic steps executed: 284
+KMC time: 1.842241e+00 s
+
+Macroscopic steps executed: 284
+KMC time: 1.842241e+00 s
+
+Macroscopic steps executed: 284
+KMC time: 1.842241e+00 s
+
+Macroscopic steps executed: 284
+KMC time: 1.842241e+00 s
+
+Macroscopic steps executed: 285
+KMC time: 1.845344e+00 s
+
+Macroscopic steps executed: 287
+KMC time: 1.850661e+00 s
+
+Macroscopic steps executed: 288
+KMC time: 1.855485e+00 s
+
+Macroscopic steps executed: 289
+KMC time: 1.877555e+00 s
+
+Macroscopic steps executed: 289
+KMC time: 1.877555e+00 s
+
+Macroscopic steps executed: 289
+KMC time: 1.877555e+00 s
+
+Macroscopic steps executed: 289
+KMC time: 1.877555e+00 s
+
+Macroscopic steps executed: 291
+KMC time: 1.885781e+00 s
+
+Macroscopic steps executed: 291
+KMC time: 1.885781e+00 s
+
+Macroscopic steps executed: 293
+KMC time: 1.896513e+00 s
+
+Macroscopic steps executed: 293
+KMC time: 1.896513e+00 s
+
+Macroscopic steps executed: 295
+KMC time: 1.902284e+00 s
+
+Macroscopic steps executed: 297
+KMC time: 1.909310e+00 s
+
+Macroscopic steps executed: 298
+KMC time: 1.910080e+00 s
+
+Macroscopic steps executed: 299
+KMC time: 1.916659e+00 s
+
+Macroscopic steps executed: 300
+KMC time: 1.921045e+00 s
+
+Macroscopic steps executed: 301
+KMC time: 1.930561e+00 s
+
+Macroscopic steps executed: 301
+KMC time: 1.930561e+00 s
+
+Macroscopic steps executed: 302
+KMC time: 1.950872e+00 s
+
+Macroscopic steps executed: 302
+KMC time: 1.950872e+00 s
+
+Macroscopic steps executed: 302
+KMC time: 1.950872e+00 s
+
+Macroscopic steps executed: 302
+KMC time: 1.950872e+00 s
+
+Macroscopic steps executed: 303
+KMC time: 1.955554e+00 s
+
+Macroscopic steps executed: 304
+KMC time: 1.961124e+00 s
+
+Macroscopic steps executed: 305
+KMC time: 1.975568e+00 s
+
+Macroscopic steps executed: 305
+KMC time: 1.975568e+00 s
+
+Macroscopic steps executed: 305
+KMC time: 1.975568e+00 s
+
+Macroscopic steps executed: 307
+KMC time: 1.985090e+00 s
+
+Macroscopic steps executed: 307
+KMC time: 1.985090e+00 s
+
+Macroscopic steps executed: 308
+KMC time: 1.991117e+00 s
+
+Macroscopic steps executed: 309
+KMC time: 1.996187e+00 s
+
+Macroscopic steps executed: 310
+KMC time: 2.001201e+00 s
+
+Macroscopic steps executed: 312
+KMC time: 2.013087e+00 s
+
+Macroscopic steps executed: 312
+KMC time: 2.013087e+00 s
+
+Macroscopic steps executed: 313
+KMC time: 2.024242e+00 s
+
+Macroscopic steps executed: 313
+KMC time: 2.024242e+00 s
+
+Macroscopic steps executed: 314
+KMC time: 2.029892e+00 s
+
+Macroscopic steps executed: 315
+KMC time: 2.038457e+00 s
+
+Macroscopic steps executed: 315
+KMC time: 2.038457e+00 s
+
+Macroscopic steps executed: 317
+KMC time: 2.053237e+00 s
+
+Macroscopic steps executed: 317
+KMC time: 2.053237e+00 s
+
+Macroscopic steps executed: 317
+KMC time: 2.053237e+00 s
+
+Macroscopic steps executed: 318
+KMC time: 2.062908e+00 s
+
+Macroscopic steps executed: 318
+KMC time: 2.062908e+00 s
+
+Macroscopic steps executed: 319
+KMC time: 2.076617e+00 s
+
+Macroscopic steps executed: 319
+KMC time: 2.076617e+00 s
+
+Macroscopic steps executed: 319
+KMC time: 2.076617e+00 s
+
+Macroscopic steps executed: 320
+KMC time: 2.085844e+00 s
+
+Macroscopic steps executed: 320
+KMC time: 2.085844e+00 s
+
+Macroscopic steps executed: 321
+KMC time: 2.092362e+00 s
+
+Macroscopic steps executed: 323
+KMC time: 2.118983e+00 s
+
+Macroscopic steps executed: 323
+KMC time: 2.118983e+00 s
+
+Macroscopic steps executed: 323
+KMC time: 2.118983e+00 s
+
+Macroscopic steps executed: 323
+KMC time: 2.118983e+00 s
+
+Macroscopic steps executed: 323
+KMC time: 2.118983e+00 s
+
+Macroscopic steps executed: 325
+KMC time: 2.143246e+00 s
+
+Macroscopic steps executed: 325
+KMC time: 2.143246e+00 s
+
+Macroscopic steps executed: 325
+KMC time: 2.143246e+00 s
+
+Macroscopic steps executed: 325
+KMC time: 2.143246e+00 s
+
+Macroscopic steps executed: 325
+KMC time: 2.143246e+00 s
+
+Macroscopic steps executed: 326
+KMC time: 2.146674e+00 s
+
+Macroscopic steps executed: 327
+KMC time: 2.155038e+00 s
+
+Macroscopic steps executed: 327
+KMC time: 2.155038e+00 s
+
+Macroscopic steps executed: 329
+KMC time: 2.160296e+00 s
+
+Macroscopic steps executed: 330
+KMC time: 2.165306e+00 s
+
+Macroscopic steps executed: 331
+KMC time: 2.178569e+00 s
+
+Macroscopic steps executed: 331
+KMC time: 2.178569e+00 s
+
+Macroscopic steps executed: 332
+KMC time: 2.183146e+00 s
+
+Macroscopic steps executed: 334
+KMC time: 2.185216e+00 s
+
+Macroscopic steps executed: 336
+KMC time: 2.198425e+00 s
+
+Macroscopic steps executed: 336
+KMC time: 2.198425e+00 s
+
+Macroscopic steps executed: 337
+KMC time: 2.200067e+00 s
+
+Macroscopic steps executed: 338
+KMC time: 2.208029e+00 s
+
+Macroscopic steps executed: 339
+KMC time: 2.210118e+00 s
+
+Macroscopic steps executed: 341
+KMC time: 2.215679e+00 s
+
+Macroscopic steps executed: 342
+KMC time: 2.222698e+00 s
+
+Macroscopic steps executed: 343
+KMC time: 2.227470e+00 s
+
+Macroscopic steps executed: 344
+KMC time: 2.232340e+00 s
+
+Macroscopic steps executed: 345
+KMC time: 2.252935e+00 s
+
+Macroscopic steps executed: 345
+KMC time: 2.252935e+00 s
+
+Macroscopic steps executed: 345
+KMC time: 2.252935e+00 s
+
+Macroscopic steps executed: 345
+KMC time: 2.252935e+00 s
+
+Macroscopic steps executed: 347
+KMC time: 2.257654e+00 s
+
+Macroscopic steps executed: 349
+KMC time: 2.261171e+00 s
+
+Macroscopic steps executed: 350
+KMC time: 2.269441e+00 s
+
+Macroscopic steps executed: 351
+KMC time: 2.273541e+00 s
+
+Macroscopic steps executed: 352
+KMC time: 2.276946e+00 s
+
+Macroscopic steps executed: 354
+KMC time: 2.296697e+00 s
+
+Macroscopic steps executed: 354
+KMC time: 2.296697e+00 s
+
+Macroscopic steps executed: 354
+KMC time: 2.296697e+00 s
+
+Macroscopic steps executed: 354
+KMC time: 2.296697e+00 s
+
+Macroscopic steps executed: 356
+KMC time: 2.302037e+00 s
+
+Macroscopic steps executed: 358
+KMC time: 2.314763e+00 s
+
+Macroscopic steps executed: 358
+KMC time: 2.314763e+00 s
+
+Macroscopic steps executed: 359
+KMC time: 2.315800e+00 s
+
+Macroscopic steps executed: 360
+KMC time: 2.325428e+00 s
+
+Macroscopic steps executed: 360
+KMC time: 2.325428e+00 s
+
+Macroscopic steps executed: 361
+KMC time: 2.336140e+00 s
+
+Macroscopic steps executed: 361
+KMC time: 2.336140e+00 s
+
+Macroscopic steps executed: 362
+KMC time: 2.350758e+00 s
+
+Macroscopic steps executed: 362
+KMC time: 2.350758e+00 s
+
+Macroscopic steps executed: 362
+KMC time: 2.350758e+00 s
+
+Macroscopic steps executed: 364
+KMC time: 2.355199e+00 s
+
+Macroscopic steps executed: 366
+KMC time: 2.370196e+00 s
+
+Macroscopic steps executed: 366
+KMC time: 2.370196e+00 s
+
+Macroscopic steps executed: 366
+KMC time: 2.370196e+00 s
+
+Macroscopic steps executed: 368
+KMC time: 2.377315e+00 s
+
+Macroscopic steps executed: 369
+KMC time: 2.380722e+00 s
+
+Macroscopic steps executed: 370
+KMC time: 2.412041e+00 s
+
+Macroscopic steps executed: 370
+KMC time: 2.412041e+00 s
+
+Macroscopic steps executed: 370
+KMC time: 2.412041e+00 s
+
+Macroscopic steps executed: 370
+KMC time: 2.412041e+00 s
+
+Macroscopic steps executed: 370
+KMC time: 2.412041e+00 s
+
+Macroscopic steps executed: 370
+KMC time: 2.412041e+00 s
+
+Macroscopic steps executed: 372
+KMC time: 2.415622e+00 s
+
+Macroscopic steps executed: 374
+KMC time: 2.421932e+00 s
+
+Macroscopic steps executed: 375
+KMC time: 2.428130e+00 s
+
+Macroscopic steps executed: 376
+KMC time: 2.433318e+00 s
+
+Macroscopic steps executed: 378
+KMC time: 2.436998e+00 s
+
+Macroscopic steps executed: 379
+KMC time: 2.452337e+00 s
+
+Macroscopic steps executed: 379
+KMC time: 2.452337e+00 s
+
+Macroscopic steps executed: 379
+KMC time: 2.452337e+00 s
+
+Macroscopic steps executed: 380
+KMC time: 2.463141e+00 s
+
+Macroscopic steps executed: 380
+KMC time: 2.463141e+00 s
+
+Macroscopic steps executed: 381
+KMC time: 2.468626e+00 s
+
+Macroscopic steps executed: 382
+KMC time: 2.494178e+00 s
+
+Macroscopic steps executed: 382
+KMC time: 2.494178e+00 s
+
+Macroscopic steps executed: 382
+KMC time: 2.494178e+00 s
+
+Macroscopic steps executed: 382
+KMC time: 2.494178e+00 s
+
+Macroscopic steps executed: 382
+KMC time: 2.494178e+00 s
+
+Macroscopic steps executed: 383
+KMC time: 2.495544e+00 s
+
+Macroscopic steps executed: 384
+KMC time: 2.512127e+00 s
+
+Macroscopic steps executed: 384
+KMC time: 2.512127e+00 s
+
+Macroscopic steps executed: 384
+KMC time: 2.512127e+00 s
+
+Macroscopic steps executed: 385
+KMC time: 2.521622e+00 s
+
+Macroscopic steps executed: 385
+KMC time: 2.521622e+00 s
+
+Macroscopic steps executed: 386
+KMC time: 2.527190e+00 s
+
+Macroscopic steps executed: 387
+KMC time: 2.539658e+00 s
+
+Macroscopic steps executed: 387
+KMC time: 2.539658e+00 s
+
+Macroscopic steps executed: 388
+KMC time: 2.545053e+00 s
+
+Macroscopic steps executed: 388
+KMC time: 2.545053e+00 s
+
+Macroscopic steps executed: 389
+KMC time: 2.550153e+00 s
+
+Macroscopic steps executed: 390
+KMC time: 2.559934e+00 s
+
+Macroscopic steps executed: 391
+KMC time: 2.565791e+00 s
+
+Macroscopic steps executed: 391
+KMC time: 2.565791e+00 s
+
+Macroscopic steps executed: 393
+KMC time: 2.580181e+00 s
+
+Macroscopic steps executed: 393
+KMC time: 2.580181e+00 s
+
+Macroscopic steps executed: 393
+KMC time: 2.580181e+00 s
+
+Macroscopic steps executed: 394
+KMC time: 2.588529e+00 s
+
+Macroscopic steps executed: 395
+KMC time: 2.601417e+00 s
+
+Macroscopic steps executed: 395
+KMC time: 2.601417e+00 s
+
+Macroscopic steps executed: 395
+KMC time: 2.601417e+00 s
+
+Macroscopic steps executed: 396
+KMC time: 2.608352e+00 s
+
+Macroscopic steps executed: 397
+KMC time: 2.614553e+00 s
+
+Macroscopic steps executed: 398
+KMC time: 2.628012e+00 s
+
+Macroscopic steps executed: 398
+KMC time: 2.628012e+00 s
+
+Macroscopic steps executed: 398
+KMC time: 2.628012e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 399
+KMC time: 2.672465e+00 s
+
+Macroscopic steps executed: 400
+KMC time: 2.675646e+00 s
+
+Macroscopic steps executed: 401
+KMC time: 2.685916e+00 s
+
+Macroscopic steps executed: 401
+KMC time: 2.685916e+00 s
+
+Macroscopic steps executed: 403
+KMC time: 2.695788e+00 s
+
+Macroscopic steps executed: 403
+KMC time: 2.695788e+00 s
+
+Macroscopic steps executed: 404
+KMC time: 2.706177e+00 s
+
+Macroscopic steps executed: 404
+KMC time: 2.706177e+00 s
+
+Macroscopic steps executed: 406
+KMC time: 2.716719e+00 s
+
+Macroscopic steps executed: 406
+KMC time: 2.716719e+00 s
+
+Macroscopic steps executed: 407
+KMC time: 2.725548e+00 s
+
+Macroscopic steps executed: 407
+KMC time: 2.725548e+00 s
+
+Macroscopic steps executed: 408
+KMC time: 2.753606e+00 s
+
+Macroscopic steps executed: 408
+KMC time: 2.753606e+00 s
+
+Macroscopic steps executed: 408
+KMC time: 2.753606e+00 s
+
+Macroscopic steps executed: 408
+KMC time: 2.753606e+00 s
+
+Macroscopic steps executed: 408
+KMC time: 2.753606e+00 s
+
+Macroscopic steps executed: 409
+KMC time: 2.762914e+00 s
+
+Macroscopic steps executed: 409
+KMC time: 2.762914e+00 s
+
+Macroscopic steps executed: 410
+KMC time: 2.766749e+00 s
+
+Macroscopic steps executed: 414
+KMC time: 2.782380e+00 s
+
+Macroscopic steps executed: 414
+KMC time: 2.782380e+00 s
+
+Macroscopic steps executed: 414
+KMC time: 2.782380e+00 s
+
+Macroscopic steps executed: 415
+KMC time: 2.803415e+00 s
+
+Macroscopic steps executed: 415
+KMC time: 2.803415e+00 s
+
+Macroscopic steps executed: 415
+KMC time: 2.803415e+00 s
+
+Macroscopic steps executed: 415
+KMC time: 2.803415e+00 s
+
+Macroscopic steps executed: 416
+KMC time: 2.807298e+00 s
+
+Macroscopic steps executed: 417
+KMC time: 2.817242e+00 s
+
+Macroscopic steps executed: 417
+KMC time: 2.817242e+00 s
+
+Macroscopic steps executed: 418
+KMC time: 2.835038e+00 s
+
+Macroscopic steps executed: 418
+KMC time: 2.835038e+00 s
+
+Macroscopic steps executed: 418
+KMC time: 2.835038e+00 s
+
+Macroscopic steps executed: 418
+KMC time: 2.835038e+00 s
+
+Macroscopic steps executed: 419
+KMC time: 2.842953e+00 s
+
+Macroscopic steps executed: 422
+KMC time: 2.846245e+00 s
+
+Macroscopic steps executed: 426
+KMC time: 2.861319e+00 s
+
+Macroscopic steps executed: 426
+KMC time: 2.861319e+00 s
+
+Macroscopic steps executed: 426
+KMC time: 2.861319e+00 s
+
+Macroscopic steps executed: 427
+KMC time: 2.865322e+00 s
+
+Macroscopic steps executed: 429
+KMC time: 2.870208e+00 s
+
+Macroscopic steps executed: 430
+KMC time: 2.875059e+00 s
+
+Macroscopic steps executed: 431
+KMC time: 2.881765e+00 s
+
+Macroscopic steps executed: 434
+KMC time: 2.886334e+00 s
+
+Macroscopic steps executed: 435
+KMC time: 2.890677e+00 s
+
+Macroscopic steps executed: 436
+KMC time: 2.915995e+00 s
+
+Macroscopic steps executed: 436
+KMC time: 2.915995e+00 s
+
+Macroscopic steps executed: 436
+KMC time: 2.915995e+00 s
+
+Macroscopic steps executed: 436
+KMC time: 2.915995e+00 s
+
+Macroscopic steps executed: 436
+KMC time: 2.915995e+00 s
+
+Macroscopic steps executed: 437
+KMC time: 2.923514e+00 s
+
+Macroscopic steps executed: 439
+KMC time: 2.937028e+00 s
+
+Macroscopic steps executed: 439
+KMC time: 2.937028e+00 s
+
+Macroscopic steps executed: 439
+KMC time: 2.937028e+00 s
+
+Macroscopic steps executed: 442
+KMC time: 2.956924e+00 s
+
+Macroscopic steps executed: 442
+KMC time: 2.956924e+00 s
+
+Macroscopic steps executed: 442
+KMC time: 2.956924e+00 s
+
+Macroscopic steps executed: 442
+KMC time: 2.956924e+00 s
+
+Macroscopic steps executed: 443
+KMC time: 2.968902e+00 s
+
+Macroscopic steps executed: 443
+KMC time: 2.968902e+00 s
+
+Macroscopic steps executed: 444
+KMC time: 2.977048e+00 s
+
+Macroscopic steps executed: 444
+KMC time: 2.977048e+00 s
+
+Macroscopic steps executed: 446
+KMC time: 2.993675e+00 s
+
+Macroscopic steps executed: 446
+KMC time: 2.993675e+00 s
+
+Macroscopic steps executed: 446
+KMC time: 2.993675e+00 s
+
+Macroscopic steps executed: 448
+KMC time: 2.997006e+00 s
+
+Macroscopic steps executed: 449
+KMC time: 3.001157e+00 s
+
+Macroscopic steps executed: 451
+KMC time: 3.010547e+00 s
+
+Macroscopic steps executed: 451
+KMC time: 3.010547e+00 s
+
+Macroscopic steps executed: 452
+KMC time: 3.027932e+00 s
+
+Macroscopic steps executed: 452
+KMC time: 3.027932e+00 s
+
+Macroscopic steps executed: 452
+KMC time: 3.027932e+00 s
+
+Macroscopic steps executed: 453
+KMC time: 3.034400e+00 s
+
+Macroscopic steps executed: 454
+KMC time: 3.036191e+00 s
+
+Macroscopic steps executed: 455
+KMC time: 3.045501e+00 s
+
+Macroscopic steps executed: 455
+KMC time: 3.045501e+00 s
+
+Macroscopic steps executed: 456
+KMC time: 3.052428e+00 s
+
+Macroscopic steps executed: 458
+KMC time: 3.059322e+00 s
+
+Macroscopic steps executed: 459
+KMC time: 3.062115e+00 s
+
+Macroscopic steps executed: 460
+KMC time: 3.075336e+00 s
+
+Macroscopic steps executed: 460
+KMC time: 3.075336e+00 s
+
+Macroscopic steps executed: 460
+KMC time: 3.075336e+00 s
+
+Macroscopic steps executed: 462
+KMC time: 3.084097e+00 s
+
+Macroscopic steps executed: 463
+KMC time: 3.088244e+00 s
+
+Macroscopic steps executed: 464
+KMC time: 3.091320e+00 s
+
+Macroscopic steps executed: 465
+KMC time: 3.095208e+00 s
+
+Macroscopic steps executed: 468
+KMC time: 3.102441e+00 s
+
+Macroscopic steps executed: 469
+KMC time: 3.112581e+00 s
+
+Macroscopic steps executed: 469
+KMC time: 3.112581e+00 s
+
+Macroscopic steps executed: 470
+KMC time: 3.120605e+00 s
+
+Macroscopic steps executed: 470
+KMC time: 3.120605e+00 s
+
+Macroscopic steps executed: 475
+KMC time: 3.126434e+00 s
+
+Macroscopic steps executed: 478
+KMC time: 3.143004e+00 s
+
+Macroscopic steps executed: 478
+KMC time: 3.143004e+00 s
+
+Macroscopic steps executed: 478
+KMC time: 3.143004e+00 s
+
+Macroscopic steps executed: 479
+KMC time: 3.145590e+00 s
+
+Macroscopic steps executed: 480
+KMC time: 3.153714e+00 s
+
+Macroscopic steps executed: 481
+KMC time: 3.155134e+00 s
+
+Macroscopic steps executed: 483
+KMC time: 3.166184e+00 s
+
+Macroscopic steps executed: 483
+KMC time: 3.166184e+00 s
+
+Macroscopic steps executed: 484
+KMC time: 3.174284e+00 s
+
+Macroscopic steps executed: 485
+KMC time: 3.177528e+00 s
+
+Macroscopic steps executed: 487
+KMC time: 3.181754e+00 s
+
+Macroscopic steps executed: 489
+KMC time: 3.185064e+00 s
+
+Macroscopic steps executed: 491
+KMC time: 3.191713e+00 s
+
+Macroscopic steps executed: 493
+KMC time: 3.217450e+00 s
+
+Macroscopic steps executed: 493
+KMC time: 3.217450e+00 s
+
+Macroscopic steps executed: 493
+KMC time: 3.217450e+00 s
+
+Macroscopic steps executed: 493
+KMC time: 3.217450e+00 s
+
+Macroscopic steps executed: 493
+KMC time: 3.217450e+00 s
+
+Macroscopic steps executed: 494
+KMC time: 3.220265e+00 s
+
+Macroscopic steps executed: 495
+KMC time: 3.230988e+00 s
+
+Macroscopic steps executed: 495
+KMC time: 3.230988e+00 s
+
+Macroscopic steps executed: 496
+KMC time: 3.236749e+00 s
+
+Macroscopic steps executed: 498
+KMC time: 3.251190e+00 s
+
+Macroscopic steps executed: 498
+KMC time: 3.251190e+00 s
+
+Macroscopic steps executed: 498
+KMC time: 3.251190e+00 s
+
+Macroscopic steps executed: 500
+KMC time: 3.271152e+00 s
+
+Macroscopic steps executed: 500
+KMC time: 3.271152e+00 s
+
+Macroscopic steps executed: 500
+KMC time: 3.271152e+00 s
+
+Macroscopic steps executed: 500
+KMC time: 3.271152e+00 s
+
+Macroscopic steps executed: 502
+KMC time: 3.279377e+00 s
+
+Macroscopic steps executed: 503
+KMC time: 3.280070e+00 s
+
+Macroscopic steps executed: 504
+KMC time: 3.285526e+00 s
+
+Macroscopic steps executed: 507
+KMC time: 3.292600e+00 s
+
+Macroscopic steps executed: 508
+KMC time: 3.298093e+00 s
+
+Macroscopic steps executed: 509
+KMC time: 3.304606e+00 s
+
+Macroscopic steps executed: 510
+KMC time: 3.307650e+00 s
+
+Macroscopic steps executed: 512
+KMC time: 3.310670e+00 s
+
+Macroscopic steps executed: 513
+KMC time: 3.316294e+00 s
+
+Macroscopic steps executed: 514
+KMC time: 3.320717e+00 s
+
+Macroscopic steps executed: 515
+KMC time: 3.335521e+00 s
+
+Macroscopic steps executed: 515
+KMC time: 3.335521e+00 s
+
+Macroscopic steps executed: 515
+KMC time: 3.335521e+00 s
+
+Macroscopic steps executed: 518
+KMC time: 3.353284e+00 s
+
+Macroscopic steps executed: 518
+KMC time: 3.353284e+00 s
+
+Macroscopic steps executed: 518
+KMC time: 3.353284e+00 s
+
+Macroscopic steps executed: 519
+KMC time: 3.380973e+00 s
+
+Macroscopic steps executed: 519
+KMC time: 3.380973e+00 s
+
+Macroscopic steps executed: 519
+KMC time: 3.380973e+00 s
+
+Macroscopic steps executed: 519
+KMC time: 3.380973e+00 s
+
+Macroscopic steps executed: 519
+KMC time: 3.380973e+00 s
+
+Macroscopic steps executed: 519
+KMC time: 3.380973e+00 s
+
+Macroscopic steps executed: 520
+KMC time: 3.411699e+00 s
+
+Macroscopic steps executed: 520
+KMC time: 3.411699e+00 s
+
+Macroscopic steps executed: 520
+KMC time: 3.411699e+00 s
+
+Macroscopic steps executed: 520
+KMC time: 3.411699e+00 s
+
+Macroscopic steps executed: 520
+KMC time: 3.411699e+00 s
+
+Macroscopic steps executed: 520
+KMC time: 3.411699e+00 s
+
+Macroscopic steps executed: 523
+KMC time: 3.415701e+00 s
+
+Macroscopic steps executed: 524
+KMC time: 3.430465e+00 s
+
+Macroscopic steps executed: 524
+KMC time: 3.430465e+00 s
+
+Macroscopic steps executed: 524
+KMC time: 3.430465e+00 s
+
+Macroscopic steps executed: 525
+KMC time: 3.443167e+00 s
+
+Macroscopic steps executed: 525
+KMC time: 3.443167e+00 s
+
+Macroscopic steps executed: 526
+KMC time: 3.461170e+00 s
+
+Macroscopic steps executed: 526
+KMC time: 3.461170e+00 s
+
+Macroscopic steps executed: 526
+KMC time: 3.461170e+00 s
+
+Macroscopic steps executed: 526
+KMC time: 3.461170e+00 s
+
+Macroscopic steps executed: 528
+KMC time: 3.467660e+00 s
+
+Macroscopic steps executed: 529
+KMC time: 3.483366e+00 s
+
+Macroscopic steps executed: 529
+KMC time: 3.483366e+00 s
+
+Macroscopic steps executed: 529
+KMC time: 3.483366e+00 s
+
+Macroscopic steps executed: 530
+KMC time: 3.486226e+00 s
+
+Macroscopic steps executed: 531
+KMC time: 3.490868e+00 s
+
+Macroscopic steps executed: 532
+KMC time: 3.497020e+00 s
+
+Macroscopic steps executed: 534
+KMC time: 3.503172e+00 s
+
+Macroscopic steps executed: 535
+KMC time: 3.514188e+00 s
+
+Macroscopic steps executed: 535
+KMC time: 3.514188e+00 s
+
+Macroscopic steps executed: 536
+KMC time: 3.515403e+00 s
+
+Macroscopic steps executed: 539
+KMC time: 3.522099e+00 s
+
+Macroscopic steps executed: 540
+KMC time: 3.531442e+00 s
+
+Macroscopic steps executed: 540
+KMC time: 3.531442e+00 s
+
+Macroscopic steps executed: 541
+KMC time: 3.536018e+00 s
+

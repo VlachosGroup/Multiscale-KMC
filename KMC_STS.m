@@ -1,12 +1,9 @@
 % single time-scale stochastic simulation
 
 clc; clear;
-t_cpu_start = cputime;
-
-addpath('../Network')
 
 % System info
-input_specs = InputRead_ABcat;
+input_specs = network_input();
 
 input_specs.k(input_specs.fast_rxns) = input_specs.k(input_specs.fast_rxns) / input_specs.eps;
 [n_params, n_specs] = size(input_specs.stoich);
@@ -35,11 +32,11 @@ W_prev = W;
 
 while t < input_specs.t_final                                                                   % (macro) Termination time controls the sampling
     
-    disp(['Event # ' num2str(n_events)])
-    disp(['Time: ' num2str(t) ' s'])
-    
     % Record the current state as long as time >= t_sample
     while t >= t_r(ind_rec)                                                     % If you record after you compute the next step, but before you update data, then you won't need all the prev variables
+        
+        disp(['Event # ' num2str(n_events)])
+        disp(['Time: ' num2str(t) ' s'])
         
         % Record the species numbers
         N_r(ind_rec,:) = N_prev;
@@ -83,13 +80,14 @@ while ind_rec < input_specs.N_record + 1
     ind_rec = ind_rec + 1;                                          % Increment the recording index
 end
 
+%% Plot species profile
 
-disp('CPU time')
-elapsed_cpu = cputime-t_cpu_start
+% Plot species profiles
+input_specs.plot_species_profiles(t_r',N_r);
 
 %% Print Data into Output File
 
-fidout = fopen('KMC_STS_output.bin','w');
+fidout = fopen('KMC_STS_out.bin','w');
 output_mat = [t_r', N_r, N_int_r, W_r];
 fwrite(fidout,output_mat,'double');
 fclose(fidout);

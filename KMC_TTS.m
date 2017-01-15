@@ -1,11 +1,13 @@
 % The multi-scale sensitivity analysis of M. Núñez and D.G. Vlachos, J. Chem. Phys. 142 (4), 044108 (2015) is used.
 
-clc; clear; fclose('all');  t_cpu_start = cputime;
+clc; clear; fclose('all');
+t_cpu_start = cputime;
+addpath('KMC_TTS')
 
 %% User Input - change to read everything from the input files
 
 rng(12345);     % Set random seed
-input_specs = InputRead_ABcat;
+input_specs = network_input();
 out_file = fopen('MSA_debug.txt','w');
 
 %% Stochastic Simulation Loop
@@ -101,10 +103,12 @@ end
 elapsed_cpu = cputime-t_cpu_start;
 fprintf(out_file, 'Elapsed CPU time: %d seconds\n', elapsed_cpu)
 
+% Plot species profiles
+input_specs.plot_species_profiles(t_r',N_r);
+
 %% Print Data into Output File
 
 fclose('all');
-return
 
 fidout = fopen('MSA_output.bin','w');
 output_mat = [t_r', N_r, N_int_r, W_r];

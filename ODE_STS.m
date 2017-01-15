@@ -8,8 +8,7 @@ function ODE_STS
 clc; clear; fclose('all');
 
 % System specifications - read this from input file
-addpath('../Network')
-input_specs = InputRead_ABcat;
+input_specs = network_input();
 input_specs.k(input_specs.fast_rxns) = input_specs.k(input_specs.fast_rxns) / input_specs.eps;
 [n_rxns, n_specs] = size(input_specs.stoich);
 
@@ -34,25 +33,14 @@ input_specs.k(input_specs.fast_rxns) = input_specs.k(input_specs.fast_rxns) / in
 
     end
 
-%% Plot Results
-
 % Separate population and sensitivity data
 spec_pop_traj = Y(:,1:n_specs);
 sens_traj = Y(:,n_specs+1:end);
 
-% Plot species populations
-figure
-hold on
-for spec = 1:n_specs
-    plot(T,spec_pop_traj(:,spec))
-end
-hold off
-box('on')
-ax = gca;
-ax.FontSize = 18;
-xlabel('time (s)','FontSize',18)
-ylabel('spec. pop.','FontSize',18)
-legend(input_specs.spec_names);
+%% Plot Results
+
+% Plot species profiles
+input_specs.plot_species_profiles(T,spec_pop_traj);
 
 % Plot sensitivities for each species
 for spec = 1:n_specs
@@ -67,27 +55,12 @@ for spec = 1:n_specs
     plot(T, sens )
     hold off
     box('on')
-    xlabel('time (s)','FontSize',18)
+    xlabel('Time (s)','FontSize',18)
     ylabel([input_specs.spec_names{spec} ' sensitivities'],'FontSize',18)
     ax = gca;
     ax.FontSize = 18;
     legend(input_specs.param_names);
+    legend('boxoff')
 end
 
-disp('final time')
-T(end)
-
-disp('final species pops')
-spec_pop_traj(end,:)
-
-disp('final sensitivities')
-sens_traj(end,:)
-
-%% Further analyze sensitivities
-sens = sens_traj(end,:);
-sens = reshape(sens,[n_specs, n_rxns]);
-sens = sens(2,:) .* input_specs.k / spec_pop_traj(end,2)
-NSCs = sens([1,3,5]) + sens([2,4,6]);
-NSCs(3) = NSCs(3) + 1;
-NSCs
 end
