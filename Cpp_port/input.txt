@@ -1,0 +1,26 @@
+# Multiscale input file
+
+Simulation type
+KMC
+
+Time scales
+STS
+
+Species
+A* B* *
+
+Reactions
+ 1  0 -1
+-1  0  1
+-1  1  0
+ 1 -1  0
+ 0 -1  1
+ 0  1 -1
+
+Rate constants
+100 100 3 4 5 0
+
+Parameter names
+k1 k2 k3 k4 k5 k6
+
+# other input
