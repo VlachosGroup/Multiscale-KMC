@@ -23,5 +23,5 @@ SOFTWARE.
 ----------------------------------------------------------------------------------
 
 If used in published work, please cite the following papers  
-1. A. Hashemi, M. Nunez, P. Plechac, D.G. Vlachos, “Stochastic Averaging and Sensitivity Analysis for Two Scale Reaction Networks” Journal of Chemical Physics 144, 074104 (2016)  
-2. M. Núñez and D.G. Vlachos, J. Chem. Phys. 142 (4), 044108 (2015)
+1. M. Núñez and D.G. Vlachos, "Steady state likelihood ratio sensitivity analysis for stiff kinetic Monte Carlo simulations" Journal of Chemical Physics 142 (4), 044108 (2015)
+2. A. Hashemi, M. Nunez, P. Plechac, D.G. Vlachos, “Stochastic Averaging and Sensitivity Analysis for Two Scale Reaction Networks” Journal of Chemical Physics 144, 074104 (2016)

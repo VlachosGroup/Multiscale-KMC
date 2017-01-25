@@ -1,14 +1,8 @@
-# Multiscale-KMC-with-SA
-Two time-scale well-mixed kinetic Monte Carlo. Multiscale likelihood ratio sensitivity analysis is done on the fly. Implemented in Matlab. Single time-scale and ODE analogues are also included.
+# MSA-KMC
+Multiscale sensitivity analysis kinetic Monte Carlo
 
-**Citations**  
-See license or references page in the wiki.
+Single and two time-scale well mixed KMC code with likelihood ratio sensitivity analysis (LRSA)
 
-**Workflow**  
-Please see wiki page for detailed instructions.
-- Input reaction network in input files
-- Specify which reactions are fast and slow
-- Choose numerical parameters (time horizon, sampling times, number or replicates, etc.)
-- Choose a model: deterministic (ODE) vs. stochastic (KMC), single time-scale (STS) vs. two time-scale mode (TTS)
-- Averageing over replicates for transient (don't do macro steady-state because that's more complicated)
-- Simple post-processing scripts which read the output files and output trajectories and sensitivity estimates with error estimates
+**Citations** 
+1. M. Núñez and D.G. Vlachos, "Steady state likelihood ratio sensitivity analysis for stiff kinetic Monte Carlo simulations" Journal of Chemical Physics 142 (4), 044108 (2015)
+2. A. Hashemi, M. Nunez, P. Plechac, D.G. Vlachos, “Stochastic Averaging and Sensitivity Analysis for Two Scale Reaction Networks” Journal of Chemical Physics 144, 074104 (2016)   
