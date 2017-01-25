@@ -89,6 +89,7 @@ MPI_Scatter(seed_list, Npp, MPI_INT, sub_seeds,
 ============================ Declare variables ============================
 */
 
+int N[n_specs];                         // species populations
 double props[n_rxns];
 double prop_cum[n_rxns];
 double asum;
@@ -126,6 +127,11 @@ for(int rep=0; rep < Npp; rep++){
     t = 0;
     t_prev = 0;
     ind_rec = 0;
+    
+    // Initialize species populations
+    for(int k =0; k < n_specs; k++){
+        N[k] = N_0[k];
+    }
     
     // Initialize trajectory derivatives
     for(int k =0; k < n_params; k++){
@@ -186,7 +192,7 @@ for(int rep=0; rep < Npp; rep++){
             props[i] = rate_const[i];
             for(int j = 0; j < n_specs; j++){
                 if(stoich_mat[i][j] < 0){//if this species is a reactant, use it to compute the rate
-                    props[i] = props[i] * pow (N_0[j], -stoich_mat[i][j]);
+                    props[i] = props[i] * pow (N[j], -stoich_mat[i][j]);
                 }
             }
             
@@ -198,7 +204,7 @@ for(int rep=0; rep < Npp; rep++){
                     
                     for(int j = 0; j < n_specs; j++){
                         if(stoich_mat[i][j] < 0){//if this species is a reactant, use it to compute the rate
-                            prop_ders[i][k] = prop_ders[i][k] * pow (N_0[j], -stoich_mat[i][j]);
+                            prop_ders[i][k] = prop_ders[i][k] * pow (N[j], -stoich_mat[i][j]);
                         }
                     }
                     
@@ -260,7 +266,7 @@ for(int rep=0; rep < Npp; rep++){
                 // Record the species numbers
                 writer_spec << t_rec[ind_rec] << "\t";
                 for(int j = 0; j < n_specs; j++){
-                    writer_spec << N_0[j] << "\t";
+                    writer_spec << N[j] << "\t";
                 }
                 writer_spec << endl;
             
@@ -276,7 +282,7 @@ for(int rep=0; rep < Npp; rep++){
             
             // Record species populations
             for(int j = 0; j < n_specs; j++){
-                 spec_profiles_pp[ind_rec_spec] = N_0[j];
+                 spec_profiles_pp[ind_rec_spec] = N[j];
                  ind_rec_spec += 1;
                 }
             
@@ -297,7 +303,7 @@ for(int rep=0; rep < Npp; rep++){
         
         // Update species populations
         for(int j = 0; j < n_specs; j++){
-            N_0[j] += stoich_mat[rxn_to_fire_ind][j];
+            N[j] += stoich_mat[rxn_to_fire_ind][j];
         }
         
         // Update clock
@@ -324,7 +330,7 @@ for(int rep=0; rep < Npp; rep++){
             // Record the species numbers
             writer_spec << t_rec[ind_rec] << "\t";
             for(int j = 0; j < n_specs; j++){
-                writer_spec << N_0[j] << "\t";
+                writer_spec << N[j] << "\t";
             }
             writer_spec << endl;
         
@@ -340,7 +346,7 @@ for(int rep=0; rep < Npp; rep++){
         
         // Record species populations
         for(int j = 0; j < n_specs; j++){
-             spec_profiles_pp[ind_rec_spec] = N_0[j];
+             spec_profiles_pp[ind_rec_spec] = N[j];
              ind_rec_spec += 1;
             }
         
@@ -382,12 +388,16 @@ if(id==0){
     int spec_profiles_mda[N_traj][N_record+1][n_specs];
     double traj_derivs_mda[N_traj][N_record+1][n_params];
     
+    ind_rec_spec = 0;
+    ind_rec_rxns = 0;
+    
     for(int i=0; i < N_traj; i++){
         for(int j=0; j<N_record+1; j++){
             
             // Reshape species profile data
             for(int k = 0; k < n_specs; k++){
-                spec_profiles_mda[i][j][k] = 0;         // PLACEHOLDER VALUE
+                spec_profiles_mda[i][j][k] = spec_profiles[ind_rec_spec];
+                ind_rec_spec += 1;
             }
             
             // Reshape trajectory derivative data
@@ -405,12 +415,21 @@ if(id==0){
     ============ Perform statistical analysis ==============
     */
 
-    for(int i=0; i<N_record+1; i++){
+    // Average species numbers accross trajectories
+    for(int i=0; i < N_record+1; i++){
         for(int j=0; j<n_specs; j++){
-            spec_profiles_averages[i][j] = 0;           // PLACEHOLDER VALUE
+            
+            spec_profiles_averages[i][j] = 0;
+            
+            for(int rep_num = 0; rep_num < N_traj; rep_num++){
+                spec_profiles_averages[i][j] += spec_profiles_mda[rep_num][i][j];
+            }
+            
+            spec_profiles_averages[i][j] = spec_profiles_averages[i][j] / N_traj;
         }
     }
     
+    // Compute sensitivities as the covariance of species populations and trajectory derivatives
     for(int i=0; i<N_record+1; i++){
         for(int j=0; j<n_specs; j++){
             for(int k = 0; k < n_params; k++){
@@ -443,12 +462,12 @@ if(id==0){
     }
     writer_spec_avgs << endl;
     
-    for(int time_ind = 0; time_ind < N_record+1; time_ind ++){
+    for(int time_ind = 0; time_ind <= N_record; time_ind ++){
         
         writer_spec_avgs << t_rec[time_ind] << "\t";
         
         for(int spec_ind = 0; spec_ind < n_specs; spec_ind++){
-            writer_spec_avgs << spec_profiles_averages[time_ind][spec_ind] << "\t";
+            writer_spec_avgs << spec_profiles_averages[time_ind][spec_ind] << "\t"; // print the mean population of this species at this time
         }
         
         writer_spec_avgs << endl;
