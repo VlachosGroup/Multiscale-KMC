@@ -402,13 +402,15 @@ if(id==0){
             
             // Reshape trajectory derivative data
             for(int k = 0; k < n_params; k++){
-                traj_derivs_mda[i][j][k] = 0;           // PLACEHOLDER VALUE
+                traj_derivs_mda[i][j][k] = traj_derivs[ind_rec_rxns];
+                ind_rec_rxns += 1;
             }
         }
     }
     
     // Reshape the data into multidimensional arrays
     double spec_profiles_averages[N_record+1][n_specs];
+    double traj_deriv_avgs[N_record+1][n_params];
     double sensitivities[N_record+1][n_specs][n_params];
     
     /*
@@ -429,11 +431,33 @@ if(id==0){
         }
     }
     
+    // Average trajectory derivatives accross trajectories
+    for(int i=0; i < N_record+1; i++){
+        for(int j=0; j < n_params; j++){
+            
+            traj_deriv_avgs[i][j] = 0;
+            
+            for(int rep_num = 0; rep_num < N_traj; rep_num++){
+                traj_deriv_avgs[i][j] += traj_derivs_mda[rep_num][i][j];
+            }
+            
+            traj_deriv_avgs[i][j] = traj_deriv_avgs[i][j] / N_traj;
+        }
+    }
+    
     // Compute sensitivities as the covariance of species populations and trajectory derivatives
     for(int i=0; i<N_record+1; i++){
         for(int j=0; j<n_specs; j++){
             for(int k = 0; k < n_params; k++){
-                sensitivities[i][j][k] = 0;           // PLACEHOLDER VALUE
+                
+                sensitivities[i][j][k] = 0;
+                
+                for(int traj_ind = 0; traj_ind < N_traj; traj_ind++){
+                    sensitivities[i][j][k] += ( spec_profiles_mda[traj_ind][i][j] - spec_profiles_averages[i][j] ) * ( traj_derivs_mda[traj_ind][i][k]- traj_deriv_avgs[i][k] );
+                }
+                
+                sensitivities[i][j][k] = sensitivities[i][j][k] / (N_traj - 1);
+                
             }
             
         }

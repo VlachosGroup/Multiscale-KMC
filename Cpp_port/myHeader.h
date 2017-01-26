@@ -1,6 +1,6 @@
 #ifndef MY_HEADER
 #define MY_HEADER
 
-    double genrandom(int);
+    int * avg_3da(int *, int, int, int)
 
 #endif
