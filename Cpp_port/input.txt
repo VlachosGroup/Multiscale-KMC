@@ -6,7 +6,7 @@ Number of species
 Number of reactions
 3
 
-Species
+Species names
 A
 B
 C
@@ -17,17 +17,14 @@ Initial state
 0
 
 Reactions
--1  1  0
- 1 -1  0
- 0 -1  1
+-1 1 0
+1 -1 0
+0 -1 1
 
 Rate constants
-100
-100
-3
-4
-5
-0
+20.0
+30.0
+2.0
 
 Parameter names
 k1
@@ -37,9 +34,10 @@ k3
 Final time
 10.0
 
-Time scales
-two
+# write trajectory data
 
-Fast reactions
-1
-2
+# two time scale
+
+# Fast reactions
+# 1
+# 2

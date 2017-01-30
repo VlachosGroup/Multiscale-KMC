@@ -5,6 +5,11 @@
 # include <random>
 # include <math.h>
 # include <mpi.h>
+
+# include <typeinfo>
+# include <sstream>
+# include <stdio.h>      /* printf, fgets */
+# include <stdlib.h>     /* atoi */
 using namespace std;
 
 
@@ -45,6 +50,8 @@ int n_params = n_rxns;
 
 bool write_traj_files = false;      // set to true if the user wants data files for each individual trajectory, will take up a lot of space
 
+  
+
 /*
 ============================ Set up parallelization variables ============================
 */
@@ -52,7 +59,6 @@ bool write_traj_files = false;      // set to true if the user wants data files 
 int id;
 int ierr;
 int p;
-
 int Npp;
 
 ierr = MPI_Init ( &argc, &argv );                 //  Initialize MPI.
@@ -384,170 +390,170 @@ MPI_Gather(traj_derivs_pp, traj_ints_pp, MPI_DOUBLE, traj_derivs, traj_ints_pp, 
 // Process simulation data on processor 0
 if(id==0){
     
-    // Reshape the data into multidimensional arrays
-    int spec_profiles_mda[N_traj][N_record+1][n_specs];
-    double traj_derivs_mda[N_traj][N_record+1][n_params];
-    
-    ind_rec_spec = 0;
-    ind_rec_rxns = 0;
-    
-    for(int i=0; i < N_traj; i++){
-        for(int j=0; j<N_record+1; j++){
-            
-            // Reshape species profile data
-            for(int k = 0; k < n_specs; k++){
-                spec_profiles_mda[i][j][k] = spec_profiles[ind_rec_spec];
-                ind_rec_spec += 1;
-            }
-            
-            // Reshape trajectory derivative data
-            for(int k = 0; k < n_params; k++){
-                traj_derivs_mda[i][j][k] = traj_derivs[ind_rec_rxns];
-                ind_rec_rxns += 1;
-            }
-        }
-    }
-    
-    // Reshape the data into multidimensional arrays
-    double spec_profiles_averages[N_record+1][n_specs];
-    double traj_deriv_avgs[N_record+1][n_params];
-    double sensitivities[N_record+1][n_specs][n_params];
-    
-    /*
-    ============ Perform statistical analysis ==============
-    */
+// Reshape the data into multidimensional arrays
+int spec_profiles_mda[N_traj][N_record+1][n_specs];
+double traj_derivs_mda[N_traj][N_record+1][n_params];
 
-    // Average species numbers accross trajectories
-    for(int i=0; i < N_record+1; i++){
-        for(int j=0; j<n_specs; j++){
-            
-            spec_profiles_averages[i][j] = 0;
-            
-            for(int rep_num = 0; rep_num < N_traj; rep_num++){
-                spec_profiles_averages[i][j] += spec_profiles_mda[rep_num][i][j];
-            }
-            
-            spec_profiles_averages[i][j] = spec_profiles_averages[i][j] / N_traj;
-        }
-    }
-    
-    // Average trajectory derivatives accross trajectories
-    for(int i=0; i < N_record+1; i++){
-        for(int j=0; j < n_params; j++){
-            
-            traj_deriv_avgs[i][j] = 0;
-            
-            for(int rep_num = 0; rep_num < N_traj; rep_num++){
-                traj_deriv_avgs[i][j] += traj_derivs_mda[rep_num][i][j];
-            }
-            
-            traj_deriv_avgs[i][j] = traj_deriv_avgs[i][j] / N_traj;
-        }
-    }
-    
-    // Compute sensitivities as the covariance of species populations and trajectory derivatives
-    for(int i=0; i<N_record+1; i++){
-        for(int j=0; j<n_specs; j++){
-            for(int k = 0; k < n_params; k++){
-                
-                sensitivities[i][j][k] = 0;
-                
-                for(int traj_ind = 0; traj_ind < N_traj; traj_ind++){
-                    sensitivities[i][j][k] += ( spec_profiles_mda[traj_ind][i][j] - spec_profiles_averages[i][j] ) * ( traj_derivs_mda[traj_ind][i][k]- traj_deriv_avgs[i][k] );
-                }
-                
-                sensitivities[i][j][k] = sensitivities[i][j][k] / (N_traj - 1);
-                
-            }
-            
-        }
-    }
-    
-    
+ind_rec_spec = 0;
+ind_rec_rxns = 0;
 
-    /*
-    ============ Print species population averages into an output file ==============
-    */
-    
-    ofstream writer_spec_avgs;
-
-    writer_spec_avgs.open("spec_avgs.txt");
-    if(! writer_spec_avgs){  
-        cout << "Error opening file" << endl;
-        return -1;
-    }
-    
-    // Write header
-    writer_spec_avgs << "Species mean populations versus time" << endl;
-    writer_spec_avgs << endl;
-    writer_spec_avgs << "Time \t";
-    for(int j = 0; j < n_specs; j++){
-        writer_spec_avgs << spec_names[j] << "\t";
-    }
-    writer_spec_avgs << endl;
-    
-    for(int time_ind = 0; time_ind <= N_record; time_ind ++){
+for(int i=0; i < N_traj; i++){
+    for(int j=0; j<N_record+1; j++){
         
-        writer_spec_avgs << t_rec[time_ind] << "\t";
-        
-        for(int spec_ind = 0; spec_ind < n_specs; spec_ind++){
-            writer_spec_avgs << spec_profiles_averages[time_ind][spec_ind] << "\t"; // print the mean population of this species at this time
+        // Reshape species profile data
+        for(int k = 0; k < n_specs; k++){
+            spec_profiles_mda[i][j][k] = spec_profiles[ind_rec_spec];
+            ind_rec_spec += 1;
         }
         
-        writer_spec_avgs << endl;
-    }
-    
-    writer_spec_avgs.close();
-    
-    /*
-    ============ Print sensitivities into an output file ==============
-    */
-    
-    ofstream writer_sensitivities;
-    
-    writer_sensitivities.open("sensitivities.txt");
-    if(! writer_sensitivities){  
-        cout << "Error opening file" << endl;
-        return -1;
-    }
-    
-    // Write header
-    writer_sensitivities << "Sensitivities for each species and rate constant versus time" << endl << endl;
-    
-    // Loop over species
-    for(int i=0; i < n_specs; i++){
-        
-        writer_sensitivities << spec_names[i] << endl << endl;
-        
-        // Write header for this species
-        writer_sensitivities << "Time \t";
+        // Reshape trajectory derivative data
         for(int k = 0; k < n_params; k++){
-            writer_sensitivities << param_names[k] << "\t";
+            traj_derivs_mda[i][j][k] = traj_derivs[ind_rec_rxns];
+            ind_rec_rxns += 1;
         }
-        writer_sensitivities << endl;
+    }
+}
+
+// Reshape the data into multidimensional arrays
+double spec_profiles_averages[N_record+1][n_specs];
+double traj_deriv_avgs[N_record+1][n_params];
+double sensitivities[N_record+1][n_specs][n_params];
+
+/*
+============ Perform statistical analysis ==============
+*/
+
+// Average species numbers accross trajectories
+for(int i=0; i < N_record+1; i++){
+    for(int j=0; j<n_specs; j++){
         
-        // Loop over parameters to print out 
-        for(int time_ind = 0; time_ind < N_record+1; time_ind ++){
+        spec_profiles_averages[i][j] = 0;
+        
+        for(int rep_num = 0; rep_num < N_traj; rep_num++){
+            spec_profiles_averages[i][j] += spec_profiles_mda[rep_num][i][j];
+        }
+        
+        spec_profiles_averages[i][j] = spec_profiles_averages[i][j] / N_traj;
+    }
+}
+
+// Average trajectory derivatives accross trajectories
+for(int i=0; i < N_record+1; i++){
+    for(int j=0; j < n_params; j++){
+        
+        traj_deriv_avgs[i][j] = 0;
+        
+        for(int rep_num = 0; rep_num < N_traj; rep_num++){
+            traj_deriv_avgs[i][j] += traj_derivs_mda[rep_num][i][j];
+        }
+        
+        traj_deriv_avgs[i][j] = traj_deriv_avgs[i][j] / N_traj;
+    }
+}
+
+// Compute sensitivities as the covariance of species populations and trajectory derivatives
+for(int i=0; i<N_record+1; i++){
+    for(int j=0; j<n_specs; j++){
+        for(int k = 0; k < n_params; k++){
             
-            writer_sensitivities << t_rec[time_ind] << "\t";
+            sensitivities[i][j][k] = 0;
             
-            for(int param_ind = 0; param_ind < n_params; param_ind++){
-                writer_sensitivities << sensitivities[time_ind][i][param_ind] << "\t";
+            for(int traj_ind = 0; traj_ind < N_traj; traj_ind++){
+                sensitivities[i][j][k] += ( spec_profiles_mda[traj_ind][i][j] - spec_profiles_averages[i][j] ) * ( traj_derivs_mda[traj_ind][i][k]- traj_deriv_avgs[i][k] );
             }
             
-            writer_sensitivities << endl;
-        }
-        
-        // Put a barrier in between species data
-        if(i < n_specs - 1){
-            writer_sensitivities << endl;
-            writer_sensitivities << "=======================================" << endl;
-            writer_sensitivities << endl;
+            sensitivities[i][j][k] = sensitivities[i][j][k] / (N_traj - 1);
+            
         }
         
     }
+}
+
+
+
+/*
+============ Print species population averages into an output file ==============
+*/
+
+ofstream writer_spec_avgs;
+
+writer_spec_avgs.open("spec_avgs.txt");
+if(! writer_spec_avgs){  
+    cout << "Error opening file" << endl;
+    return -1;
+}
+
+// Write header
+writer_spec_avgs << "Species mean populations versus time" << endl;
+writer_spec_avgs << endl;
+writer_spec_avgs << "Time \t";
+for(int j = 0; j < n_specs; j++){
+    writer_spec_avgs << spec_names[j] << "\t";
+}
+writer_spec_avgs << endl;
+
+for(int time_ind = 0; time_ind <= N_record; time_ind ++){
     
-    writer_sensitivities.close();
+    writer_spec_avgs << t_rec[time_ind] << "\t";
+    
+    for(int spec_ind = 0; spec_ind < n_specs; spec_ind++){
+        writer_spec_avgs << spec_profiles_averages[time_ind][spec_ind] << "\t"; // print the mean population of this species at this time
+    }
+    
+    writer_spec_avgs << endl;
+}
+
+writer_spec_avgs.close();
+
+/*
+============ Print sensitivities into an output file ==============
+*/
+
+ofstream writer_sensitivities;
+
+writer_sensitivities.open("sensitivities.txt");
+if(! writer_sensitivities){  
+    cout << "Error opening file" << endl;
+    return -1;
+}
+
+// Write header
+writer_sensitivities << "Sensitivities for each species and rate constant versus time" << endl << endl;
+
+// Loop over species
+for(int i=0; i < n_specs; i++){
+    
+    writer_sensitivities << spec_names[i] << endl << endl;
+    
+    // Write header for this species
+    writer_sensitivities << "Time \t";
+    for(int k = 0; k < n_params; k++){
+        writer_sensitivities << param_names[k] << "\t";
+    }
+    writer_sensitivities << endl;
+    
+    // Loop over parameters to print out 
+    for(int time_ind = 0; time_ind < N_record+1; time_ind ++){
+        
+        writer_sensitivities << t_rec[time_ind] << "\t";
+        
+        for(int param_ind = 0; param_ind < n_params; param_ind++){
+            writer_sensitivities << sensitivities[time_ind][i][param_ind] << "\t";
+        }
+        
+        writer_sensitivities << endl;
+    }
+    
+    // Put a barrier in between species data
+    if(i < n_specs - 1){
+        writer_sensitivities << endl;
+        writer_sensitivities << "=======================================" << endl;
+        writer_sensitivities << endl;
+    }
+    
+}
+
+writer_sensitivities.close();
     
 }
 
