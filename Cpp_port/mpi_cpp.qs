@@ -8,6 +8,10 @@
 #$ -j y
 #$ -S /bin/bash
 
+# Setup environment:
+source /etc/profile.d/valet.sh
+vpkg_require openmpi/1.6.3-gcc
+
 # Begin the run by printing some basic info and then
 # invoke mpiexec:
 echo "GridEngine parameters:"	

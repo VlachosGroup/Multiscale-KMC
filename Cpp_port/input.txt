@@ -17,9 +17,9 @@ Initial state
 0
 
 Reactions
--1 1 0
-1 -1 0
-0 -1 1
+ -1	1    0
+  1    -1    0
+  0    -1    1
 
 Rate constants
 20.0

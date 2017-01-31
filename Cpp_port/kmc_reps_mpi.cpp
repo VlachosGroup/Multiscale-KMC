@@ -12,11 +12,37 @@
 # include <stdlib.h>     /* atoi */
 using namespace std;
 
+string trim_string(const string& string_in){       // remove white spaces from the beginning and the end
+    
+    int strBegin = string_in.find_first_not_of(" ");
+    if (strBegin == std::string::npos)
+        return ""; // no content
+
+    int strEnd = string_in.find_last_not_of(" ");
+    int strRange = strEnd - strBegin + 1;
+
+    return string_in.substr(strBegin, strRange);
+}
 
 int main ( int argc, char *argv[] );
 
 int main ( int argc, char *argv[] ){
-	
+    
+/*
+============================ Set up MPI variables ============================
+*/
+
+int id;
+int ierr;
+int p;
+int Npp;
+
+ierr = MPI_Init ( &argc, &argv );                 //  Initialize MPI.
+ierr = MPI_Comm_size ( MPI_COMM_WORLD, &p );      //  Get the number of processes.  
+ierr = MPI_Comm_rank ( MPI_COMM_WORLD, &id );     //  Get the individual process ID.
+
+
+    
 /*
 ============================ Read input file ============================
 */
@@ -32,7 +58,7 @@ double eps;                	            // stiffness level, eps << 1
 bool write_traj_files = false;           // flag to write data files for each individual trajectory, will take up a lot of space
 string* spec_names = NULL;              // names of chemical species
 int* N_0 = NULL;                        // initial state
-//int** stoich_mat = NULL;                // stoichiometry matrix                      
+int** stoich_mat = NULL;                // stoichiometry matrix                      
 double* rate_const = NULL;              // rate constants of elementary reactions
 string* param_names = NULL;             // names of the parameters
 
@@ -42,20 +68,22 @@ int* fast_rxns = NULL;                  // indices of the fast reactions
 int num_batches = 50;        	        // number of batches to use for microscale steady-state averaging in KMC_TTS
 double delta = 0.05;              	    // accuracy level of microscale averaging, delta << 1
 
-
-int stoich_mat[3][3] = { {-1, 1, 0},
-    {1, -1, 0},
-    {0, -1, 1}};                       // stoichiometry matrix, only thing we cannot read properly right now
-
-
 ifstream myfile ("input.txt");
 string line;
 
+
 if (myfile.is_open())
 {
+    
+    
+    
     while ( getline (myfile,line) )
     {
-        if(line.find_first_not_of(' ') == std::string::npos or line[0] == '#')    // skip empty lines and comments
+        
+
+        line = trim_string(line);       // Trim empty spaces from the beginning and end
+         
+        if(line == "" or line[0] == '#')    // skip empty lines and comments
         {
             continue;
         }
@@ -82,6 +110,7 @@ if (myfile.is_open())
             
             for(int spec_ind = 0; spec_ind < n_specs; spec_ind++){
                 getline (myfile,line);
+                line = trim_string(line);
                 spec_names[spec_ind] = line;
             }
             
@@ -89,42 +118,46 @@ if (myfile.is_open())
             
             for(int spec_ind = 0; spec_ind < n_specs; spec_ind++){
                 getline (myfile,line);
+                line = trim_string(line);
                 N_0[spec_ind] = atoi(line.c_str());
             }
              
         }else if(line == "Final time"){
         
             getline (myfile,line);
+            line = trim_string(line);
             t_final = atof(line.c_str());
             
-        //}else if(line == "Reactions"){          // read in stoichiometric matrix
-        //    
-        //    stoich_mat = new int*[n_rxns];          // allocate stoichiometric matrix
-        //    for(int i = 0; i < n_rxns; ++i){
-        //        stoich_mat[i] = new int[n_specs];
-        //    }
-        //        
-        //    for(int rxn_ind = 0; rxn_ind < n_rxns; rxn_ind++){
-        //        
-        //        getline (myfile,line);
-        //        string delimiter = " ";
-        //        //string token = line.substr(0, line.find(" ")); // token is "scott"
-        //        size_t pos = 0;
-        //        string token;
-        //        
-        //        for(int spec_ind = 0; spec_ind < n_specs; spec_ind++){
-        //            pos = line.find(delimiter);
-        //            token = line.substr(0, pos);
-        //            stoich_mat[rxn_ind][spec_ind] = atoi(token.c_str());
-        //            line.erase(0, pos + delimiter.length());
-        //        } 
-        //        
-        //    }
+        }else if(line == "Reactions"){          // read in stoichiometric matrix
             
+            stoich_mat = new int*[n_rxns];          // allocate stoichiometric matrix
+            for(int i = 0; i < n_rxns; ++i){
+                stoich_mat[i] = new int[n_specs];
+            }
+                
+                    
+                for(int rxn_ind = 0; rxn_ind < n_rxns; rxn_ind++){
+                    
+                    getline (myfile,line);
+                        
+                    string delimiter = " ";
+                    size_t pos = 0;
+                    string token;
+                    
+                    for(int spec_ind = 0; spec_ind < n_specs; spec_ind++){
+                        line = trim_string(line);
+                        pos = line.find(delimiter);
+                        token = line.substr(0, pos);
+                        stoich_mat[rxn_ind][spec_ind] = atoi(token.c_str());
+                        line.erase(0, pos + delimiter.length());
+                    }
+                }   
+                
         }else if(line == "Rate constants"){
             
             for(int rxn_ind = 0; rxn_ind < n_rxns; rxn_ind++){
                 getline (myfile,line);
+                line = trim_string(line);
                 rate_const[rxn_ind] = atof(line.c_str());
             }
             
@@ -140,6 +173,7 @@ if (myfile.is_open())
             
             for(int param_ind = 0; param_ind < n_params; param_ind++){
                 getline (myfile,line);
+                line = trim_string(line);
                 param_names[param_ind] = line;
             }
             
@@ -147,12 +181,13 @@ if (myfile.is_open())
             
             // read the fast reactions
             
-        }//else{                  // Unrecognized command. Throw an error. Should also tell them the line number
-        //    
-        //    cout << "Unrecognized command: " << line << endl;
-        //    return -1;
-        //    
-        //}
+        }else{                  // Unrecognized command. Throw an error. Should also tell them the line number
+            
+            cout << "Unrecognized command: " << line << endl;
+            return -1;
+            
+        }
+        
     }
 }else{
     cout << "Unable to open file" << endl;
@@ -161,19 +196,9 @@ if (myfile.is_open())
 
 myfile.close();
 
-
-/*
-============================ Set up parallelization variables ============================
-*/
-
-int id;
-int ierr;
-int p;
-int Npp;
-
-ierr = MPI_Init ( &argc, &argv );                 //  Initialize MPI.
-ierr = MPI_Comm_size ( MPI_COMM_WORLD, &p );      //  Get the number of processes.  
-ierr = MPI_Comm_rank ( MPI_COMM_WORLD, &id );     //  Get the individual process ID.
+if(id==0){
+    cout << "Input file has been read." << endl;
+}
 
 Npp = N_traj / p;
 N_traj = Npp * p;       // round down to the nearest multiple of the number of processors
