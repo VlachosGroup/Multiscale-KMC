@@ -190,15 +190,21 @@ class file_reader {
 			myfile.close();
 
 		}
-		
+        
+		if(two_time_scale){
+            // prepare the TTS variables: fast and slow stoichiometry matrices, n_rxns_fast and n_rxns_slow
+        }
+        
 	};
 
 // Test driver function
 int main() {
 	
-	file_reader fr("../Cpp_port/input.txt");            // Read input file
+	file_reader fr("network.in");            // Read input file
 	
-
+    // If it is STS, make a Traj_stats_STS object and run it
+    
+    // If it is TTS, make a Traj_stats_TTS object and run and process it slightly differently
 
 	return 0;
 }

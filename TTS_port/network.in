@@ -1,0 +1,46 @@
+# Multiscale input file
+    
+Number of species
+3
+
+Number of reactions
+3
+
+Species names
+A
+B
+C
+
+Initial state
+100
+0
+0
+
+Reactions
+ -1     1    0
+  1    -1    0
+  0    -1    1
+
+Rate constants
+20.0
+30.0
+2.0
+
+Parameter names
+k1
+k2
+k3
+
+Final time
+10.0
+
+Number of trajectories
+1000
+
+# write trajectory data
+
+# two time scale
+
+# Fast reactions
+# 1
+# 2
