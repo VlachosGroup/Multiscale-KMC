@@ -18,32 +18,90 @@ class Traj_stats_STS {
 	
 	private:
 	
+    static string species_avgs_out_flname;                      // "spec_avgs.out"      
+    static string SA_out_flname;                                // "SA.out"
     
+    vector< vector< vector<double> > > spec_profiles;           // species data from each trajectory
+    vector< vector< vector<double> > > traj_derivs;             // trajectory derivative data from each trajectory
     
-    int spec_profiles_mda[2][2][2];      // species data from each trajectory
-    double traj_derivs_mda[2][2][2];     // trajectory derivative data from each trajectory
-    
-    double spec_profiles_averages[2][2];   // species averages
-    double sensitivities[2][2][2];                       // sensities
+    vector< vector<double> > spec_profiles_averages;            // species averages
+    vector< vector< vector<double> > > sensitivities;           // sensities
     
 	public:
     
     file_reader in_data;            // input data from the input file
     
+    // Empty class constructor
+    Traj_stats_STS() : in_data(){}
+    
     /*
-    ============================ Class constructor ============================
+    ============ Resize vectors to be able to hold the necessary data =============
     */
-    Traj_stats_STS() : in_data(){
+    void allocate_data(){
         
-        // allocate memory for data variables
+        spec_profiles.resize(in_data.N_traj);
+        for (int i = 0; i < in_data.N_traj; i++){
+            
+            spec_profiles[i].resize(in_data.N_record);
+            for(int j = 0; j < in_data.N_record; j ++){
+                
+                spec_profiles[i][j].resize(in_data.n_specs);
+            }
+        }
+        
+        traj_derivs.resize(in_data.N_traj);
+        for (int i = 0; i < in_data.N_traj; i++){
+            
+            traj_derivs[i].resize(in_data.N_record);
+            for(int j = 0; j < in_data.N_record; j ++){
+                
+                traj_derivs[i][j].resize(in_data.n_params);
+            }
+        }
+        
+        spec_profiles_averages.resize(in_data.N_record);
+        for (int i = 0; i < in_data.N_record; i++){
+            spec_profiles_averages[i].resize(in_data.n_specs);}
+
+        sensitivities.resize(in_data.n_specs);
+        for (int i = 0; i < in_data.n_specs; i++){
+            
+            sensitivities[i].resize(in_data.N_record);
+            for(int j = 0; j < in_data.N_record; j++){
+                
+                sensitivities[i][j].resize(in_data.n_params);
+            }
+        }
+        
     }
     
-//    /*
-//    ============================ Run simulations to gather data ============================
-//    */
-//    
-//    void run_simulations(){
-//        
+    /*
+    ============================ Run simulations to gather data ============================
+    */
+    
+    void run_simulations(){
+        
+        // Fill in fake data
+        for (int i = 0; i < in_data.N_traj; ++i){
+            for(int j = 0; j < in_data.N_record; j ++){
+                for(int k = 0; k < in_data.n_specs; k++){
+                    spec_profiles[i][j][k] = 0;
+                }
+            }
+        }
+        
+        for (int i = 0; i < in_data.N_traj; ++i){
+            for(int j = 0; j < in_data.N_record; j ++){
+                for(int k = 0; k < in_data.n_params; k++){
+                    traj_derivs[i][j][k] = 0;
+                }
+            }
+        }
+        
+        STS_traj run;
+        run.in_data = in_data;      // Copy input file data to the trajectory object
+        run.simulate(12345);
+        
 //        // Set up MPI variables
 //        
 //        int id;
@@ -57,8 +115,8 @@ class Traj_stats_STS {
 //        
 //        
 //        
-//        Npp = N_traj / p;
-//        N_traj = Npp * p;       // round down to the nearest multiple of the number of processors
+//        Npp = N_traj / p + 1;
+//        N_traj = Npp * p;       // round up to the nearest multiple of the number of processors
 //        
 //        if(id==0){
 //            cout << N_traj << " replicate trajectories will be used." << endl;
@@ -142,13 +200,29 @@ class Traj_stats_STS {
 //        if(id==0){
 //            cout << "Simulation completed successfully" << endl;
 //        }
-//    }
-//    
-//    /*
-//    ============ Perform statistical analysis ==============
-//    */
-//    void process_statistics(){
-//        
+
+    }
+    
+    /*
+    ============ Perform statistical analysis ==============
+    */
+    void process_statistics(){
+        
+        for (int i = 0; i < in_data.N_record; ++i){
+            for(int j = 0; j < in_data.n_specs; j++){
+                spec_profiles_averages[i][j] = 0;
+            }
+        }
+
+        for (int i = 0; i < in_data.n_specs; ++i){
+            for(int j = 0; j < in_data.N_record; j ++){
+                for(int k = 0; k < in_data.n_params; k++){
+                    sensitivities[i][j][k] = 0;
+                }
+            }
+        }
+        
+        
 //        // Average species numbers accross trajectories
 //        for(int i=0; i < N_record+1; i++){
 //            for(int j=0; j<n_specs; j++){
@@ -194,145 +268,157 @@ class Traj_stats_STS {
 //                
 //            }
 //        }
-//    }
-//    
-//    
-//    /* 
-//    =========== Print species population averages into an output file ===========
-//    */
-//    void write_spec_avg_output(){
-//
-//        ofstream writer_spec_avgs;
-//        
-//        writer_spec_avgs.open("spec_avgs.txt");
-//        if(! writer_spec_avgs){  
-//            cout << "Error opening file" << endl;
-//            return -1;
-//        }
-//        
-//        // Write header
-//        writer_spec_avgs << "Species mean populations versus time" << endl;
-//        writer_spec_avgs << endl;
-//        writer_spec_avgs << "Time \t";
-//        for(int j = 0; j < n_specs; j++){
-//            writer_spec_avgs << spec_names[j] << "\t";
-//        }
-//        writer_spec_avgs << endl;
-//        
-//        for(int time_ind = 0; time_ind <= N_record; time_ind ++){
-//            
-//            writer_spec_avgs << t_rec[time_ind] << "\t";
-//            
-//            for(int spec_ind = 0; spec_ind < n_specs; spec_ind++){
-//                writer_spec_avgs << spec_profiles_averages[time_ind][spec_ind] << "\t"; // print the mean population of this species at this time
-//            }
-//            
-//            writer_spec_avgs << endl;
-//        }
-//        
-//        writer_spec_avgs.close();
-//    }
-//            
-//    
-//    /*
-//    ===========Print sensitivities into an output file ===========
-//    */
-//    void write_spec_avg_output(){
-//        
-//        ofstream writer_sensitivities;
-//
-//        writer_sensitivities.open("sensitivities.txt");
-//        if(! writer_sensitivities){  
-//            cout << "Error opening file" << endl;
-//            return -1;
-//        }
-//        
-//        // Write header
-//        writer_sensitivities << "Sensitivities for each species and rate constant versus time" << endl << endl;
-//        
-//        // Loop over species
-//        for(int i=0; i < n_specs; i++){
-//            
-//            writer_sensitivities << spec_names[i] << endl << endl;
-//            
-//            // Write header for this species
-//            writer_sensitivities << "Time \t";
-//            for(int k = 0; k < n_params; k++){
-//                writer_sensitivities << param_names[k] << "\t";
-//            }
-//            writer_sensitivities << endl;
-//            
-//            // Loop over parameters to print out 
-//            for(int time_ind = 0; time_ind < N_record+1; time_ind ++){
-//                
-//                writer_sensitivities << t_rec[time_ind] << "\t";
-//                
-//                for(int param_ind = 0; param_ind < n_params; param_ind++){
-//                    writer_sensitivities << sensitivities[time_ind][i][param_ind] << "\t";
-//                }
-//                
-//                writer_sensitivities << endl;
-//            }
-//            
-//            // Put a barrier in between species data
-//            if(i < n_specs - 1){
-//                writer_sensitivities << endl;
-//                writer_sensitivities << "=======================================" << endl;
-//                writer_sensitivities << endl;
-//            }
-//            
-//        }
-//        
-//        writer_sensitivities.close();
-//    }
+
+    }
+    
+    
+    /* 
+    =========== Print species population averages into an output file ===========
+    */
+    void write_spec_avg_output(){
+
+        ofstream writer_spec_avgs;
+        
+        writer_spec_avgs.open(Traj_stats_STS :: species_avgs_out_flname);
+        if(! writer_spec_avgs){  
+            cout << "Error opening file" << endl;
+        }
+        
+        // Write header
+        writer_spec_avgs << "Species mean populations versus time" << endl;
+        writer_spec_avgs << endl;
+        writer_spec_avgs << "Time \t";
+        for(int j = 0; j < in_data.n_specs; j++){
+            writer_spec_avgs << in_data.spec_names[j] << "\t";
+        }
+        writer_spec_avgs << endl;
+        
+        for(int time_ind = 0; time_ind < in_data.N_record; time_ind ++){
+            
+            writer_spec_avgs << in_data.t_rec[time_ind] << "\t";
+            
+            for(int spec_ind = 0; spec_ind < in_data.n_specs; spec_ind++){
+                writer_spec_avgs << spec_profiles_averages[time_ind][spec_ind] << "\t"; // print the mean population of this species at this time
+            }
+            
+            writer_spec_avgs << endl;
+        }
+        
+        writer_spec_avgs.close();
+
+    }
+            
+    
+    /*
+    ===========Print sensitivities into an output file ===========
+    */
+    void write_sensitivity_output(){
+        
+        ofstream writer_sensitivities;
+
+        writer_sensitivities.open(Traj_stats_STS :: SA_out_flname);
+        if(! writer_sensitivities){  
+            cout << "Error opening file" << endl;
+        }
+        
+        // Write header
+        writer_sensitivities << "Sensitivities for each species and rate constant versus time" << endl << endl;
+        
+        // Loop over species
+        for(int i=0; i < in_data.n_specs; i++){
+            
+            writer_sensitivities << in_data.spec_names[i] << endl << endl;
+            
+            // Write header for this species
+            writer_sensitivities << "Time \t";
+            for(int k = 0; k < in_data.n_params; k++){
+                writer_sensitivities << in_data.param_names[k] << "\t";
+            }
+            writer_sensitivities << endl;
+            
+            // Loop over parameters to print out 
+            for(int time_ind = 0; time_ind < in_data.N_record; time_ind ++){
+                
+                writer_sensitivities << in_data.t_rec[time_ind] << "\t";
+                
+                for(int param_ind = 0; param_ind < in_data.n_params; param_ind++){
+                    writer_sensitivities << sensitivities[i][time_ind][param_ind] << "\t";
+                }
+                
+                writer_sensitivities << endl;
+            }
+            
+            // Put a barrier in between species data
+            if(i < in_data.n_specs - 1){
+                writer_sensitivities << endl;
+                writer_sensitivities << "=======================================" << endl;
+                writer_sensitivities << endl;
+            }
+            
+        }
+        
+        writer_sensitivities.close();
+
+    }
     
 };
-//
-//
-//
-//class Traj_stats_TTS : public Traj_stats_STS{
-//    
-//    private:
-//    
-//    double microscale_sensitivity_contributions[2][2][2];
-//    
-//    public:
-//    
-//    Traj_stats_TTS() : Traj_stats_STS(){
-//        
-//    }
-//    
-//    void add_microscale_sensitivities(){
-//        // add microscale contributions to the sensitivities
-//    }
-//};
+
+string Traj_stats_STS :: species_avgs_out_flname = "spec_avgs.out";
+string Traj_stats_STS :: SA_out_flname = "SA.out";
+
+
+class Traj_stats_TTS : public Traj_stats_STS{
+    
+    private:
+    
+    double microscale_sensitivity_contributions[2][2][2];
+    
+    public:
+    
+    Traj_stats_TTS() : Traj_stats_STS(){
+        
+    }
+    
+    void add_microscale_sensitivities(){
+        // add microscale contributions to the sensitivities
+    }
+};
 
 
 // Main function
 int main() {
 	
-	file_reader fr("network.in");           // Read input file
-	
-    Traj_stats_STS STS_sim;
-    STS_sim.in_data = fr;
+	file_reader fr("network.in");               // Read input file
+        
+        
+    if(! fr.two_time_scale){                    // single time scale
+            
+        Traj_stats_STS STS_sim; 
+        STS_sim.in_data = fr;                   // assign input
+        STS_sim.allocate_data();
+            
+        STS_sim.run_simulations();              // run KMC simulations
+        STS_sim.process_statistics();
+        
+        STS_sim.write_spec_avg_output();        // Write output files
+        STS_sim.write_sensitivity_output();
+        
+    }else{                                      // two time scale version
+        
+        Traj_stats_TTS TTS_sim;
+        TTS_sim.in_data = fr;
+        TTS_sim.allocate_data();
+        
+        TTS_sim.run_simulations();
+        TTS_sim.process_statistics();
+        TTS_sim.add_microscale_sensitivities();
+        
+        TTS_sim.write_spec_avg_output();
+        TTS_sim.write_sensitivity_output();
+        
+    }
     
-    //if(fr.two_time_scale){                  // two time scale
-    //    
-    //    TTS_sim = Traj_stats_TTS();
-    //    TTS_sim.in_data = fr;
-    //    
-    //}else{                                  // single time scale
-    //    
-    //    STS_sim = Traj_stats_STS();
-    //    STS_sim.in_data = fr;
-    //    
-    //}
-    
-    // If it is STS, make a Traj_stats_STS object and run it
-    
-    // If it is TTS, make a Traj_stats_TTS object and run and process it slightly differently
-    
-    cout << "There are " << STS_sim.in_data.n_rxns << " reactions." << endl;
+    cout << "Simulation complete." << endl;
 
 	return 0;
 }

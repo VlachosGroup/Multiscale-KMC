@@ -32,7 +32,7 @@ string trim_string(const string& string_in){       // remove white spaces from t
 file_reader :: file_reader(string flname){
 	
 	// Set default values                      
-	N_record = 100;                    
+	N_record = 101;                    
 	N_traj = 1000;
     num_batches = 50;        	       
 	delta = 0.05;                           	   
@@ -148,7 +148,7 @@ file_reader :: file_reader(string flname){
             }else if(line == "Number of time points"){
 				
 				getline (myfile,line);
-				N_record = atoi(line.c_str());
+				N_record = atoi(line.c_str()) + 1;
             
 			}else if(line == "Fast reactions"){
 				
@@ -166,6 +166,13 @@ file_reader :: file_reader(string flname){
 	
 	myfile.close();
 
+    
+    // Fill in recording times
+    t_rec.resize(N_record);
+	for(int i = 0; i < N_record; i++){
+		t_rec[i] = (double) i / (N_record-1) * t_final;
+	}
+    
     if(two_time_scale){
     // prepare the TTS variables: fast and slow stoichiometry matrices, n_rxns_fast and n_rxns_slow
     }

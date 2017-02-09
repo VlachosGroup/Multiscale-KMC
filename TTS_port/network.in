@@ -41,6 +41,5 @@ Number of trajectories
 
 # two time scale
 
-# Fast reactions
-# 1
-# 2
+# Fast reactions - enter reversible reactions in forward/backward pairs
+# 1 2
