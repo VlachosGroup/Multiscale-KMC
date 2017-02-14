@@ -60,7 +60,7 @@ file_reader :: file_reader(string flname){
 				getline (myfile,line);
 				n_specs = atoi(line.c_str());
 				
-                N_0.reserve(n_specs);                       // allocate memory for the initial state          
+                N_0.resize(n_specs);                       // allocate memory for the initial state          
 			
 			}else if(line == "Number of reactions"){
 				
@@ -68,7 +68,7 @@ file_reader :: file_reader(string flname){
 				n_rxns = atoi(line.c_str());
 				n_params = n_rxns;
 				
-				rate_const.reserve(n_rxns);
+				rate_const.resize(n_rxns);
 			
 			}else if(line == "Species names"){
 				

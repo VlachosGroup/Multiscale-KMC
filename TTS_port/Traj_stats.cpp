@@ -21,9 +21,6 @@ class Traj_stats_STS {
     static string species_avgs_out_flname;                      // "spec_avgs.out"      
     static string SA_out_flname;                                // "SA.out"
     
-    vector< vector< vector<double> > > spec_profiles;           // species data from each trajectory
-    vector< vector< vector<double> > > traj_derivs;             // trajectory derivative data from each trajectory
-    
     vector< vector<double> > spec_profiles_averages;            // species averages
     vector< vector< vector<double> > > sensitivities;           // sensities
     
@@ -31,77 +28,17 @@ class Traj_stats_STS {
     
     file_reader in_data;            // input data from the input file
     
-    // Empty class constructor
-    Traj_stats_STS() : in_data(){}
+    Traj_stats_STS() : in_data(){}      // Empty class constructor
     
-    /*
-    ============ Resize vectors to be able to hold the necessary data =============
-    */
-    void allocate_data(){
-        
-        spec_profiles.resize(in_data.N_traj);
-        for (int i = 0; i < in_data.N_traj; i++){
-            
-            spec_profiles[i].resize(in_data.N_record);
-            for(int j = 0; j < in_data.N_record; j ++){
-                
-                spec_profiles[i][j].resize(in_data.n_specs);
-            }
-        }
-        
-        traj_derivs.resize(in_data.N_traj);
-        for (int i = 0; i < in_data.N_traj; i++){
-            
-            traj_derivs[i].resize(in_data.N_record);
-            for(int j = 0; j < in_data.N_record; j ++){
-                
-                traj_derivs[i][j].resize(in_data.n_params);
-            }
-        }
-        
-        spec_profiles_averages.resize(in_data.N_record);
-        for (int i = 0; i < in_data.N_record; i++){
-            spec_profiles_averages[i].resize(in_data.n_specs);}
 
-        sensitivities.resize(in_data.n_specs);
-        for (int i = 0; i < in_data.n_specs; i++){
-            
-            sensitivities[i].resize(in_data.N_record);
-            for(int j = 0; j < in_data.N_record; j++){
-                
-                sensitivities[i][j].resize(in_data.n_params);
-            }
-        }
-        
-    }
-    
-    /*
-    ============================ Run simulations to gather data ============================
-    */
-    
     void run_simulations(){
         
-        // Fill in fake data
-        for (int i = 0; i < in_data.N_traj; ++i){
-            for(int j = 0; j < in_data.N_record; j ++){
-                for(int k = 0; k < in_data.n_specs; k++){
-                    spec_profiles[i][j][k] = 0;
-                }
-            }
-        }
-        
-        for (int i = 0; i < in_data.N_traj; ++i){
-            for(int j = 0; j < in_data.N_record; j ++){
-                for(int k = 0; k < in_data.n_params; k++){
-                    traj_derivs[i][j][k] = 0;
-                }
-            }
-        }
-        
-        STS_traj run;
-        run.in_data = in_data;      // Copy input file data to the trajectory object
-        run.simulate(12345);
-        
+        /*
+        ============================ Run simulations to gather data ============================
+        */
+    
+    
+
 //        // Set up MPI variables
 //        
 //        int id;
@@ -142,11 +79,19 @@ class Traj_stats_STS {
 //                Npp, MPI_INT, 0, MPI_COMM_WORLD);
 //        
 //
-//        /*
-//        ============ run KMC simulations to gather data ==============
-//        */       
-//        
-//        
+
+        double spec_avgs[in_data.N_record][in_data.n_specs];
+        double W_avgs[in_data.N_record][in_data.n_params];
+        double prod_avgs[in_data.N_record][in_data.n_specs][in_data.n_params];
+
+        /*
+        ============ run KMC simulations to gather data ==============
+        */       
+
+        STS_traj run;
+        run.in_data = in_data;      // Copy input file data to the trajectory object
+        run.simulate(12345);
+
 //        /*
 //        ============ Collect data from the replicate simulations ==============
 //        */
@@ -201,12 +146,29 @@ class Traj_stats_STS {
 //            cout << "Simulation completed successfully" << endl;
 //        }
 
-    }
+
     
-    /*
-    ============ Perform statistical analysis ==============
-    */
-    void process_statistics(){
+        /*
+        ============ Perform statistical analysis ==============
+        */
+
+        // Resize vectors to be able to hold the necessary data
+        
+        spec_profiles_averages.resize(in_data.N_record);
+        for (int i = 0; i < in_data.N_record; i++){
+            spec_profiles_averages[i].resize(in_data.n_specs);}
+
+        sensitivities.resize(in_data.n_specs);
+        for (int i = 0; i < in_data.n_specs; i++){
+            
+            sensitivities[i].resize(in_data.N_record);
+            for(int j = 0; j < in_data.N_record; j++){
+                
+                sensitivities[i][j].resize(in_data.n_params);
+            }
+        }
+        
+        // Fill in with fake data
         
         for (int i = 0; i < in_data.N_record; ++i){
             for(int j = 0; j < in_data.n_specs; j++){
@@ -268,7 +230,6 @@ class Traj_stats_STS {
 //                
 //            }
 //        }
-
     }
     
     
@@ -366,12 +327,11 @@ class Traj_stats_STS {
 string Traj_stats_STS :: species_avgs_out_flname = "spec_avgs.out";
 string Traj_stats_STS :: SA_out_flname = "SA.out";
 
-
 class Traj_stats_TTS : public Traj_stats_STS{
     
     private:
     
-    double microscale_sensitivity_contributions[2][2][2];
+    vector< vector< vector<double> > > microscale_sensitivity_contributions;
     
     public:
     
@@ -395,10 +355,8 @@ int main() {
             
         Traj_stats_STS STS_sim; 
         STS_sim.in_data = fr;                   // assign input
-        STS_sim.allocate_data();
             
         STS_sim.run_simulations();              // run KMC simulations
-        STS_sim.process_statistics();
         
         STS_sim.write_spec_avg_output();        // Write output files
         STS_sim.write_sensitivity_output();
@@ -407,11 +365,9 @@ int main() {
         
         Traj_stats_TTS TTS_sim;
         TTS_sim.in_data = fr;
-        TTS_sim.allocate_data();
         
         TTS_sim.run_simulations();
-        TTS_sim.process_statistics();
-        TTS_sim.add_microscale_sensitivities();
+        //TTS_sim.add_microscale_sensitivities();
         
         TTS_sim.write_spec_avg_output();
         TTS_sim.write_sensitivity_output();

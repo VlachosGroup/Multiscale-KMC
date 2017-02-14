@@ -24,7 +24,7 @@ class file_reader {
 		bool write_traj_files;                  // flag to write data files for each individual trajectory, will take up a lot of space
 		vector<string> spec_names;              // names of chemical species
 		vector<int> N_0;                        // initial state
-		vector< vector<int> > stoich_mat;                    
+		vector< vector<int> > stoich_mat;       // stoichiometric matrix
 		vector<double> rate_const;              // rate constants of elementary reactions
 		vector<string> param_names;             // names of the parameters
 		vector<double> t_rec;                   // vector of sampling times
@@ -48,40 +48,17 @@ class STS_traj {
         static string species_out_flname;
         static string traj_deriv_out_flname;
     
-		vector<int> N;                         	// species populations
-		vector<double> props;
-		vector<double> prop_cum;
-		vector<double> asum;
-		
-		// Used for sensitivity analysis
-		vector<double> W;                       // trajectory derivatives
-		vector< vector<double> > prop_ders;     // derivative of each propensity with respect to each parameter
-		vector<double> prop_ders_sum;           // derivative of the sum of all propensities with respect to each parameter
-		double t_trunc;                         // time since the previous KMC step
-		
-		double t;                               // KMC clock
-		double t_prev;                          // KMC time of previous step
-		double dt;                              // time step
-		double r_rxn_choose;                    // random number between 0 and 1 used to choose which reaction to fire
-		double r_timestep;                      // random mumber between 0 and 1 used to choose the time step
-		int rxn_to_fire_ind;                    // index of the reaction chosen to fire
-		int ind_rec;                            // time point
-		int ind_rec_spec;                   	// index to record species population data for all trajectories running on the current processor
-		int ind_rec_rxns;                   	// index to record trajectory derivative data for all trajectories running on the current processor
-	
-		
-	
     public:
     
         file_reader in_data;            		// input data from the input file
 	
         // Data to record
-		// species vs. time
-		// trajectory derivative vs. time
+		vector< vector<double> > spec_profile;                      // species vs. time
+		vector< vector<double> > traj_deriv_profile;                // trajectory derivative vs. time
+        vector< vector< vector<double> > > spec_traj_deriv_prod;    // product of species and trajectory derivative
     
         STS_traj();                          	// empty constructor
 		void simulate(int);								// perform KMC simulation
-		void record_data();							// record data at the current KMC time
 		
 	
 };
