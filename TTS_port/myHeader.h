@@ -1,11 +1,14 @@
-
-
 #ifndef MY_HEADER
 #define MY_HEADER
 
 # include <vector>
 # include <string>
 using namespace std;
+
+
+/*
+============================ Class to read input file ============================
+*/
 
 class file_reader {
 
@@ -41,6 +44,62 @@ class file_reader {
 };
 
 
+/*
+============================ Class to handle many STS trajectories ============================
+*/
+
+class Traj_stats_STS {
+	
+	private:
+	
+        static string species_avgs_out_flname;                      // "spec_avgs.out"
+        static string SA_out_flname;                                // "SA.out"
+        
+        vector< vector<double> > spec_profiles_averages;            // species averages
+        vector< vector<double> > traj_deriv_avgs;                   // trajectory derivative averages
+        vector< vector< vector<double> > > sensitivities;           // sensities
+    
+	public:
+    
+        file_reader in_data;            // input data from the input file
+        
+        Traj_stats_STS();               // Empty class constructor
+        void initialize_stats();
+        void run_simulations();
+        void finalize_stats();
+        void write_spec_avg_output();
+        void write_sensitivity_output();
+    
+};
+
+
+/*
+============================ Class to handle many TTS trajectories ============================
+*/
+
+class Traj_stats_TTS : public Traj_stats_STS{
+    
+    private:
+    
+    vector< vector< vector<double> > > microscale_sensitivity_contributions;
+    
+    public:
+    
+    Traj_stats_TTS() : Traj_stats_STS(){
+        
+    }
+    
+    void add_microscale_sensitivities(){
+        // add microscale contributions to the sensitivities
+    }
+};
+
+
+/*
+============================ Class to handle one STS trajectory ============================
+*/
+
+
 class STS_traj {
 
     private:
@@ -55,7 +114,6 @@ class STS_traj {
         // Data to record
 		vector< vector<double> > spec_profile;                      // species vs. time
 		vector< vector<double> > traj_deriv_profile;                // trajectory derivative vs. time
-        vector< vector< vector<double> > > spec_traj_deriv_prod;    // product of species and trajectory derivative
     
         STS_traj();                          	// empty constructor
 		void simulate(int);								// perform KMC simulation
@@ -64,11 +122,15 @@ class STS_traj {
 };
 
 
+/*
+============================ Class to handle one TTS trajectory ============================
+*/
+
 class TTS_traj : public STS_traj {
 
     private:
     
-		// need an extra 3-d vector of microscale sensitivities
+		vector< vector< vector<double> > > micro_scale_sens;         // 3-D vector of microscale sensitivities
 	
     public:
 

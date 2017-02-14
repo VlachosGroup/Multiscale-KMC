@@ -34,6 +34,7 @@ file_reader :: file_reader(string flname){
 	// Set default values                      
 	N_record = 101;                    
 	N_traj = 1000;
+    write_traj_files = false;
     num_batches = 50;        	       
 	delta = 0.05;                           	   
 	

@@ -4,11 +4,6 @@
 # include <fstream>
 # include <random>
 # include <math.h>
-
-# include <typeinfo>
-# include <sstream>
-# include <stdio.h>      /* printf, fgets */
-# include <stdlib.h>     /* atoi */
 # include "myHeader.h"
 using namespace std;
 
@@ -20,7 +15,6 @@ STS_traj :: STS_traj() : in_data(){}            // empty constructor
 
 void STS_traj :: simulate(int rand_seed){       // Execute simulation
 
-cout << "Running KMC trajectory." << endl;
 
 /*
 ============================ Initialize variables ============================
@@ -53,17 +47,6 @@ for (int i = 0; i < in_data.N_record; i++){
 traj_deriv_profile.resize(in_data.N_record);
 for (int i = 0; i < in_data.N_record; i++){
     traj_deriv_profile[i].resize(in_data.n_params);}
-
-// Vector for recording the product of species populations and trajectory derivatives
-spec_traj_deriv_prod.resize(in_data.N_record);
-for (int i = 0; i < in_data.N_record; i++){
-    
-    spec_traj_deriv_prod[i].resize(in_data.n_specs);
-    for(int j = 0; j < in_data.n_specs; j++){
-        
-        spec_traj_deriv_prod[i][j].resize(in_data.n_params);
-    }
-}
     
 srand(rand_seed);      // Set the random seed
 
@@ -225,14 +208,7 @@ while(t < in_data.t_final){
         
         // Record trajectory derivatives
         for(int k = 0; k < in_data.n_params; k++){
-           traj_deriv_profile[ind_rec][k] = W[k] - prop_ders_sum[k] * t_trunc;
-            }
-        
-        // Record product of species populations and trajectory derivatives        
-        for(int j = 0; j < in_data.n_specs; j++){
-            for(int k = 0; k < in_data.n_params; k++){
-                spec_traj_deriv_prod[ind_rec][j][k] = N[j] * (W[k] - prop_ders_sum[k] * t_trunc);
-                }
+            traj_deriv_profile[ind_rec][k] = W[k] - prop_ders_sum[k] * t_trunc;
             }
         
         ind_rec += 1;
@@ -296,13 +272,6 @@ while(ind_rec < in_data.N_record){
        traj_deriv_profile[ind_rec][k] = W[k] - prop_ders_sum[k] * t_trunc;
         }
     
-    // Record product of species populations and trajectory derivatives        
-    for(int j = 0; j < in_data.n_specs; j++){
-        for(int k = 0; k < in_data.n_params; k++){
-            spec_traj_deriv_prod[ind_rec][j][k] = N[j] * (W[k] - prop_ders_sum[k] * t_trunc);
-            }
-        }
-    
     ind_rec += 1;
         
     }
@@ -313,7 +282,6 @@ if(in_data.write_traj_files){
     writer_SA.close();
 }
 
-cout << "Finished KMC trajectory." << endl;
 
 }
 
