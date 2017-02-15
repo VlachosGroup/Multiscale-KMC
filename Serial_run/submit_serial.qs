@@ -9,7 +9,7 @@
 # squidward.che.udel.edu submission script for a serial job
 
 # The  executable:
-export KMC_EXE="oop_test.x"
+export KMC_EXE="MSA-KMC.x"
 
 # Simple summary:
 echo ""

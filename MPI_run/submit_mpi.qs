@@ -24,5 +24,5 @@ echo
 cat $PE_HOSTFILE 
 echo 
 echo "-- begin OPENMPI run --"
-time mpiexec --n $NSLOTS ./oop_test_par.x
+time mpiexec --n $NSLOTS ./MSA-KMC.x
 echo "-- end OPENMPI run --"
