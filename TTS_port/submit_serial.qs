@@ -8,8 +8,6 @@
 
 # squidward.che.udel.edu submission script for a serial job
 
-# Add CPU profiling
-
 # The  executable:
 export KMC_EXE="oop_test.x"
 
@@ -18,4 +16,4 @@ echo ""
 echo "Running on ${HOSTNAME} with job id ${JOB_ID}"
 echo ""
 
-${KMC_EXE}
+time ${KMC_EXE}

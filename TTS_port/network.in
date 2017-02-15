@@ -35,9 +35,12 @@ Final time
 10.0
 
 Number of trajectories
-10000
+1000
 
-# write trajectory data
+Number of time points
+100
+
+#write trajectory data
 
 # two time scale
 

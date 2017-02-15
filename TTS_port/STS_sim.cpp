@@ -4,12 +4,13 @@
 # include <fstream>
 # include <random>
 # include <math.h>
+# include <sstream>
 # include "myHeader.h"
 using namespace std;
 
 // Static variables - names of output files
-string STS_traj :: species_out_flname = "specs.out";
-string STS_traj :: traj_deriv_out_flname = "SA.out";
+string STS_traj :: species_out_flname = "specs";
+string STS_traj :: traj_deriv_out_flname = "SA";
 
 STS_traj :: STS_traj() : in_data(){}            // empty constructor
 
@@ -74,7 +75,10 @@ if(in_data.write_traj_files){
     // Create a folder for all trajectory data files
     // Name the file specific to this trajectory. Put random seed in the file name.
     
-    writer_spec.open(STS_traj::species_out_flname);
+    ostringstream fname1;
+    fname1 << STS_traj::species_out_flname << "_" << rand_seed << ".out";
+    
+    writer_spec.open(fname1.str());
     if(! writer_spec){  
         cout << "Error opening file" << endl;
     }
@@ -86,7 +90,10 @@ if(in_data.write_traj_files){
     }
     writer_spec << endl;
     
-    writer_SA.open(STS_traj::species_out_flname);
+    ostringstream fname2;
+    fname2 << STS_traj::traj_deriv_out_flname << "_" << rand_seed << ".out";
+    
+    writer_SA.open(fname2.str());
     if(! writer_SA){  
         cout << "Error opening file" << endl;
     }
@@ -203,7 +210,7 @@ while(t < in_data.t_final){
         
         // Record species populations
         for(int j = 0; j < in_data.n_specs; j++){
-            spec_profile[ind_rec][j] = N[j];
+            spec_profile[ind_rec][j] = (double) N[j];
             }
         
         // Record trajectory derivatives

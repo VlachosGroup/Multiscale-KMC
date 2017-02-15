@@ -51,6 +51,18 @@ void Traj_stats_STS :: run_simulations(){
     double traj_deriv_avgs_arr[size2];
     double sensitivities_arr[size3];
     
+    for(int i = 0; i < size1; i++){
+        spec_profiles_averages_arr[i] = 0;
+    }
+    
+    for(int i = 0; i < size2; i++){
+        traj_deriv_avgs_arr[i] = 0;
+    }
+    
+    for(int i = 0; i < size3; i++){
+        sensitivities_arr[i] = 0;
+    }
+    
     int ind1;
     int ind2;
     int ind3;
@@ -80,6 +92,7 @@ void Traj_stats_STS :: run_simulations(){
                 
                 for(int k = 0; k < in_data.n_params; k++){
                     sensitivities_arr[ind3] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k];    // Change this like for TTS - add microscale contribution
+                    
                     ind3++;
                 }
             }
@@ -89,6 +102,8 @@ void Traj_stats_STS :: run_simulations(){
                 ind2++;
             }
         }
+        
+        
     }
 
     /*
@@ -111,6 +126,8 @@ void Traj_stats_STS :: run_simulations(){
         ind1 = 0;
         ind2 = 0;
         ind3 = 0;
+        
+        //for 
         
         // Normalize statistics by the number of trajectories
         

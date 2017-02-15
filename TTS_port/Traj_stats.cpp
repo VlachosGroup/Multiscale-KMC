@@ -7,8 +7,8 @@
 # include "myHeader.h"
 using namespace std;
 
-string Traj_stats_STS :: species_avgs_out_flname = "spec_avgs.out";
-string Traj_stats_STS :: SA_out_flname = "SA.out";
+string Traj_stats_STS :: species_avgs_out_flname = "species_avgs.out";
+string Traj_stats_STS :: SA_out_flname = "sensitivities.out";
 
 Traj_stats_STS :: Traj_stats_STS() : in_data(){}      // Empty class constructor
 
@@ -191,6 +191,7 @@ void Traj_stats_STS :: write_sensitivity_output(){
 // Main function
 int main() {
 	
+    cout.precision(6);
 	file_reader fr("network.in");               // Read input file
         
     if(! fr.two_time_scale){                    // single time scale
