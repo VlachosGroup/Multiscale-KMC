@@ -188,34 +188,26 @@ void Traj_stats_STS :: write_sensitivity_output(){
 }
     
 
-
-
-
-
 // Main function
 int main() {
 	
 	file_reader fr("network.in");               // Read input file
         
-        
     if(! fr.two_time_scale){                    // single time scale
             
         Traj_stats_STS STS_sim; 
         STS_sim.in_data = fr;                   // assign input
-            
         STS_sim.run_simulations();              // run KMC simulations
         
     }else{                                      // two time scale version
         
         Traj_stats_TTS TTS_sim;
         TTS_sim.in_data = fr;
-        
         TTS_sim.run_simulations();
-        //TTS_sim.add_microscale_sensitivities();
         
     }
     
-    cout << "Simulation complete." << endl;
+    
 
 	return 0;
 }

@@ -16,7 +16,7 @@ void Traj_stats_STS :: run_simulations(){
     ============================ Run simulations to gather data ============================
     */
     
-    
+    initialize_stats();
 
     // Set up MPI variables
     
@@ -24,196 +24,129 @@ void Traj_stats_STS :: run_simulations(){
     int ierr;
     int p;
     int Npp;
+    //int argc;
+    //char *argv[];
     
-    ierr = MPI_Init ( &argc, &argv );                 //  Initialize MPI.
+    ierr = MPI_Init ( NULL, NULL );                 //  Initialize MPI.
     ierr = MPI_Comm_size ( MPI_COMM_WORLD, &p );      //  Get the number of processes.  
     ierr = MPI_Comm_rank ( MPI_COMM_WORLD, &id );     //  Get the individual process ID.
     
     
     
-    Npp = N_traj / p + 1;
-    N_traj = Npp * p;       // round up to the nearest multiple of the number of processors
+    Npp = in_data.N_traj / p + 1;
+    in_data.N_traj = Npp * p;       // round up to the nearest multiple of the number of processors
     
     if(id==0){
-        cout << N_traj << " replicate trajectories will be used." << endl;
+        cout << in_data.N_traj << " replicate trajectories will be used." << endl;
     }
     
     
-    int seed_list[N_traj];
-    for(int i = 0; i < N_traj; i++){
-        seed_list[i] = i+1;
-    }
+    // Make a data array for each processor to be combined later
     
+    int size1 = in_data.N_record * in_data.n_specs;
+    int size2 = in_data.N_record * in_data.n_params;
+    int size3 = in_data.N_record * in_data.n_specs * in_data.n_params;
     
-    // For each processor
-    int spec_ints_pp = Npp * (N_record+1) * n_specs;
-    int traj_ints_pp = Npp * (N_record+1) * n_params;
-    int spec_profiles_pp[spec_ints_pp];
-    double traj_derivs_pp[traj_ints_pp];
-    // Fill these up with data as the simulation progresses
+    double spec_profiles_averages_arr[size1];
+    double traj_deriv_avgs_arr[size2];
+    double sensitivities_arr[size3];
     
-    // Scatter the seed list
-    int sub_seeds[Npp];
-    MPI_Scatter(seed_list, Npp, MPI_INT, sub_seeds,
-            Npp, MPI_INT, 0, MPI_COMM_WORLD);
+    int ind1;
+    int ind2;
+    int ind3;
     
-
-
-    double spec_avgs[in_data.N_record][in_data.n_specs];
-    double W_avgs[in_data.N_record][in_data.n_params];
-    double prod_avgs[in_data.N_record][in_data.n_specs][in_data.n_params];
-
     /*
     ============ run KMC simulations to gather data ==============
     */       
 
-    STS_traj run;
-    run.in_data = in_data;      // Copy input file data to the trajectory object
-    run.simulate(12345);
+    for(int traj_ind = 0; traj_ind < Npp; traj_ind++){
+        
+        // Create and run a KMC simulation
+        STS_traj run;           // Change this like for TTS - make TTS_traj object instead
+        run.in_data = in_data;      // Copy input file data to the trajectory object
+        run.simulate(12345  + id * Npp + traj_ind);
+        
+        // Add to statistical running counts
+        
+        ind1 = 0;
+        ind2 = 0;
+        ind3 = 0;
+        
+        for (int i = 0; i < in_data.N_record; ++i){
+            
+            for(int j = 0; j < in_data.n_specs; j++){
+                spec_profiles_averages_arr[ind1] += run.spec_profile[i][j];
+                ind1++;
+                
+                for(int k = 0; k < in_data.n_params; k++){
+                    sensitivities_arr[ind3] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k];    // Change this like for TTS - add microscale contribution
+                    ind3++;
+                }
+            }
+            
+            for(int j = 0; j < in_data.n_params; j++){
+                traj_deriv_avgs_arr[ind2] += run.traj_deriv_profile[i][j];
+                ind2++;
+            }
+        }
+    }
 
     /*
     ============ Collect data from the replicate simulations ==============
     */
     
     // For final analysis, gather data into the big arrays
-    int spec_profiles[N_traj * (N_record+1) * n_specs];
-    double traj_derivs[N_traj * (N_record+1) * n_params];
+    double spec_profiles_averages_big_arr[p * size1];
+    double traj_deriv_avgs_big_arr[p * size2];
+    double sensitivities_big_arr[p * size3];
     
-    MPI_Gather(spec_profiles_pp, spec_ints_pp, MPI_INT, spec_profiles, spec_ints_pp, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Gather(traj_derivs_pp, traj_ints_pp, MPI_DOUBLE, traj_derivs, traj_ints_pp, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Gather(spec_profiles_averages_arr, size1, MPI_DOUBLE, spec_profiles_averages_big_arr, size1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Gather(traj_deriv_avgs_arr, size2, MPI_DOUBLE, traj_deriv_avgs_big_arr, size2, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Gather(sensitivities_arr, size3, MPI_DOUBLE, sensitivities_big_arr, size3, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     
     
-    // Process simulation data on processor 0
+    // Reshape the data into multidimensional arrays on processor 0
     if(id==0){
         
-    // Reshape the data into multidimensional arrays
-    int spec_profiles_mda[N_traj][N_record+1][n_specs];
-    double traj_derivs_mda[N_traj][N_record+1][n_params];
-    
-    ind_rec_spec = 0;
-    ind_rec_rxns = 0;
-    
-    for(int i=0; i < N_traj; i++){
-        for(int j=0; j<N_record+1; j++){
-            
-            // Reshape species profile data
-            for(int k = 0; k < n_specs; k++){
-                spec_profiles_mda[i][j][k] = spec_profiles[ind_rec_spec];
-                ind_rec_spec += 1;
-            }
-            
-            // Reshape trajectory derivative data
-            for(int k = 0; k < n_params; k++){
-                traj_derivs_mda[i][j][k] = traj_derivs[ind_rec_rxns];
-                ind_rec_rxns += 1;
+        ind1 = 0;
+        ind2 = 0;
+        ind3 = 0;
+        
+        // Normalize statistics by the number of trajectories
+        
+        for(int proc_id = 0; proc_id < p; proc_id++){
+        
+            for (int i = 0; i < in_data.N_record; ++i){
+                    
+                for(int j = 0; j < in_data.n_specs; j++){
+                    
+                    spec_profiles_averages[i][j] += spec_profiles_averages_big_arr[ind1];
+                    ind1++;
+                    
+                    for(int k = 0; k < in_data.n_params; k++){
+                        
+                        sensitivities[i][j][k] += sensitivities_big_arr[ind3];
+                        ind3++;
+                        
+                    }
+                }
+                
+                for(int j = 0; j < in_data.n_params; j++){
+                        traj_deriv_avgs[i][j] += traj_deriv_avgs_big_arr[ind2];
+                        ind2++;
+                }
+                    
+                    
             }
         }
-    }
-    
-    // Reshape the data into multidimensional arrays
-    double spec_profiles_averages[N_record+1][n_specs];
-    double traj_deriv_avgs[N_record+1][n_params];
-    double sensitivities[N_record+1][n_specs][n_params];
-    
-    
         
+        
+        finalize_stats();
+        write_spec_avg_output();                // Write output files   
+        write_sensitivity_output();
+        cout << "Simulation completed successfully" << endl;
     }
     
     MPI_Finalize ( );     //  Terminate MPI.
-    
-    if(id==0){
-        cout << "Simulation completed successfully" << endl;
-    }
-
-
-  
-    /*
-    ============ Perform statistical analysis ==============
-    */
-
-    // Resize vectors to be able to hold the necessary data
-    
-    spec_profiles_averages.resize(in_data.N_record);
-    for (int i = 0; i < in_data.N_record; i++){
-        spec_profiles_averages[i].resize(in_data.n_specs);}
-
-    sensitivities.resize(in_data.n_specs);
-    for (int i = 0; i < in_data.n_specs; i++){
-        
-        sensitivities[i].resize(in_data.N_record);
-        for(int j = 0; j < in_data.N_record; j++){
-            
-            sensitivities[i][j].resize(in_data.n_params);
-        }
-    }
-    
-    // Fill in with fake data
-    
-    for (int i = 0; i < in_data.N_record; ++i){
-        for(int j = 0; j < in_data.n_specs; j++){
-            spec_profiles_averages[i][j] = 0;
-        }
-    }
-
-    for (int i = 0; i < in_data.n_specs; ++i){
-        for(int j = 0; j < in_data.N_record; j ++){
-            for(int k = 0; k < in_data.n_params; k++){
-                sensitivities[i][j][k] = 0;
-            }
-        }
-    }
-    
-    
-    // Average species numbers accross trajectories
-    for(int i=0; i < N_record+1; i++){
-        for(int j=0; j<n_specs; j++){
-            
-            spec_profiles_averages[i][j] = 0;
-            
-            for(int rep_num = 0; rep_num < N_traj; rep_num++){
-                spec_profiles_averages[i][j] += spec_profiles_mda[rep_num][i][j];
-            }
-            
-            spec_profiles_averages[i][j] = spec_profiles_averages[i][j] / N_traj;
-        }
-    }
-    
-    // Average trajectory derivatives accross trajectories
-    for(int i=0; i < N_record+1; i++){
-        for(int j=0; j < n_params; j++){
-            
-            traj_deriv_avgs[i][j] = 0;
-            
-            for(int rep_num = 0; rep_num < N_traj; rep_num++){
-                traj_deriv_avgs[i][j] += traj_derivs_mda[rep_num][i][j];
-            }
-            
-            traj_deriv_avgs[i][j] = traj_deriv_avgs[i][j] / N_traj;
-        }
-    }
-    
-    // Compute sensitivities as the covariance of species populations and trajectory derivatives
-    for(int i=0; i<N_record+1; i++){
-        for(int j=0; j<n_specs; j++){
-            for(int k = 0; k < n_params; k++){
-                
-                sensitivities[i][j][k] = 0;
-                
-                for(int traj_ind = 0; traj_ind < N_traj; traj_ind++){
-                    sensitivities[i][j][k] += ( spec_profiles_mda[traj_ind][i][j] - spec_profiles_averages[i][j] ) * ( traj_derivs_mda[traj_ind][i][k]- traj_deriv_avgs[i][k] );
-                }
-                
-                sensitivities[i][j][k] = sensitivities[i][j][k] / (N_traj - 1);
-                
-            }
-            
-        }
-    }
-
-    // Write output files
-    if(id==0){
-        write_spec_avg_output();        
-        write_sensitivity_output();
-    }
     
 }

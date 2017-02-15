@@ -48,7 +48,7 @@ void Traj_stats_STS :: run_simulations(){
     write_spec_avg_output();        
     write_sensitivity_output();
    
-    
+    cout << "Simulation complete." << endl;
 }
 
 
