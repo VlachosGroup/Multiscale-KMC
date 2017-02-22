@@ -7,13 +7,13 @@
 # include "myHeader.h"
 using namespace std;
 
-string Traj_stats_STS :: species_avgs_out_flname = "species_avgs.out";
-string Traj_stats_STS :: SA_out_flname = "sensitivities.out";
+string Traj_stats :: species_avgs_out_flname = "species_avgs.out";
+string Traj_stats :: SA_out_flname = "sensitivities.out";
 
-Traj_stats_STS :: Traj_stats_STS() : in_data(){}      // Empty class constructor
+Traj_stats :: Traj_stats() : in_data(){}      // Empty class constructor
 
 
-void Traj_stats_STS :: initialize_stats(){
+void Traj_stats :: initialize_stats(){
     
     // Resize vectors to be able to hold the necessary data
     
@@ -61,7 +61,7 @@ void Traj_stats_STS :: initialize_stats(){
 }
 
 
-void Traj_stats_STS :: finalize_stats(){
+void Traj_stats :: finalize_stats(){
 
     /*
     ============ Finalize statistical analysis ==============
@@ -101,11 +101,11 @@ void Traj_stats_STS :: finalize_stats(){
 /* 
 =========== Print species population averages into an output file ===========
 */
-void Traj_stats_STS :: write_spec_avg_output(){
+void Traj_stats :: write_spec_avg_output(){
 
     ofstream writer_spec_avgs;
     
-    writer_spec_avgs.open(Traj_stats_STS :: species_avgs_out_flname);
+    writer_spec_avgs.open(Traj_stats :: species_avgs_out_flname);
     if(! writer_spec_avgs){  
         cout << "Error opening file" << endl;
     }
@@ -138,11 +138,11 @@ void Traj_stats_STS :: write_spec_avg_output(){
 /*
 ===========Print sensitivities into an output file ===========
 */
-void Traj_stats_STS :: write_sensitivity_output(){
+void Traj_stats :: write_sensitivity_output(){
     
     ofstream writer_sensitivities;
 
-    writer_sensitivities.open(Traj_stats_STS :: SA_out_flname);
+    writer_sensitivities.open(Traj_stats :: SA_out_flname);
     if(! writer_sensitivities){  
         cout << "Error opening file" << endl;
     }
@@ -193,22 +193,9 @@ int main() {
 	
     cout.precision(6);
 	file_reader fr("network.in");               // Read input file
-        
-    if(! fr.two_time_scale){                    // single time scale
-            
-        Traj_stats_STS STS_sim; 
-        STS_sim.in_data = fr;                   // assign input
-        STS_sim.run_simulations();              // run KMC simulations
-        
-    }else{                                      // two time scale version
-        
-        Traj_stats_TTS TTS_sim;
-        TTS_sim.in_data = fr;
-        TTS_sim.run_simulations();
-        
-    }
+    Traj_stats sim; 
+    sim.in_data = fr;                   // assign input
+    sim.run_simulations();              // run KMC simulations, will execute differently depending on fr.two_time_scale
     
-    
-
 	return 0;
 }

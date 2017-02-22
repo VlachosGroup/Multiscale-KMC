@@ -3,6 +3,10 @@
 
 # include <vector>
 # include <string>
+# include <iostream>    // using IO functions
+# include <string>      // using string
+# include <fstream>
+# include <sstream>
 using namespace std;
 
 
@@ -41,14 +45,15 @@ class file_reader {
 	
 		file_reader(string flname);             // constructor which reads the input file
 		file_reader();                          // empty constructor
+        
 };
 
 
 /*
-============================ Class to handle many STS trajectories ============================
+============================ Class to handle many trajectories ============================
 */
 
-class Traj_stats_STS {
+class Traj_stats {
 	
 	private:
 	
@@ -58,12 +63,13 @@ class Traj_stats_STS {
         vector< vector<double> > spec_profiles_averages;            // species averages
         vector< vector<double> > traj_deriv_avgs;                   // trajectory derivative averages
         vector< vector< vector<double> > > sensitivities;           // sensities
+        vector< vector< vector<double> > > microscale_sensitivity_contributions;
     
 	public:
     
         file_reader in_data;            // input data from the input file
         
-        Traj_stats_STS();               // Empty class constructor
+        Traj_stats();               // Empty class constructor
         void initialize_stats();
         void run_simulations();
         void finalize_stats();
@@ -73,39 +79,42 @@ class Traj_stats_STS {
 };
 
 
-/*
-============================ Class to handle many TTS trajectories ============================
-*/
-
-class Traj_stats_TTS : public Traj_stats_STS{
-    
-    private:
-    
-    vector< vector< vector<double> > > microscale_sensitivity_contributions;
-    
-    public:
-    
-    Traj_stats_TTS() : Traj_stats_STS(){
-        
-    }
-    
-    void add_microscale_sensitivities(){
-        // add microscale contributions to the sensitivities
-    }
-};
-
 
 /*
 ============================ Class to handle one STS trajectory ============================
 */
 
 
-class STS_traj {
+class KMC_traj {
 
     private:
     
+        // File writer objects for output files
         static string species_out_flname;
         static string traj_deriv_out_flname;
+        
+        // Basic KMC variables
+        vector <int> N;
+        double t_trunc;                                         // time since the previous KMC step
+        double t;                                               // KMC clock
+        double t_prev;                                          // KMC time of previous step
+        double dt;                                              // time step
+        int rxn_to_fire_ind;                                    // index of the reaction chosen to fire
+        int ind_rec;                                            // time point
+        vector <double> props;
+        
+        // Used for sensitivity analysis
+        vector <double> W;                                      // trajectory derivatives
+        vector < vector <double> > prop_ders;     // derivative of each propensity with respect to each parameter
+        vector <double> prop_ders_sum;
+        
+    
+        // For file writing
+        ofstream writer_spec;
+        ofstream writer_SA;
+        
+        
+        void record_stats();
     
     public:
     
@@ -115,26 +124,31 @@ class STS_traj {
 		vector< vector<double> > spec_profile;                      // species vs. time
 		vector< vector<double> > traj_deriv_profile;                // trajectory derivative vs. time
     
-        STS_traj();                          	// empty constructor
-		void simulate(int);								// perform KMC simulation
-		
+        KMC_traj();                          	             // empty constructor
+		void simulate(int);								// perform STS KMC simulation
 	
 };
-
 
 /*
 ============================ Class to handle one TTS trajectory ============================
 */
 
-class TTS_traj : public STS_traj {
+class KMC_traj_TTS : public KMC_traj {
 
     private:
     
-		vector< vector< vector<double> > > micro_scale_sens;         // 3-D vector of microscale sensitivities
+        vector <double> N_micro_avg; 
+        
+        void record_stats_TTS();
+		void simulate_micro();								// perform microscale KMC simulation for fast reactions
 	
     public:
 
-		TTS_traj();                          // empty constructor
+        vector< vector< vector<double> > > micro_scale_sens;         // 3-D vector of microscale sensitivities
+    
+		KMC_traj_TTS();                          // empty constructor
+        void simulate_TTS(int);
+        
 };
 
 #endif

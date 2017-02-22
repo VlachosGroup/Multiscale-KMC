@@ -10,7 +10,7 @@
 # include "myHeader.h"
 using namespace std;
 
-void Traj_stats_STS :: run_simulations(){
+void Traj_stats :: run_simulations(){       // add some if statements which will change bahavior depending on if it is STS or TTS
 
     /*
     ============================ Run simulations to gather data ============================
@@ -74,9 +74,15 @@ void Traj_stats_STS :: run_simulations(){
     for(int traj_ind = 0; traj_ind < Npp; traj_ind++){
         
         // Create and run a KMC simulation
-        STS_traj run;           // Change this like for TTS - make TTS_traj object instead
+        KMC_traj run;           // Change this like for TTS - make TTS_traj object instead
         run.in_data = in_data;      // Copy input file data to the trajectory object
-        run.simulate(12345  + id * Npp + traj_ind);
+        
+        if(! in_data.two_time_scale){
+            run.simulate_STS(12345  + id * Npp + traj_ind);
+        }else{
+            run.simulate_TTS(12345  + id * Npp + traj_ind);
+        }
+        
         
         // Add to statistical running counts
         
