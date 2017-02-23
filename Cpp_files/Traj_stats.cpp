@@ -90,8 +90,12 @@ void Traj_stats :: finalize_stats(){
         for(int j = 0; j < in_data.n_specs; j++){
             
             for(int k = 0; k < in_data.n_params; k++){
+                
+                //cout << endl;
+                //cout << sensitivities[i][j][k] << endl;
                 sensitivities[i][j][k] -= spec_profiles_averages[i][j] * traj_deriv_avgs[i][k];
                 sensitivities[i][j][k] = sensitivities[i][j][k] * in_data.N_traj / (in_data.N_traj - 1);
+                //cout << sensitivities[i][j][k] << endl;
             }
         }
     }

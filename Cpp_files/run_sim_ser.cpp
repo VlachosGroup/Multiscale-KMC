@@ -45,7 +45,7 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
             
             KMC_traj_TTS run;           // Change this like for TTS - make TTS_traj object instead
             run.in_data = in_data;      // Copy input file data to the trajectory object
-            run.simulate(12345  + traj_ind);
+            run.simulate_TTS(12345  + traj_ind);
             
             // Add to statistical running counts
             for (int i = 0; i < in_data.N_record; ++i){
@@ -54,7 +54,7 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
                     spec_profiles_averages[i][j] += run.spec_profile[i][j];
                     
                     for(int k = 0; k < in_data.n_params; k++){
-                        sensitivities[i][j][k] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k] + run.micro_scale_sens[i][j][k];    // Add microscale contribution
+                        sensitivities[i][j][k] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k] + run.micro_scale_sens_profile[i][j][k];    // Add microscale contribution
                     }
                 }
                 

@@ -89,6 +89,8 @@ class KMC_traj {
 
     private:
     
+    public:
+    
         // File writer objects for output files
         static string species_out_flname;
         static string traj_deriv_out_flname;
@@ -116,7 +118,7 @@ class KMC_traj {
         
         void record_stats();
     
-    public:
+    
     
         file_reader in_data;            		// input data from the input file
 	
@@ -126,6 +128,7 @@ class KMC_traj {
     
         KMC_traj();                          	             // empty constructor
 		void simulate(int);								// perform STS KMC simulation
+        void initialize_sim(int);
 	
 };
 
@@ -137,14 +140,18 @@ class KMC_traj_TTS : public KMC_traj {
 
     private:
     
-        vector <double> N_micro_avg; 
+        vector <double> N_micro_avg;
+        vector < vector <double> > micro_scale_sens;
+        
+        vector < vector <double> > prop_ders_direct;        // Direct averaging of derviativeson the microscale
+        vector < vector <double> > prop_ders_indirect;      // Indirect averaging on the microscale
         
         void record_stats_TTS();
 		void simulate_micro();								// perform microscale KMC simulation for fast reactions
 	
     public:
 
-        vector< vector< vector<double> > > micro_scale_sens;         // 3-D vector of microscale sensitivities
+        vector< vector< vector<double> > > micro_scale_sens_profile;         // 3-D vector of microscale sensitivities
     
 		KMC_traj_TTS();                          // empty constructor
         void simulate_TTS(int);

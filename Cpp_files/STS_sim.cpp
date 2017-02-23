@@ -18,89 +18,13 @@ void KMC_traj :: simulate(int rand_seed){       // Execute simulation
 
 srand(rand_seed);      // Set the random seed
 
-/*
-============================ Initialize variables ============================
-*/
-
-t = 0;                               // KMC clock
-t_prev = 0;                          // KMC time of previous step
-ind_rec = 0;                            // time point
-
-// Initialize species populations
-N.resize(in_data.n_specs);
-for(int k =0; k < in_data.n_specs; k++){
-    N[k] = in_data.N_0[k];
-}
-
-props.resize(in_data.n_rxns);
-
-// Derivative of each propensity with respect to each parameter
-prop_ders_sum.resize(in_data.n_rxns);           // derivative of the sum of all propensities with respect to each parameter
-prop_ders.resize(in_data.n_rxns);           // derivative of the sum of all propensities with respect to each parameter
-for (int i = 0; i < in_data.n_rxns; i++){
-    prop_ders[i].resize(in_data.n_params);}
-
-// Initialize trajectory derivatives
-W.resize(in_data.n_params);                       // trajectory derivatives
-for(int k =0; k < in_data.n_params; k++){
-    W[k] = 0;
-}
-    
-// Vector for recording species profiles
-spec_profile.resize(in_data.N_record);
-for (int i = 0; i < in_data.N_record; i++){
-    spec_profile[i].resize(in_data.n_specs);}
-
-// Vector for recording trajectory derivatives
-traj_deriv_profile.resize(in_data.N_record);
-for (int i = 0; i < in_data.N_record; i++){
-    traj_deriv_profile[i].resize(in_data.n_params);}
-
 // Some additional non-class varaiables
 double prop_cum[in_data.n_rxns];
 double asum;
 double r_rxn_choose;                                    // random number between 0 and 1 used to choose which reaction to fire
 double r_timestep;                                      // random mumber between 0 and 1 used to choose the time step
 
-/*
-============== Open files to record data for the trajectory ==============
-*/
-
-if(in_data.write_traj_files){
-    
-    // Create a folder for all trajectory data files
-    // Name the file specific to this trajectory. Put random seed in the file name.
-    
-    ostringstream fname1;
-    fname1 << KMC_traj::species_out_flname << "_" << rand_seed << ".out";
-    
-    writer_spec.open(fname1.str());
-    if(! writer_spec){  
-        cout << "Error opening file" << endl;
-    }
-    
-    // Write header    
-    writer_spec << "Time \t";
-    for(int j = 0; j < in_data.n_specs; j++){
-        writer_spec << in_data.spec_names[j] << "\t";
-    }
-    writer_spec << endl;
-    
-    ostringstream fname2;
-    fname2 << KMC_traj::traj_deriv_out_flname << "_" << rand_seed << ".out";
-    
-    writer_SA.open(fname2.str());
-    if(! writer_SA){  
-        cout << "Error opening file" << endl;
-    }
-    
-    // Write header
-    writer_SA << "Time \t";
-    for(int i = 0; i < in_data.n_params; i++){
-        writer_SA << in_data.param_names[i] << "\t";
-    }
-    writer_SA << endl; 
-}        
+initialize_sim(rand_seed);
 
 // Start KMC loop
 while(t < in_data.t_final){
@@ -219,8 +143,90 @@ if(in_data.write_traj_files){
 }
 
 
+void KMC_traj :: initialize_sim(int rand_seed){
+    
+    /*
+    ============================ Initialize variables ============================
+    */
+    
+    t = 0;                               // KMC clock
+    t_prev = 0;                          // KMC time of previous step
+    ind_rec = 0;                            // time point
+    
+    // Initialize species populations
+    N.resize(in_data.n_specs);
+    for(int k =0; k < in_data.n_specs; k++){
+        N[k] = in_data.N_0[k];
+    }
+    
+    props.resize(in_data.n_rxns);
+    
+    // Derivative of each propensity with respect to each parameter
+    prop_ders_sum.resize(in_data.n_rxns);           // derivative of the sum of all propensities with respect to each parameter
+    prop_ders.resize(in_data.n_rxns);           // derivative of the sum of all propensities with respect to each parameter
+    for (int i = 0; i < in_data.n_rxns; i++){
+        prop_ders[i].resize(in_data.n_params);}
+    
+    // Initialize trajectory derivatives
+    W.resize(in_data.n_params);                       // trajectory derivatives
+    for(int k =0; k < in_data.n_params; k++){
+        W[k] = 0;
+    }
+        
+    // Vector for recording species profiles
+    spec_profile.resize(in_data.N_record);
+    for (int i = 0; i < in_data.N_record; i++){
+        spec_profile[i].resize(in_data.n_specs);}
+    
+    // Vector for recording trajectory derivatives
+    traj_deriv_profile.resize(in_data.N_record);
+    for (int i = 0; i < in_data.N_record; i++){
+        traj_deriv_profile[i].resize(in_data.n_params);}
+    
+    /*
+    ============== Open files to record data for the trajectory ==============
+    */
+    
+    if(in_data.write_traj_files){
+    
+        // Create a folder for all trajectory data files
+        // Name the file specific to this trajectory. Put random seed in the file name.
+        
+        ostringstream fname1;
+        fname1 << KMC_traj::species_out_flname << "_" << rand_seed << ".out";
+        
+        writer_spec.open(fname1.str());
+        if(! writer_spec){  
+            cout << "Error opening file" << endl;
+        }
+        
+        // Write header    
+        writer_spec << "Time \t";
+        for(int j = 0; j < in_data.n_specs; j++){
+            writer_spec << in_data.spec_names[j] << "\t";
+        }
+        writer_spec << endl;
+        
+        ostringstream fname2;
+        fname2 << KMC_traj::traj_deriv_out_flname << "_" << rand_seed << ".out";
+        
+        writer_SA.open(fname2.str());
+        if(! writer_SA){  
+            cout << "Error opening file" << endl;
+        }
+        
+        // Write header
+        writer_SA << "Time \t";
+        for(int i = 0; i < in_data.n_params; i++){
+            writer_SA << in_data.param_names[i] << "\t";
+        }
+        writer_SA << endl; 
+    }  
+}
+
+
 /*
-========= Record the current state
+========= Record the current state =========
 */
 void KMC_traj :: record_stats(){
     
