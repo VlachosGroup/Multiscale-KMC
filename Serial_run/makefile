@@ -1,10 +1,14 @@
 CC = g++                  #compiler name
 CFLAGS = -std=c++0x         #extra compiler flags
 OUT_NAME = MSA-KMC.x           #executable name
-SOURCE = ../Cpp_files/Traj_stats.cpp ../Cpp_files/run_sim_ser.cpp ../Cpp_files/STS_sim.cpp ../Cpp_files/TTS_sim.cpp ../Cpp_files/in_file_reader.cpp ../Cpp_files/myHeader.h
+OBJ = Traj_stats.o run_sim_ser.o STS_sim.o TTS_sim.o in_file_reader.o
+SRC = ../src/
 
-all: ../Cpp_files/*.cpp ../Cpp_files/*.h
-	$(CC) -o $(OUT_NAME) $(CFLAGS) $(SOURCE)
+all: $(OBJ)
+	$(CC) -o $(OUT_NAME) $(CFLAGS) $(OBJ)
+
+%.o: $(SRC)%.cpp
+	$(CC) -c $(CFLAGS) $< $(SRC)myHeader.h
     
 clean:
 	rm $(OUT_NAME) *.o

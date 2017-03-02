@@ -78,9 +78,9 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
         run.in_data = in_data;      // Copy input file data to the trajectory object
         
         if(! in_data.two_time_scale){
-            run.simulate_STS(12345  + id * Npp + traj_ind);
+            run.simulate(12345  + id * Npp + traj_ind);
         }else{
-            run.simulate_TTS(12345  + id * Npp + traj_ind);
+            run.simulate(12345  + id * Npp + traj_ind);
         }
         
         
