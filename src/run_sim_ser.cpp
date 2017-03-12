@@ -17,7 +17,7 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
     for(int traj_ind = 0; traj_ind < in_data.N_traj; traj_ind++){
         
         // Create and run a KMC simulation
-        
+        cout << traj_ind << " / " << in_data.N_traj << endl;
         
         if(! in_data.two_time_scale){       // Single time scale
             

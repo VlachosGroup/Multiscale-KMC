@@ -35,9 +35,17 @@ file_reader :: file_reader(string flname){
 	N_record = 101;                    
 	N_traj = 1000;
     write_traj_files = false;
-    num_batches = 50;        	       
-	delta = 0.05;                           	   
+                               	   
 	
+    // Two time scale variables
+    //num_batches = 50;        	       
+	//delta = 0.05;
+    two_time_scale = false;                 // simulation uses one time scale by default
+    n_fast_pairs = 0;                       // number of pairs of fast reactions
+    n_fast_rxns = 0;                        // number of fast reactions
+    n_slow_rxns = 0;                        // number of slow reactions
+    n_micro_steps = 1000;                   // number of Metropolis steps to use for averaging on the micro scale
+    
 	ifstream myfile(flname);
 	string line;
 	
@@ -133,7 +141,60 @@ file_reader :: file_reader(string flname){
 				
 				two_time_scale = true;
 				
-			}else if(line == "Parameter names"){
+			}else if(line == "Number of fast reaction pairs"){      // Flag to turn two time scale mode on
+				
+				getline (myfile,line);
+				n_fast_pairs = atoi(line.c_str());
+                
+                n_fast_rxns = n_fast_pairs * 2;
+                n_slow_rxns = n_rxns - n_fast_rxns;
+                fast_rxns.resize(n_fast_rxns);
+                slow_rxns.resize(n_slow_rxns);
+                fast_pairs.resize(n_fast_rxns);
+                for(int i = 0; i < n_fast_rxns; i++){
+                    fast_pairs[i].resize(2);
+                }
+			
+            }else if(line == "Fast reaction pairs"){      // Flag to turn two time scale mode on
+				
+                int fwd_rxn_ind;
+                int rev_rxn_ind;
+                
+				for(int pair_ind = 0; pair_ind < n_fast_pairs; pair_ind++){
+					
+					getline (myfile,line);
+						
+					string delimiter = " ";
+					size_t pos = 0;
+					string token; 
+					
+                    // Read forward reaction
+					line = trim_string(line);
+					pos = line.find(delimiter);
+					token = line.substr(0, pos);
+                    fwd_rxn_ind = atoi(token.c_str()) - 1;
+                    fast_pairs[2 * pair_ind][0] = fwd_rxn_ind;
+                    fast_pairs[2 * pair_ind + 1][1] = fwd_rxn_ind;
+					line.erase(0, pos + delimiter.length());
+                    
+                    // Read reverse reaction
+                    line = trim_string(line);
+					pos = line.find(delimiter);
+					token = line.substr(0, pos);
+                    rev_rxn_ind = atoi(token.c_str()) - 1;
+                    fast_pairs[2 * pair_ind][1] = rev_rxn_ind;
+                    fast_pairs[2 * pair_ind + 1][0] = rev_rxn_ind;
+					line.erase(0, pos + delimiter.length());
+                    
+
+				}
+			
+            }else if(line == "Number of microscale averaging steps"){
+				
+				getline (myfile,line);
+				n_micro_steps = atoi(line.c_str());
+                
+            }else if(line == "Parameter names"){
 				
 				for(int param_ind = 0; param_ind < n_params; param_ind++){
 					getline (myfile,line);
@@ -176,6 +237,10 @@ file_reader :: file_reader(string flname){
     
     if(two_time_scale){
     // prepare the TTS variables: fast and slow stoichiometry matrices, n_rxns_fast and n_rxns_slow
+    }
+    
+    for(int pair_ind = 0; pair_ind < n_fast_rxns; pair_ind++){
+        cout << fast_pairs[pair_ind][0] << " " << fast_pairs[pair_ind][1] << endl;
     }
     
 }

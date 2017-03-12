@@ -38,11 +38,22 @@ class file_reader {
         
 		// Two time scale variables
 		bool two_time_scale;                    // simulation uses one time scale by default
+        
+        int n_fast_pairs;                       // number of pairs of fast reactions
+        vector < vector<int> > fast_pairs;      // indices of fast reaction pairs
+        
 		vector<int> fast_rxns;                  // indices of the fast reactions
-		int num_batches;        	            // number of batches to use for microscale steady-state averaging in KMC_TTS
-		double delta;              	            // accuracy level of microscale averaging, delta << 1
+        vector<int> slow_rxns;                  // indices of the slow reactions
+        int n_fast_rxns;                        // number of fast reactions
+        int n_slow_rxns;                        // number of slow reactions
+        
+        int n_micro_steps;                      // number of Metropolis steps to use for averaging on the micro scale
+        
+		//int num_batches;        	            // number of batches to use for microscale steady-state averaging in KMC_TTS
+		//double delta;              	            // accuracy level of microscale averaging, delta << 1
 	
-	
+    
+        // Methods
 		file_reader(string flname);             // constructor which reads the input file
 		file_reader();                          // empty constructor
         

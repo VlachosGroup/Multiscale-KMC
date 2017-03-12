@@ -42,7 +42,13 @@ Number of time points
 
 #write trajectory data
 
-#two time scale
+# ======= two time scale section =======
+
+two time scale
+
+Number of fast reaction pairs
+1
 
 # Fast reactions - enter reversible reactions in forward/backward pairs
-# 1 2
+Fast reaction pairs
+ 1   2
