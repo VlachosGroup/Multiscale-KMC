@@ -172,7 +172,7 @@ void Traj_stats :: write_sensitivity_output(){
             writer_sensitivities << in_data.t_rec[time_ind] << "\t";
             
             for(int param_ind = 0; param_ind < in_data.n_params; param_ind++){
-                writer_sensitivities << sensitivities[time_ind][i][param_ind] << "\t";
+                writer_sensitivities << sensitivities[time_ind][i][param_ind] * in_data.rate_const[param_ind] << "\t";      // normalize by rate constant value
             }
             
             writer_sensitivities << endl;

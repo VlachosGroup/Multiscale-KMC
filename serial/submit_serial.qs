@@ -7,9 +7,11 @@
 #$ -o MSA-KMC.out
 
 # squidward.che.udel.edu submission script for a serial job
+source /etc/profile.d/valet.sh
+vpkg_require openmpi/1.6.3-gcc
 
 # The  executable:
-export KMC_EXE="MSA-KMC.x"
+export KMC_EXE="./MSA-KMC.x"
 
 # Simple summary:
 echo ""

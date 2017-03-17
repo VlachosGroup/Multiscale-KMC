@@ -4,6 +4,8 @@
 # include <fstream>
 # include <random>
 # include <math.h>
+# include <algorithm> // for std::find
+# include <iterator> // for std::begin, std::end
 
 # include <typeinfo>
 # include <sstream>
@@ -186,8 +188,22 @@ file_reader :: file_reader(string flname){
                     fast_pairs[2 * pair_ind + 1][0] = rev_rxn_ind;
 					line.erase(0, pos + delimiter.length());
                     
+                    fast_rxns[2 * pair_ind] = fwd_rxn_ind;
+                    fast_rxns[2 * pair_ind + 1] = rev_rxn_ind;
 
 				}
+                
+                // Populate list of slow reactions
+                int slow_ind = 0;
+                for(int i = 0; i < n_rxns; i++){
+                    
+                    if ( find(begin(fast_rxns), end(fast_rxns), i) == end(fast_rxns) ){     // If it is not a fast reaction, it is a slow reaction
+                        slow_rxns[slow_ind] = i;
+                        slow_ind ++;
+                    } 
+                    
+                }
+                
 			
             }else if(line == "Number of microscale averaging steps"){
 				
@@ -236,12 +252,9 @@ file_reader :: file_reader(string flname){
 	}
     
     if(two_time_scale){
-    // prepare the TTS variables: fast and slow stoichiometry matrices, n_rxns_fast and n_rxns_slow
+        // check that nothing has been violated
     }
     
-    for(int pair_ind = 0; pair_ind < n_fast_rxns; pair_ind++){
-        cout << fast_pairs[pair_ind][0] << " " << fast_pairs[pair_ind][1] << endl;
-    }
     
 }
 

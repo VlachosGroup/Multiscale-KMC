@@ -68,7 +68,7 @@ while(t < in_data.t_final){
     /*
     ============================ Compute quantities for current step ============================
     */
-    
+
     // Use a separete method to handle the microscale averaging
     simulate_micro();
     
@@ -80,14 +80,8 @@ while(t < in_data.t_final){
         }
     }
     
-    // Sum the slow propensities
-    asum = 0;
-    for(int i = 0; i < in_data.n_rxns; i++){
-        asum += props[i];
-    }
-    
-    // If all propensities are 0, then exit the while loop
-    if(asum == 0){
+    // If all slow are 0, then exit the while loop
+    if(dt < 0){
         break;
     }
     
@@ -151,6 +145,10 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     double a_rev;
     bool if_accept;
     
+    int N_rec[in_data.n_micro_steps][in_data.n_specs];
+    double q_cum[in_data.n_micro_steps];
+    double Q = 0;       // partition function
+    
     int fast_rxn_randi;
     int fast_rxn_to_try;
     int rev_rxn_to_try;
@@ -158,6 +156,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     
     double micro_props[in_data.n_rxns];
     double micro_prop_ders[in_data.n_rxns][in_data.n_params];
+    double micro_prop_ders_cum[in_data.n_rxns][in_data.n_params];
     
     // Running counts used for averaging
     double N_cum[in_data.n_specs];
@@ -170,7 +169,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
         props_cum[j] = 0;
     }
     
-    double micro_prop_ders_cum[in_data.n_rxns][in_data.n_params];
+    
     for(int i = 0; i < in_data.n_rxns; i++){
         for(int j = 0; j < in_data.n_params; j++){
             micro_prop_ders_cum[i][j] = 0;
@@ -179,6 +178,10 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     
     double prop_ders_direct[in_data.n_rxns][in_data.n_params];
     double prop_ders_indirect[in_data.n_rxns][in_data.n_params];
+    
+    double slow_prop_sum;
+    double slow_prop_sum_cum = 0;
+    double slow_prop_sum_avg;
     
     // Should we scale the number of micro steps by the number of pairs of reversible steps?
     for(int micro_step = 0; micro_step < in_data.n_micro_steps; micro_step++){
@@ -210,7 +213,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
                     
                     for(int j = 0; j < in_data.n_specs; j++){
                         if(in_data.stoich_mat[i][j] < 0){//if this species is a reactant, use it to compute the rate
-                            micro_prop_ders[i][k] = prop_ders[i][k] * pow (N[j], -in_data.stoich_mat[i][j]);
+                            micro_prop_ders[i][k] = micro_prop_ders[i][k] * pow (N[j], -in_data.stoich_mat[i][j]);
                         }
                     }
                     
@@ -220,38 +223,45 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
             }
         }
         
-        // Compute forward and reverse propensities
-        a_fwd = micro_props[fast_rxn_to_try];
-        for(int j = 0; j < in_data.n_specs; j++){
-            N_candidate[j] = N[j];
+        slow_prop_sum = 0;
+        for(int i = 0; i < in_data.n_slow_rxns; i++){
+            slow_prop_sum += micro_props[ in_data.slow_rxns[i] ];
         }
+
+        slow_prop_sum_cum += slow_prop_sum;
+        
+        // Compute forward and reverse propensities
         
         // Update species populations
+        a_fwd = micro_props[fast_rxn_to_try];
         for(int j = 0; j < in_data.n_specs; j++){
-            N_candidate[j] += in_data.stoich_mat[fast_rxn_to_try][j];
+            N_candidate[j] = N[j] + in_data.stoich_mat[fast_rxn_to_try][j];
         }
         
-        a_rev = in_data.rate_const[fast_rxn_to_try];
+        a_rev = in_data.rate_const[rev_rxn_to_try];
         for(int j = 0; j < in_data.n_specs; j++){
-            if(in_data.stoich_mat[fast_rxn_to_try][j] < 0){//if this species is a reactant, use it to compute the rate
-                a_rev = a_rev * pow (N_candidate[j], -in_data.stoich_mat[fast_rxn_to_try][j]);
+            if(in_data.stoich_mat[rev_rxn_to_try][j] < 0){//if this species is a reactant, use it to compute the rate
+                a_rev = a_rev * pow (N_candidate[j], -in_data.stoich_mat[rev_rxn_to_try][j]);
             }
         }
         
         // Test whether to try to move
-        del_E = -log(a_fwd / a_rev);
-        if_accept = (r_accept < a_fwd / a_rev);
+        if (a_fwd > 0){
+            del_E = -log(a_fwd / a_rev);
+            if_accept = (r_accept < a_fwd / a_rev);
+        }else{
+            del_E = 0;
+            if_accept = false;
+        }
         
-        // Execute the change
-        if (if_accept){     // Metropolis criterion
-            
-            for(int j = 0; j < in_data.n_specs; j++){
-                N[j] = N_candidate[j];
-            }
-            
-            E += del_E;         // Update the system energy
-            
-        }  
+        
+        //Record stuff for choosing reaction and state
+        for(int spec_ind = 0; spec_ind < in_data.n_specs; spec_ind++){
+            N_rec[micro_step][spec_ind] = N[spec_ind];
+        }
+        
+        Q += slow_prop_sum * exp( - E );        // running partition function
+        q_cum[micro_step] = Q;                  // sum of little partition functions up until that point
         
         // Record data in cumulative counters
         for(int j = 0; j < in_data.n_specs; j++){
@@ -268,9 +278,23 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
             }
         }
         
+        // Execute the change
+        if (if_accept){     // Metropolis criterion
+            
+            for(int j = 0; j < in_data.n_specs; j++){
+                N[j] = N_candidate[j];
+            }
+            
+            E += del_E;         // Update the system energy
+            
+        } 
+        
     }
     
-    // Finalize averages
+    /*
+    ============== Finalize averages ==============
+    */
+    
     for(int j = 0; j < in_data.n_specs; j++){
         N_micro_avg[j] = N_cum[j] / in_data.n_micro_steps;
     }
@@ -297,23 +321,75 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
         }
     }
     
-    
-    /*
-    ============= Need to base this on averaging =============
-    */
-    
-    // Choose a reaction to fire, state to fire from, and time step
-    
-    
-    r_timestep = ((double) rand() / (RAND_MAX));
-    dt = log(1 / r_timestep) / props[2];
-    
-    rxn_to_fire_ind = 2;
-    
-    int AB_total = N[0] + N[1];
-    N[0] = (int) N_micro_avg[0];
-    N[1] = AB_total - N[0];
+    slow_prop_sum_avg = slow_prop_sum_cum / in_data.n_micro_steps;
 
+    /*
+    ============== Choose things for slow reaction ==============
+    */
+
+    // Choose macro time step
+    r_timestep = ((double) rand() / (RAND_MAX));
+    
+    if(slow_prop_sum_avg > 0){
+        dt = - log(r_timestep) / slow_prop_sum_avg;
+    }else{
+        dt = -1;
+    }
+    
+    
+    // Choose state to fire from
+    
+    for(int micro_step = 0; micro_step < in_data.n_micro_steps; micro_step++){
+        q_cum[micro_step] = q_cum[micro_step] / Q;      // convert to a fraction
+    }
+    
+    double r_state_choose = ((double) rand() / (RAND_MAX));
+    int state_to_choose = 0;
+    while (  q_cum[state_to_choose] < r_state_choose){
+        state_to_choose++;
+    }
+    
+    for(int i = 0; i < in_data.n_specs; i++){
+        N[i] = N_rec[state_to_choose][i];
+    }
+    
+    
+    // Choose slow reaction to fire
+    
+    // Compute slow propensities for the state to fire from
+    // Use mass action kinetics equation, a = k * [A]^ma * [B]^mb * ...
+    double slow_props[in_data.n_slow_rxns];
+    double slow_props_cum[in_data.n_slow_rxns];
+
+    for(int k = 0; k < in_data.n_slow_rxns; k++){
+        
+        slow_props_cum[k] = 0;
+        
+        int i2 = in_data.slow_rxns[k];
+        slow_props[k] = in_data.rate_const[i2];
+        for(int j = 0; j < in_data.n_specs; j++){
+            if(in_data.stoich_mat[i2][j] < 0){       //if this species is a reactant, use it to compute the rate
+                slow_props[k] = micro_props[k] * pow (N[j], -in_data.stoich_mat[i2][j]);
+            }
+        }
+        
+        for(int kleq = 0; kleq <= k; kleq++){
+            slow_props_cum[k] += slow_props[kleq];
+        }
+    }
+    
+    for(int i = 0; i < in_data.n_slow_rxns; i++){
+        slow_props_cum[i] = slow_props_cum[i] / slow_props_cum[in_data.n_slow_rxns - 1];
+    }
+
+    double r_slow_rxn = ((double) rand() / (RAND_MAX));
+    int slow_ind = 0;
+    while ( slow_props_cum[slow_ind] < r_slow_rxn ){
+        slow_ind++;
+    }
+    
+    rxn_to_fire_ind = in_data.slow_rxns[slow_ind];
+    
     /*
     ============= Sensitivity analysis part =============
     */
