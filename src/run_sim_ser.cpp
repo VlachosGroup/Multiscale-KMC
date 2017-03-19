@@ -54,7 +54,7 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
                     spec_profiles_averages[i][j] += run.spec_profile[i][j];
                     
                     for(int k = 0; k < in_data.n_params; k++){
-                        sensitivities[i][j][k] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k] + run.micro_scale_sens_profile[i][j][k];    // Add microscale contribution
+                        sensitivities[i][j][k] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k] + run.micro_scale_sens_profile[i][j][k];    // For TTS, add microscale contribution
                     }
                 }
                 

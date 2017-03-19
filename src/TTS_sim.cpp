@@ -159,25 +159,16 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     
     double micro_props[in_data.n_rxns];
     double micro_prop_ders[in_data.n_rxns][in_data.n_params];
-    double micro_prop_ders_cum[in_data.n_rxns][in_data.n_params];
     
     // Running counts used for averaging
-    double N_cum[in_data.n_specs];
     for(int j = 0; j < in_data.n_specs; j++){
-        N_cum[j] = 0;
+        N_micro_avg[j] = 0;
     }
     
-    double props_cum[in_data.n_rxns];
     for(int j = 0; j < in_data.n_rxns; j++){
-        props_cum[j] = 0;
+        props[j] = 0;
     }
     
-    
-    for(int i = 0; i < in_data.n_rxns; i++){
-        for(int j = 0; j < in_data.n_params; j++){
-            micro_prop_ders_cum[i][j] = 0;
-        }
-    }
     
     for(int i = 0; i < in_data.n_params; i++){
         dEdth[i] = 0;
@@ -206,6 +197,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     for(int i = 0; i < in_data.n_rxns; i++){
         for(int j = 0; j < in_data.n_params; j++){
             prop_ders_indirect[i][j] = 0;
+            prop_ders_direct[i][j] = 0;
         }
     }
     
@@ -220,6 +212,19 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
         
         r_accept = ((double) rand() / (RAND_MAX));
         
+        
+        //cout << "\n" << "species numbers" << endl;
+        //for(int i = 0; i < in_data.n_specs; i++){
+        //    cout << N[i] << "\t";
+        //}
+        
+        //cout << "\n\n" << "micro_prop_ders" << "\n";
+        //for(int i = 0; i < in_data.n_rxns; i++){
+        //    for(int j = 0; j < in_data.n_params; j++){
+        //        cout << micro_prop_ders << "\t";
+        //    }
+        //    cout << "\n";
+        //}
         
         // Compute reaction propensities
         for(int i = 0; i < in_data.n_rxns; i++){
@@ -249,6 +254,16 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
                 }
             }
         }
+        
+        
+        
+        //cout << "\n\n" << "micro_prop_ders" << "\n";
+        //for(int i = 0; i < in_data.n_rxns; i++){
+        //    for(int j = 0; j < in_data.n_params; j++){
+        //        cout << micro_prop_ders[i][j] << "\t";
+        //    }
+        //    cout << "\n";
+        //}
         
         slow_prop_sum = 0;
         for(int i = 0; i < in_data.n_slow_rxns; i++){
@@ -303,16 +318,16 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
         
         // Record data in cumulative counters
         for(int j = 0; j < in_data.n_specs; j++){
-            N_cum[j] += N[j];
+            N_micro_avg[j] += N[j];
         }
         
         for(int j = 0; j < in_data.n_rxns; j++){
-            props_cum[j] += micro_props[j];
+            props[j] += micro_props[j];
         }
         
         for(int i = 0; i < in_data.n_rxns; i++){
             for(int j = 0; j < in_data.n_params; j++){
-                micro_prop_ders_cum[i][j] += micro_prop_ders[i][j];
+                prop_ders_direct[i][j] += micro_prop_ders[i][j];
             }
         }
         
@@ -326,7 +341,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
         // Derivative of propensities - indirect
         for(int i = 0; i < in_data.n_rxns; i++){
             for(int j = 0; j < in_data.n_params; j++){
-                prop_ders_indirect[i][j] += micro_prop_ders[i][j] * (-1 * dEdth[j]);
+                prop_ders_indirect[i][j] += micro_props[i] * (-1 * dEdth[j]);
             }
         }
         
@@ -346,7 +361,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
             
             // Update energy derivatives
             for(int i = 0; i < in_data.n_params; i++){
-                // Need the derivative of teh BACKWARDS reaction
+                // Need the derivative of the BACKWARDS reaction
                 dEdth[i] += -1 / a_fwd * micro_prop_ders[fast_rxn_to_try][i] + 1 / a_rev * rev_prop_ders[i];
             }
             
@@ -359,11 +374,11 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     */
     
     for(int j = 0; j < in_data.n_specs; j++){
-        N_micro_avg[j] = N_cum[j] / in_data.n_micro_steps;
+        N_micro_avg[j] = N_micro_avg[j] / in_data.n_micro_steps;
     }
     
     for(int j = 0; j < in_data.n_rxns; j++){
-        props[j] = props_cum[j] / in_data.n_micro_steps;
+        props[j] = props[j] / in_data.n_micro_steps;
     }
     
     // Set propensities of fast reactions to zero
@@ -374,13 +389,15 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     // Direct microscale propensity derivatives
     for(int i = 0; i < in_data.n_rxns; i++){
         for(int j = 0; j < in_data.n_params; j++){
-            prop_ders_direct[i][j] += micro_prop_ders_cum[i][j] / in_data.n_micro_steps;
+            prop_ders_direct[i][j] = prop_ders_direct[i][j] / in_data.n_micro_steps;
         }
     }
     
+    // Set slow propensity values equal to zero for fast parameters
     for(int i = 0; i < in_data.n_fast_rxns; i++){
         for(int j = 0; j < in_data.n_params; j++){
             prop_ders_direct[ in_data.fast_pairs[i][0] ][j] = 0;
+            prop_ders_indirect[ in_data.fast_pairs[i][0] ][j] = 0;
         }
     }
     
@@ -411,6 +428,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
             prop_ders[i][j] = prop_ders_direct[i][j] + prop_ders_indirect[i][j];
         }
     }
+       
     
     /*
     ============== Choose things for slow reaction ==============
@@ -480,6 +498,63 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     rxn_to_fire_ind = in_data.slow_rxns[slow_ind];
       
     
+    /*
+    ================== Debug by printing out calculated values ==================
+    */
+    
+    bool print_micro_debug = false;
+    
+    if (print_micro_debug){
+        
+        cout << endl;
+        cout << " Time (s) " << endl;
+        cout << t << endl;
+        cout << endl;
+        
+        
+        cout << " Species averages " << endl;
+        for(int i = 0; i < in_data.n_specs; i++){
+            cout << N_micro_avg[i] << "\t";
+        }
+        cout << endl;
+        
+        cout << endl;
+        cout << " Final state " << endl;
+        for(int i = 0; i < in_data.n_specs; i++){
+            cout << N[i] << "\t";
+        }
+        cout << endl;
+        
+        cout << endl;
+        cout << " Reaction to fire " << endl;
+        cout << rxn_to_fire_ind << endl;
+        
+        cout << endl;
+        cout << " Average propensities " << endl;
+        for(int i = 0; i < in_data.n_rxns; i++){
+            cout << props[i] << "\t";
+        }
+        cout << endl;
+        
+        cout << endl;
+        cout << " Direct propensity averages " << endl;
+        for(int i = 0; i < in_data.n_rxns; i++){
+            for(int j = 0; j < in_data.n_params; j++){
+                cout << prop_ders_direct[i][j] << "\t";
+            }
+            cout << endl;
+        }
+        
+        cout << endl;
+        cout << " Indirect propensity averages " << endl;
+        for(int i = 0; i < in_data.n_rxns; i++){
+            for(int j = 0; j < in_data.n_params; j++){
+                cout << prop_ders_indirect[i][j] << "\t";
+            }
+            cout << endl;
+        }
+    
+    }
     
 }
 

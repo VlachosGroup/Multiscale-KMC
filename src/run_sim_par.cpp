@@ -73,41 +73,75 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
 
     for(int traj_ind = 0; traj_ind < Npp; traj_ind++){
         
-        // Create and run a KMC simulation
-        KMC_traj run;           // Change this like for TTS - make TTS_traj object instead
-        run.in_data = in_data;      // Copy input file data to the trajectory object
         
         if(! in_data.two_time_scale){
-            run.simulate(12345  + id * Npp + traj_ind);
-        }else{
-            run.simulate(12345  + id * Npp + traj_ind);
-        }
-        
-        
-        // Add to statistical running counts
-        
-        ind1 = 0;
-        ind2 = 0;
-        ind3 = 0;
-        
-        for (int i = 0; i < in_data.N_record; ++i){
             
-            for(int j = 0; j < in_data.n_specs; j++){
-                spec_profiles_averages_arr[ind1] += run.spec_profile[i][j];
-                ind1++;
+            // Create and run a KMC simulation
+            KMC_traj run;           // Change this like for TTS - make TTS_traj object instead
+            run.in_data = in_data;      // Copy input file data to the trajectory object
+            run.simulate(12345  + id * Npp + traj_ind);
+            
+            // Add to statistical running counts
+        
+            ind1 = 0;
+            ind2 = 0;
+            ind3 = 0;
+            
+            for (int i = 0; i < in_data.N_record; ++i){
                 
-                for(int k = 0; k < in_data.n_params; k++){
-                    sensitivities_arr[ind3] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k];    // Change this like for TTS - add microscale contribution
+                for(int j = 0; j < in_data.n_specs; j++){
+                    spec_profiles_averages_arr[ind1] += run.spec_profile[i][j];
+                    ind1++;
                     
-                    ind3++;
+                    for(int k = 0; k < in_data.n_params; k++){
+                        sensitivities_arr[ind3] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k];    // Change this like for TTS - add microscale contribution
+                        
+                        ind3++;
+                    }
+                }
+                
+                for(int j = 0; j < in_data.n_params; j++){
+                    traj_deriv_avgs_arr[ind2] += run.traj_deriv_profile[i][j];
+                    ind2++;
                 }
             }
             
-            for(int j = 0; j < in_data.n_params; j++){
-                traj_deriv_avgs_arr[ind2] += run.traj_deriv_profile[i][j];
-                ind2++;
+        }else{
+            
+            // Create and run a KMC simulation
+            KMC_traj_TTS run;           // Change this like for TTS - make TTS_traj object instead
+            run.in_data = in_data;      // Copy input file data to the trajectory object
+            run.simulate(12345  + id * Npp + traj_ind);
+            
+            // Add to statistical running counts
+        
+            ind1 = 0;
+            ind2 = 0;
+            ind3 = 0;
+            
+            for (int i = 0; i < in_data.N_record; ++i){
+                
+                for(int j = 0; j < in_data.n_specs; j++){
+                    spec_profiles_averages_arr[ind1] += run.spec_profile[i][j];
+                    ind1++;
+                    
+                    for(int k = 0; k < in_data.n_params; k++){
+                        sensitivities_arr[ind3] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k] + run.micro_scale_sens_profile[i][j][k];    // For TTS, add microscale contribution
+                        
+                        ind3++;
+                    }
+                }
+                
+                for(int j = 0; j < in_data.n_params; j++){
+                    traj_deriv_avgs_arr[ind2] += run.traj_deriv_profile[i][j];
+                    ind2++;
+                }
             }
+            
         }
+        
+        
+        
         
         
     }
