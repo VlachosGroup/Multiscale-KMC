@@ -144,6 +144,9 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     double a_fwd;
     double a_rev;
     bool if_accept;
+    double dEdth[in_data.n_params];
+    double dEdth_avg[in_data.n_params];
+    double rev_prop_ders[in_data.n_params];
     
     int N_rec[in_data.n_micro_steps][in_data.n_specs];
     double q_cum[in_data.n_micro_steps];
@@ -176,12 +179,36 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
         }
     }
     
+    for(int i = 0; i < in_data.n_params; i++){
+        dEdth[i] = 0;
+        dEdth_avg[i] = 0;
+    }
+    
     double prop_ders_direct[in_data.n_rxns][in_data.n_params];
     double prop_ders_indirect[in_data.n_rxns][in_data.n_params];
     
     double slow_prop_sum;
     double slow_prop_sum_cum = 0;
     double slow_prop_sum_avg;
+    
+    /*
+    ============= Sensitivity analysis part =============
+    */
+    
+    // Microscale sensitivities
+    for(int i = 0; i < in_data.n_specs; i++){
+        for(int j = 0; j < in_data.n_params; j++){
+            micro_scale_sens[i][j] = 0;
+        }
+    }
+    
+    // Derivative of propensities - indirect
+    for(int i = 0; i < in_data.n_rxns; i++){
+        for(int j = 0; j < in_data.n_params; j++){
+            prop_ders_indirect[i][j] = 0;
+        }
+    }
+    
     
     // Should we scale the number of micro steps by the number of pairs of reversible steps?
     for(int micro_step = 0; micro_step < in_data.n_micro_steps; micro_step++){
@@ -245,6 +272,17 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
             }
         }
         
+        // Compute derivatives of reverse reaction propensity
+        for(int i = 0; i < in_data.n_params; i++){
+            rev_prop_ders[i] = 0;
+        }
+        rev_prop_ders[rev_rxn_to_try] = 1;
+        for(int j = 0; j < in_data.n_specs; j++){
+            if(in_data.stoich_mat[rev_rxn_to_try][j] < 0){//if this species is a reactant, use it to compute the rate
+                rev_prop_ders[rev_rxn_to_try] = rev_prop_ders[rev_rxn_to_try] * pow (N_candidate[j], -in_data.stoich_mat[rev_rxn_to_try][j]);
+            }
+        }
+        
         // Test whether to try to move
         if (a_fwd > 0){
             del_E = -log(a_fwd / a_rev);
@@ -278,6 +316,25 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
             }
         }
         
+        // Microscale sensitivities
+        for(int i = 0; i < in_data.n_specs; i++){
+            for(int j = 0; j < in_data.n_params; j++){
+                micro_scale_sens[i][j] += N[i] * (-1 * dEdth[j]);
+            }
+        }
+        
+        // Derivative of propensities - indirect
+        for(int i = 0; i < in_data.n_rxns; i++){
+            for(int j = 0; j < in_data.n_params; j++){
+                prop_ders_indirect[i][j] += micro_prop_ders[i][j] * (-1 * dEdth[j]);
+            }
+        }
+        
+        for(int i = 0; i < in_data.n_params; i++){
+            dEdth_avg[i] += dEdth[i];
+        }
+        
+        
         // Execute the change
         if (if_accept){     // Metropolis criterion
             
@@ -286,6 +343,12 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
             }
             
             E += del_E;         // Update the system energy
+            
+            // Update energy derivatives
+            for(int i = 0; i < in_data.n_params; i++){
+                // Need the derivative of teh BACKWARDS reaction
+                dEdth[i] += -1 / a_fwd * micro_prop_ders[fast_rxn_to_try][i] + 1 / a_rev * rev_prop_ders[i];
+            }
             
         } 
         
@@ -322,7 +385,33 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     }
     
     slow_prop_sum_avg = slow_prop_sum_cum / in_data.n_micro_steps;
-
+    
+    for(int i = 0; i < in_data.n_params; i++){
+        dEdth_avg[i] = dEdth_avg[i] / in_data.n_micro_steps;
+    }
+    
+    
+    // Microscale sensitivities
+    for(int i = 0; i < in_data.n_specs; i++){
+        for(int j = 0; j < in_data.n_params; j++){
+            micro_scale_sens[i][j] = micro_scale_sens[i][j] / in_data.n_micro_steps - N_micro_avg[i] * -1 * dEdth_avg[j];
+        }
+    }
+    
+    // Derivative of propensities - indirect
+    for(int i = 0; i < in_data.n_rxns; i++){
+        for(int j = 0; j < in_data.n_params; j++){
+            prop_ders_indirect[i][j] = prop_ders_indirect[i][j] / in_data.n_micro_steps - props[i] * -1 * dEdth_avg[j];
+        }
+    }
+    
+    // Derivative of propensities - total (sum of direct and indirect)
+    for (int i = 0; i < in_data.n_rxns; i++){
+        for (int j = 0; j < in_data.n_params; j++){
+            prop_ders[i][j] = prop_ders_direct[i][j] + prop_ders_indirect[i][j];
+        }
+    }
+    
     /*
     ============== Choose things for slow reaction ==============
     */
@@ -389,41 +478,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     }
     
     rxn_to_fire_ind = in_data.slow_rxns[slow_ind];
-    
-    /*
-    ============= Sensitivity analysis part =============
-    */
-    
-    // Microscale sensitivities
-    micro_scale_sens[0][0] = - N_micro_avg[0] / (in_data.rate_const[0] + in_data.rate_const[1]);
-    micro_scale_sens[0][1] = N_micro_avg[1] / (in_data.rate_const[0] + in_data.rate_const[1]);
-    micro_scale_sens[0][2] = 0;
-    micro_scale_sens[1][0] = N_micro_avg[0] / (in_data.rate_const[0] + in_data.rate_const[1]);
-    micro_scale_sens[1][1] = - N_micro_avg[1] / (in_data.rate_const[0] + in_data.rate_const[1]);
-    micro_scale_sens[1][2] = 0;
-    micro_scale_sens[2][0] = 0;
-    micro_scale_sens[2][1] = 0;
-    micro_scale_sens[2][2] = 0;
-    
-    // Derivative of propensities - indirect
-    prop_ders_indirect[0][0] = 0;
-    prop_ders_indirect[0][1] = 0;
-    prop_ders_indirect[0][2] = 0;
-    prop_ders_indirect[1][0] = 0;
-    prop_ders_indirect[1][1] = 0;
-    prop_ders_indirect[1][2] = 0;
-    prop_ders_indirect[2][0] = in_data.rate_const[2] * N_micro_avg[1] / (in_data.rate_const[0] + in_data.rate_const[1]);
-    prop_ders_indirect[2][1] = - in_data.rate_const[2] * N_micro_avg[1] / (in_data.rate_const[0] + in_data.rate_const[1]);
-    prop_ders_indirect[2][2] = 0;
-    
-    
-    // Derivative of propensities - total (sum of direct and indirect)
-    for (int i = 0; i < in_data.n_rxns; i++){
-        for (int j = 0; j < in_data.n_params; j++){
-            prop_ders[i][j] = prop_ders_direct[i][j] + prop_ders_indirect[i][j];
-        }
-    }
-    
+      
     
     
 }
