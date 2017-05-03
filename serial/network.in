@@ -22,8 +22,8 @@ Reactions
   0    -1    1
 
 Rate constants
-2000.0
-3000.0
+20.0
+30.0
 2.0
 
 Parameter names
@@ -35,7 +35,7 @@ Final time
 10.0
 
 Number of trajectories
-1000
+10
 
 Number of time points
 100
@@ -44,11 +44,11 @@ Number of time points
 
 # ======= two time scale section =======
 
-#two time scale
-#
-#Number of fast reaction pairs
-#1
-#
-## Fast reactions - enter reversible reactions in forward/backward pairs
-#Fast reaction pairs
-# 1   2
+two time scale
+
+Number of fast reaction pairs
+1
+
+# Fast reactions - enter reversible reactions in forward/backward pairs
+Fast reaction pairs
+ 1   2

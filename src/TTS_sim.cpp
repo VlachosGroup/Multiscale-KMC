@@ -15,8 +15,8 @@ KMC_traj_TTS :: KMC_traj_TTS() :  KMC_traj(){}            // empty constructor
 ============= Macroscale KMC simulation =============
 */
 
-void KMC_traj_TTS :: simulate_TTS(int rand_seed){       // Execute simulation
-
+void KMC_traj_TTS :: simulate(int rand_seed){       // Execute simulation
+cout << "Running TTS simulation" << endl;
 srand(rand_seed);      // Set the random seed
 KMC_traj::initialize_sim(rand_seed);
 
@@ -606,4 +606,8 @@ void KMC_traj_TTS :: record_stats_TTS(){
     
     ind_rec += 1;
     
+}
+
+double KMC_traj_TTS :: get_micro_scale_sens_profile(int i, int j, int k){
+    return micro_scale_sens_profile[i][j][k];
 }

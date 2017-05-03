@@ -73,76 +73,41 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
 
     for(int traj_ind = 0; traj_ind < Npp; traj_ind++){
         
+        KMC_traj* run = NULL;  // initalize the pointer
         
-        if(! in_data.two_time_scale){
-            
-            // Create and run a KMC simulation
-            KMC_traj run;           // Change this like for TTS - make TTS_traj object instead
-            run.in_data = in_data;      // Copy input file data to the trajectory object
-            run.simulate(12345  + id * Npp + traj_ind);
-            
-            // Add to statistical running counts
-        
-            ind1 = 0;
-            ind2 = 0;
-            ind3 = 0;
-            
-            for (int i = 0; i < in_data.N_record; ++i){
-                
-                for(int j = 0; j < in_data.n_specs; j++){
-                    spec_profiles_averages_arr[ind1] += run.spec_profile[i][j];
-                    ind1++;
-                    
-                    for(int k = 0; k < in_data.n_params; k++){
-                        sensitivities_arr[ind3] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k];    // Change this like for TTS - add microscale contribution
-                        
-                        ind3++;
-                    }
-                }
-                
-                for(int j = 0; j < in_data.n_params; j++){
-                    traj_deriv_avgs_arr[ind2] += run.traj_deriv_profile[i][j];
-                    ind2++;
-                }
-            }
-            
-        }else{
-            
-            // Create and run a KMC simulation
-            KMC_traj_TTS run;           // Change this like for TTS - make TTS_traj object instead
-            run.in_data = in_data;      // Copy input file data to the trajectory object
-            run.simulate(12345  + id * Npp + traj_ind);
-            
-            // Add to statistical running counts
-        
-            ind1 = 0;
-            ind2 = 0;
-            ind3 = 0;
-            
-            for (int i = 0; i < in_data.N_record; ++i){
-                
-                for(int j = 0; j < in_data.n_specs; j++){
-                    spec_profiles_averages_arr[ind1] += run.spec_profile[i][j];
-                    ind1++;
-                    
-                    for(int k = 0; k < in_data.n_params; k++){
-                        sensitivities_arr[ind3] += run.spec_profile[i][j] * run.traj_deriv_profile[i][k] + run.micro_scale_sens_profile[i][j][k];    // For TTS, add microscale contribution
-                        
-                        ind3++;
-                    }
-                }
-                
-                for(int j = 0; j < in_data.n_params; j++){
-                    traj_deriv_avgs_arr[ind2] += run.traj_deriv_profile[i][j];
-                    ind2++;
-                }
-            }
-            
+        if(in_data.two_time_scale){     // Two time scale
+            run = new KMC_traj_TTS;
+        }else{                          // Single time scale
+            run = new KMC_traj;
         }
         
+
+        run->in_data = in_data;             // Copy input file data to the trajectory object
+        run->simulate(12345  + traj_ind);
         
+        // Add to statistical running counts
         
+        ind1 = 0;
+        ind2 = 0;
+        ind3 = 0;
         
+        for (int i = 0; i < in_data.N_record; ++i){
+            
+            for(int j = 0; j < in_data.n_specs; j++){
+                spec_profiles_averages_arr[ind1] += run->spec_profile[i][j];
+                ind1++;
+                
+                for(int k = 0; k < in_data.n_params; k++){  // For TTS, add extra contribution from microscale averaging
+                    sensitivities_arr[ind3] += run->spec_profile[i][j] * run->traj_deriv_profile[i][k] + run->get_micro_scale_sens_profile(i, j, k);
+                    ind3++;                    
+                }
+            }
+            
+            for(int j = 0; j < in_data.n_params; j++){
+                traj_deriv_avgs_arr[ind2] += run->traj_deriv_profile[i][j];
+                ind2++;
+            }
+        }
         
     }
 

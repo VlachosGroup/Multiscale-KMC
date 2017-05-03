@@ -15,7 +15,7 @@ string KMC_traj :: traj_deriv_out_flname = "SA";
 KMC_traj :: KMC_traj() : in_data(), writer_spec(), writer_SA() {}            // empty constructor
 
 void KMC_traj :: simulate(int rand_seed){       // Execute simulation
-
+cout << "Running STS simulation" << endl;
 srand(rand_seed);      // Set the random seed
 
 // Some additional non-class varaiables
@@ -264,4 +264,8 @@ void KMC_traj :: record_stats(){
     
     ind_rec += 1;
     
+}
+
+double KMC_traj :: get_micro_scale_sens_profile(int i, int j, int k){
+    return 0;
 }

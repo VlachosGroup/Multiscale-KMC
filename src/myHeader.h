@@ -138,8 +138,9 @@ class KMC_traj {
 		vector< vector<double> > traj_deriv_profile;                // trajectory derivative vs. time
     
         KMC_traj();                          	             // empty constructor
-		void simulate(int);								// perform STS KMC simulation
+		virtual void simulate(int);								// perform STS KMC simulation
         void initialize_sim(int);
+        virtual double get_micro_scale_sens_profile(int, int, int);
 	
 };
 
@@ -165,8 +166,8 @@ class KMC_traj_TTS : public KMC_traj {
         vector< vector< vector<double> > > micro_scale_sens_profile;         // 3-D vector of microscale sensitivities
     
 		KMC_traj_TTS();                          // empty constructor
-        void simulate_TTS(int);
-        
+        void simulate(int);
+        double get_micro_scale_sens_profile(int, int, int);
 };
 
 #endif
