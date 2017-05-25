@@ -16,7 +16,7 @@ KMC_traj_TTS :: KMC_traj_TTS() :  KMC_traj(){}            // empty constructor
 */
 
 void KMC_traj_TTS :: simulate(int rand_seed){       // Execute simulation
-cout << "Running TTS simulation" << endl;
+
 srand(rand_seed);      // Set the random seed
 KMC_traj::initialize_sim(rand_seed);
 
@@ -206,6 +206,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     for(int micro_step = 0; micro_step < in_data.n_micro_steps; micro_step++){
         
         // Generate random numbers
+        //fast_rxn_randi = micro_step % in_data.n_fast_rxns;      // alternates between which reaction to attempt
         fast_rxn_randi = rand() % in_data.n_fast_rxns;      // picks a random index for a fast reaction
         fast_rxn_to_try = in_data.fast_pairs[fast_rxn_randi][0];
         rev_rxn_to_try = in_data.fast_pairs[fast_rxn_randi][1];

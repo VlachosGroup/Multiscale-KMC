@@ -37,7 +37,7 @@ file_reader :: file_reader(string flname){
 	N_record = 101;                    
 	N_traj = 1000;
     write_traj_files = false;
-                               	   
+    rand_seed = 1;                           	   
 	
     // Two time scale variables
     //num_batches = 50;        	       
@@ -80,6 +80,11 @@ file_reader :: file_reader(string flname){
 				n_params = n_rxns;
 				
 				rate_const.resize(n_rxns);
+                
+            }else if(line == "random seed"){
+				
+				getline (myfile,line);
+				rand_seed = atoi(line.c_str());
 			
 			}else if(line == "Species names"){
 				

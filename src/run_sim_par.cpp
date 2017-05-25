@@ -83,7 +83,7 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
         
 
         run->in_data = in_data;             // Copy input file data to the trajectory object
-        run->simulate(12345  + traj_ind);
+        run->simulate(in_data.rand_seed + traj_ind + id * Npp);
         
         // Add to statistical running counts
         

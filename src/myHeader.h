@@ -21,7 +21,8 @@ class file_reader {
     public:
 
 		// Variables required for KMC simulation
-		int n_rxns;
+		int rand_seed;
+        int n_rxns;
 		int n_specs;
 		int n_params;
 		double t_final;                         // termination time (s)

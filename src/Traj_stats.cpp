@@ -98,6 +98,7 @@ void Traj_stats :: finalize_stats(){
                 //cout << sensitivities[i][j][k] << endl;
             }
         }
+        
     }
    
 }

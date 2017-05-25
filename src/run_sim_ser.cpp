@@ -17,7 +17,8 @@ void Traj_stats :: run_simulations(){
     for(int traj_ind = 0; traj_ind < in_data.N_traj; traj_ind++){
         
         // Create and run a KMC simulation
-        cout << traj_ind + 1 << " / " << in_data.N_traj << endl;
+        
+        //cout << traj_ind + 1 << " / " << in_data.N_traj << endl;              // Print the trajectory number
         
         KMC_traj* run = NULL;  // initalize the pointer
         
@@ -27,9 +28,8 @@ void Traj_stats :: run_simulations(){
             run = new KMC_traj;
         }
         
-
         run->in_data = in_data;             // Copy input file data to the trajectory object
-        run->simulate(12345  + traj_ind);
+        run->simulate(in_data.rand_seed + traj_ind);
         
         // Add to statistical running counts
         for (int i = 0; i < in_data.N_record; ++i){
@@ -38,7 +38,11 @@ void Traj_stats :: run_simulations(){
                 spec_profiles_averages[i][j] += run->spec_profile[i][j];
                 
                 for(int k = 0; k < in_data.n_params; k++){  // For TTS, add extra contribution from microscale averaging
-                    sensitivities[i][j][k] += run->spec_profile[i][j] * run->traj_deriv_profile[i][k] + run->get_micro_scale_sens_profile(i, j, k); 
+                    sensitivities[i][j][k] += run->spec_profile[i][j] * run->traj_deriv_profile[i][k] + run->get_micro_scale_sens_profile(i, j, k);
+                        if ( std::isnan( sensitivities[i][j][k] ) ){
+                            cout << traj_ind << " has NaNs" << endl;
+                            cout << in_data.rand_seed + traj_ind << " is the random seed." << endl;
+                        }
                 }
             }
             

@@ -15,7 +15,7 @@ string KMC_traj :: traj_deriv_out_flname = "SA";
 KMC_traj :: KMC_traj() : in_data(), writer_spec(), writer_SA() {}            // empty constructor
 
 void KMC_traj :: simulate(int rand_seed){       // Execute simulation
-cout << "Running STS simulation" << endl;
+
 srand(rand_seed);      // Set the random seed
 
 // Some additional non-class varaiables
@@ -182,6 +182,13 @@ void KMC_traj :: initialize_sim(int rand_seed){
     traj_deriv_profile.resize(in_data.N_record);
     for (int i = 0; i < in_data.N_record; i++){
         traj_deriv_profile[i].resize(in_data.n_params);}
+    
+    // Initialize all entries as zero
+    for (int i = 0; i < in_data.N_record; i++){
+        for (int j = 0; j < in_data.n_params; j++){
+            traj_deriv_profile[i][j] = 0;
+        }
+    }
     
     /*
     ============== Open files to record data for the trajectory ==============

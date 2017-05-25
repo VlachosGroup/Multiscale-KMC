@@ -1,4 +1,7 @@
 # Multiscale input file
+
+random seed
+1
     
 Number of species
 3
@@ -35,7 +38,7 @@ Final time
 10.0
 
 Number of trajectories
-10000
+50
 
 Number of time points
 100
