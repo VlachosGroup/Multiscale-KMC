@@ -39,7 +39,7 @@ void Traj_stats :: run_simulations(){
                 
                 for(int k = 0; k < in_data.n_params; k++){  // For TTS, add extra contribution from microscale averaging
                     sensitivities[i][j][k] += run->spec_profile[i][j] * run->traj_deriv_profile[i][k] + run->get_micro_scale_sens_profile(i, j, k);
-                        if ( std::isnan( sensitivities[i][j][k] ) ){
+                        if ( not std::isfinite( sensitivities[i][j][k] ) ){
                             cout << traj_ind << " has NaNs" << endl;
                             cout << in_data.rand_seed + traj_ind << " is the random seed." << endl;
                         }

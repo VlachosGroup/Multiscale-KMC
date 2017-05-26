@@ -9,8 +9,8 @@
 using namespace std;
 
 // Static variables - names of output files
-string KMC_traj :: species_out_flname = "specs";
-string KMC_traj :: traj_deriv_out_flname = "SA";
+string KMC_traj :: species_out_flname = "species_out.txt";
+string KMC_traj :: traj_deriv_out_flname = "traj_deriv_out.txt";
 
 KMC_traj :: KMC_traj() : in_data(), writer_spec(), writer_SA() {}            // empty constructor
 
@@ -19,7 +19,8 @@ void KMC_traj :: simulate(int rand_seed){       // Execute simulation
 srand(rand_seed);      // Set the random seed
 
 // Some additional non-class varaiables
-double prop_cum[in_data.n_rxns];
+vector <double> prop_cum;
+prop_cum.resize(in_data.n_rxns);
 double asum;
 double r_rxn_choose;                                    // random number between 0 and 1 used to choose which reaction to fire
 double r_timestep;                                      // random mumber between 0 and 1 used to choose the time step
@@ -94,12 +95,29 @@ while(t < in_data.t_final){
     }
     
     rxn_to_fire_ind = 0;
-    while(prop_cum[rxn_to_fire_ind] < r_rxn_choose){
-        rxn_to_fire_ind += 1;
+    if (r_rxn_choose == 1) {		// If the random number ends up being zero, choose the last reaction with nonzero propensity
+		for(int i = 0; i < in_data.n_rxns; i++) {
+			if (props[i] > 0) {
+				rxn_to_fire_ind = i;
+			}
+		}
+	}
+    else{
+        while(prop_cum[rxn_to_fire_ind] < r_rxn_choose){
+            rxn_to_fire_ind += 1;
+        }
+    }
+    
+    
+    if (r_rxn_choose == 1){
+        cout << rxn_to_fire_ind << endl;
     }
     
     // Compute time step
     dt = log(1 / r_timestep) / asum;
+    if( not std::isfinite(dt) ){
+        break;
+    }
     
     // Record the current state as long as time >= t_sample
     while(t >= in_data.t_rec[ind_rec]){
@@ -121,9 +139,28 @@ while(t < in_data.t_final){
     
     // Update trajectory derivatives
     for(int k=0; k < in_data.n_params; k++){
-        
+        if (props[rxn_to_fire_ind] == 0){
+            cout << "Propensity is zero" << endl;
+            throw 20;
+        }
         W[k] += prop_ders[rxn_to_fire_ind][k] / props[rxn_to_fire_ind];         // contribution from reaction that fires            
         W[k] -= prop_ders_sum[k] * dt;       // contribution from time step
+        if ( not std::isfinite(W[k]) ){
+            cout << "W is NaN" << endl;
+            cout << "The chosen reaction is " << endl;
+            cout << rxn_to_fire_ind << endl;
+            cout << "The propensity is " << endl;
+            cout << props[rxn_to_fire_ind] << endl;
+            cout << "The sum of propensity derivatives is" << endl;
+            cout << prop_ders_sum[k] << endl; 
+            cout << "The time step is " << endl;
+            cout << dt << endl;
+            cout << "Random number for choosing reaction" << endl;
+            cout << r_rxn_choose << endl;
+            cout << "Random number for time step" << endl;
+            cout << r_timestep << endl;
+            throw 20;
+        }
     }
 
 }

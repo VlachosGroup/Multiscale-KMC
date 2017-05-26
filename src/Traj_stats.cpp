@@ -7,8 +7,8 @@
 # include "myHeader.h"
 using namespace std;
 
-string Traj_stats :: species_avgs_out_flname = "species_avgs.out";
-string Traj_stats :: SA_out_flname = "sensitivities.out";
+string Traj_stats :: species_avgs_out_flname = "species_avgs_out.txt";
+string Traj_stats :: SA_out_flname = "sensitivities_out.txt";
 
 Traj_stats :: Traj_stats() : in_data(){}      // Empty class constructor
 
@@ -75,6 +75,11 @@ void Traj_stats :: finalize_stats(){
             
             for(int k = 0; k < in_data.n_params; k++){
                 sensitivities[i][j][k] = sensitivities[i][j][k] / in_data.N_traj;
+                
+                if ( std::isnan( sensitivities[i][j][k] ) ){
+                    cout << "Detected a NaNs" << endl;
+                    throw 20;
+                }
             }
         }
         
@@ -196,8 +201,13 @@ void Traj_stats :: write_sensitivity_output(){
 // Main function
 int main() {
 	
+    //double x = -1.0 / 0.0;
+    //cout << x << endl;
+    //if (not std::isfinite(x)){
+    //    cout << "x is NaN" << endl;
+    //}
     cout.precision(6);
-	file_reader fr("network.in");               // Read input file
+	file_reader fr("MSA_in.txt");               // Read input file
     Traj_stats sim; 
     sim.in_data = fr;                   // assign input
     sim.run_simulations();              // run KMC simulations, will execute differently depending on fr.two_time_scale

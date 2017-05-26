@@ -4,6 +4,8 @@ Kinetic Monte Carlo code which simulates a reaction setwork in either one or two
 sensitivity analysis is used so that the sensitivties of species populations with respect to the rate constants
 are computed without the need for additional runs.
 
+![Imgur](http://i.imgur.com/5ROh9m1.png)
+
 ## Features
 * Implemented in C++
 * Replicate trajectories parallelized with MPI
@@ -29,7 +31,7 @@ are computed without the need for additional runs.
 
 ## Input file format
 
-Here we tell you how to set up your KMC system in input.txt. Examples are provided in the serial and parallel run folders. Lines which begin with a # are comments. Blank spaces at the beginning and ends of lines are ignored.
+Here we tell you how to set up your KMC system in MSA_in.txt. Examples are provided in the serial and parallel run folders. Lines which begin with a # are comments. Blank spaces at the beginning and ends of lines are ignored.
 
 | Command | Data type | Description |
 | --- | --- | --- |
@@ -51,7 +53,7 @@ Here we tell you how to set up your KMC system in input.txt. Examples are provid
 
 There are two output files.
 
-### species_avg.out
+### species_avg_out.txt
 
 Contains a table with the population profiles for each species.
 
@@ -64,7 +66,7 @@ Time    A       B       C
 10	0.009	0.023	99.968	
 ```
 
-### sensitivities.out
+### sensitivities_out.txt
 
 Contains a table for each species, with the sensitivity profiles for each parameter.
 

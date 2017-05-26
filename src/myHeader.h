@@ -154,13 +154,24 @@ class KMC_traj_TTS : public KMC_traj {
     private:
     
         vector <double> N_micro_avg;
-        vector < vector <double> > micro_scale_sens;
-        
-        vector < vector <double> > prop_ders_direct;        // Direct averaging of derviativeson the microscale
-        vector < vector <double> > prop_ders_indirect;      // Indirect averaging on the microscale
+        vector < vector <double> > micro_scale_sens;     
         
         void record_stats_TTS();
 		void simulate_micro();								// perform microscale KMC simulation for fast reactions
+        
+        // Microscale vectors
+        vector <double> dEdth;
+        vector <double> dEdth_avg;
+        vector <double> rev_prop_ders;
+        vector <vector<int>> N_rec;
+        vector <double> q_cum;
+        vector <int> N_candidate;
+        vector <double> micro_props;
+        vector <vector<double>> micro_prop_ders;
+        vector <vector<double>> prop_ders_direct;           // Direct averaging of derviativeson the microscale
+        vector <vector<double>> prop_ders_indirect;         // Indirect averaging on the microscale
+        vector <double> slow_props;
+        vector <double> slow_props_cum;
 	
     public:
 

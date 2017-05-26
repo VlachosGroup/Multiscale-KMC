@@ -58,9 +58,33 @@ for(int i = 0; i < in_data.N_record; i++){
         }
     }
 }
-    
-// Some additional non-class varaiables...
-double asum;
+
+
+// Resize microscale vectors
+dEdth.resize(in_data.n_params);
+dEdth_avg.resize(in_data.n_params);
+rev_prop_ders.resize(in_data.n_params);
+q_cum.resize(in_data.n_micro_steps);
+N_candidate.resize(in_data.n_specs);
+micro_props.resize(in_data.n_rxns);
+N_rec.resize(in_data.n_micro_steps);
+for(int i = 0; i < in_data.n_micro_steps; i++){
+    N_rec[i].resize(in_data.n_specs);
+}
+micro_prop_ders.resize(in_data.n_rxns);
+for(int i = 0; i < in_data.n_rxns; i++){
+    micro_prop_ders[i].resize(in_data.n_params);
+}
+prop_ders_direct.resize(in_data.n_rxns);
+for(int i = 0; i < in_data.n_rxns; i++){
+    prop_ders_direct[i].resize(in_data.n_params);
+}
+prop_ders_indirect.resize(in_data.n_rxns);
+for(int i = 0; i < in_data.n_rxns; i++){
+    prop_ders_indirect[i].resize(in_data.n_params);
+}
+slow_props.resize(in_data.n_slow_rxns);
+slow_props_cum.resize(in_data.n_slow_rxns);
 
 // Start KMC loop
 while(t < in_data.t_final){
@@ -81,7 +105,7 @@ while(t < in_data.t_final){
     }
     
     // If all slow are 0, then exit the while loop
-    if(dt < 0){
+    if(dt < 0 or not std::isfinite(dt)){
         break;
     }
     
@@ -144,21 +168,13 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     double a_fwd;
     double a_rev;
     bool if_accept;
-    double dEdth[in_data.n_params];
-    double dEdth_avg[in_data.n_params];
-    double rev_prop_ders[in_data.n_params];
-    
-    int N_rec[in_data.n_micro_steps][in_data.n_specs];
-    double q_cum[in_data.n_micro_steps];
+
     double Q = 0;       // partition function
     
     int fast_rxn_randi;
     int fast_rxn_to_try;
     int rev_rxn_to_try;
-    int N_candidate[in_data.n_specs];
     
-    double micro_props[in_data.n_rxns];
-    double micro_prop_ders[in_data.n_rxns][in_data.n_params];
     
     // Running counts used for averaging
     for(int j = 0; j < in_data.n_specs; j++){
@@ -175,8 +191,7 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
         dEdth_avg[i] = 0;
     }
     
-    double prop_ders_direct[in_data.n_rxns][in_data.n_params];
-    double prop_ders_indirect[in_data.n_rxns][in_data.n_params];
+    
     
     double slow_prop_sum;
     double slow_prop_sum_cum = 0;
@@ -466,8 +481,6 @@ void KMC_traj_TTS :: simulate_micro(){      // Implement with analytical solutio
     
     // Compute slow propensities for the state to fire from
     // Use mass action kinetics equation, a = k * [A]^ma * [B]^mb * ...
-    double slow_props[in_data.n_slow_rxns];
-    double slow_props_cum[in_data.n_slow_rxns];
 
     for(int k = 0; k < in_data.n_slow_rxns; k++){
         
