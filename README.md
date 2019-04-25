@@ -26,7 +26,7 @@ are computed without the need for additional runs.
 ## References
 * [A. Hashemi, M. Nunez, P. Plechac, D.G. Vlachos, “Stochastic Averaging and Sensitivity Analysis for Two Scale Reaction Networks” Journal of Chemical Physics 144, 074104 (2016)](http://arxiv.org/abs/1509.03802)  
 * [M. Núñez and D.G. Vlachos, J. Chem. Phys. 142 (4), 044108 (2015)](http://scitation.aip.org/content/aip/journal/jcp/142/4/10.1063/1.4905957)
-* Marcel Nunez Ph.D. thesis, University of Delaware, 2017 (in preparation)
+* [Marcel Nunez Ph.D. thesis, University of Delaware, 2018](http://udspace.udel.edu/handle/19716/23604)
 
 
 ## Input file format
