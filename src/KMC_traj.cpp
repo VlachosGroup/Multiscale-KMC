@@ -5,7 +5,7 @@
 # include <random>
 # include <math.h>
 # include <sstream>
-# include "myHeader.h"
+# include "KMC_traj.hpp"
 using namespace std;
 
 // Static variables - names of output files
@@ -29,18 +29,18 @@ initialize_sim(rand_seed);
 
 // Start KMC loop
 while(t < in_data.t_final){
-    
+
     /*
     ============================ Compute quantities for current step ============================
     */
-    
+
     // Generate random numbers
     r_rxn_choose = ((double) rand() / (RAND_MAX));
     r_timestep = ((double) rand() / (RAND_MAX));
-    
+
     // Compute reaction propensities
     for(int i = 0; i < in_data.n_rxns; i++){
-        
+
         // Use mass action kinetics equation, a = k * [A]^ma * [B]^mb * ...
         props[i] = in_data.rate_const[i];
         for(int j = 0; j < in_data.n_specs; j++){
@@ -48,25 +48,25 @@ while(t < in_data.t_final){
                 props[i] = props[i] * pow (N[j], -in_data.stoich_mat[i][j]);
             }
         }
-        
+
         // Fill in derivatives for each parameter
         for(int k = 0; k < in_data.n_params; k++){
             if(i==k){
-                
+
                 prop_ders[i][k] = 1.0;
-                
+
                 for(int j = 0; j < in_data.n_specs; j++){
                     if(in_data.stoich_mat[i][j] < 0){//if this species is a reactant, use it to compute the rate
                         prop_ders[i][k] = prop_ders[i][k] * pow (N[j], -in_data.stoich_mat[i][j]);
                     }
                 }
-                
+
             }else{
                 prop_ders[i][k] = 0;
             }
         }
     }
-    
+
     // Add derivatives for each parameter
     for(int k=0; k < in_data.n_params; k++){
         prop_ders_sum[k] = 0;
@@ -74,18 +74,18 @@ while(t < in_data.t_final){
             prop_ders_sum[k] += prop_ders[i][k];
         }
     }
-    
+
     // Sum the propensities
     asum = 0;
     for(int i = 0; i < in_data.n_rxns; i++){
         asum += props[i];
     }
-    
+
     // If all propensities are 0, then exit the while loop
     if(asum == 0){
         break;
     }
-    
+
     // Choose which reaction to fire
     for(int i = 0; i < in_data.n_rxns; i++){
         prop_cum[i] = 0;
@@ -93,7 +93,7 @@ while(t < in_data.t_final){
             prop_cum[i] += props[j] / asum;
         }
     }
-    
+
     rxn_to_fire_ind = 0;
     if (r_rxn_choose == 1) {		// If the random number ends up being zero, choose the last reaction with nonzero propensity
 		for(int i = 0; i < in_data.n_rxns; i++) {
@@ -107,43 +107,43 @@ while(t < in_data.t_final){
             rxn_to_fire_ind += 1;
         }
     }
-    
-    
+
+
     if (r_rxn_choose == 1){
         cout << rxn_to_fire_ind << endl;
     }
-    
+
     // Compute time step
     dt = log(1 / r_timestep) / asum;
     if( not std::isfinite(dt) ){
         break;
     }
-    
+
     // Record the current state as long as time >= t_sample
     while(t >= in_data.t_rec[ind_rec]){
         record_stats();
     }
-    
+
     /*
     ============ Fire reaction and update system ==============
     */
-    
+
     // Update species populations
     for(int j = 0; j < in_data.n_specs; j++){
         N[j] += in_data.stoich_mat[rxn_to_fire_ind][j];
     }
-    
+
     // Update clock
     t_prev = t;
     t = t + dt;
-    
+
     // Update trajectory derivatives
     for(int k=0; k < in_data.n_params; k++){
         if (props[rxn_to_fire_ind] == 0){
             cout << "Propensity is zero" << endl;
             throw 20;
         }
-        W[k] += prop_ders[rxn_to_fire_ind][k] / props[rxn_to_fire_ind];         // contribution from reaction that fires            
+        W[k] += prop_ders[rxn_to_fire_ind][k] / props[rxn_to_fire_ind];         // contribution from reaction that fires
         W[k] -= prop_ders_sum[k] * dt;       // contribution from time step
         if ( not std::isfinite(W[k]) ){
             cout << "W is NaN" << endl;
@@ -152,7 +152,7 @@ while(t < in_data.t_final){
             cout << "The propensity is " << endl;
             cout << props[rxn_to_fire_ind] << endl;
             cout << "The sum of propensity derivatives is" << endl;
-            cout << prop_ders_sum[k] << endl; 
+            cout << prop_ders_sum[k] << endl;
             cout << "The time step is " << endl;
             cout << dt << endl;
             cout << "Random number for choosing reaction" << endl;
@@ -181,91 +181,91 @@ if(in_data.write_traj_files){
 
 
 void KMC_traj :: initialize_sim(int rand_seed){
-    
+
     /*
     ============================ Initialize variables ============================
     */
-    
+
     t = 0;                               // KMC clock
     t_prev = 0;                          // KMC time of previous step
     ind_rec = 0;                            // time point
-    
+
     // Initialize species populations
     N.resize(in_data.n_specs);
     for(int k =0; k < in_data.n_specs; k++){
         N[k] = in_data.N_0[k];
     }
-    
+
     props.resize(in_data.n_rxns);
-    
+
     // Derivative of each propensity with respect to each parameter
     prop_ders_sum.resize(in_data.n_rxns);           // derivative of the sum of all propensities with respect to each parameter
     prop_ders.resize(in_data.n_rxns);           // derivative of the sum of all propensities with respect to each parameter
     for (int i = 0; i < in_data.n_rxns; i++){
         prop_ders[i].resize(in_data.n_params);}
-    
+
     // Initialize trajectory derivatives
     W.resize(in_data.n_params);                       // trajectory derivatives
     for(int k =0; k < in_data.n_params; k++){
         W[k] = 0;
     }
-        
+
     // Vector for recording species profiles
     spec_profile.resize(in_data.N_record);
     for (int i = 0; i < in_data.N_record; i++){
         spec_profile[i].resize(in_data.n_specs);}
-    
+
     // Vector for recording trajectory derivatives
     traj_deriv_profile.resize(in_data.N_record);
     for (int i = 0; i < in_data.N_record; i++){
         traj_deriv_profile[i].resize(in_data.n_params);}
-    
+
     // Initialize all entries as zero
     for (int i = 0; i < in_data.N_record; i++){
         for (int j = 0; j < in_data.n_params; j++){
             traj_deriv_profile[i][j] = 0;
         }
     }
-    
+
     /*
     ============== Open files to record data for the trajectory ==============
     */
-    
+
     if(in_data.write_traj_files){
-    
+
         // Create a folder for all trajectory data files
         // Name the file specific to this trajectory. Put random seed in the file name.
-        
+
         ostringstream fname1;
         fname1 << KMC_traj::species_out_flname << "_" << rand_seed << ".out";
-        
+
         writer_spec.open(fname1.str());
-        if(! writer_spec){  
+        if(! writer_spec){
             cout << "Error opening file" << endl;
         }
-        
-        // Write header    
+
+        // Write header
         writer_spec << "Time \t";
         for(int j = 0; j < in_data.n_specs; j++){
             writer_spec << in_data.spec_names[j] << "\t";
         }
         writer_spec << endl;
-        
+
         ostringstream fname2;
         fname2 << KMC_traj::traj_deriv_out_flname << "_" << rand_seed << ".out";
-        
+
         writer_SA.open(fname2.str());
-        if(! writer_SA){  
+        if(! writer_SA){
             cout << "Error opening file" << endl;
         }
-        
+
         // Write header
         writer_SA << "Time \t";
         for(int i = 0; i < in_data.n_params; i++){
             writer_SA << in_data.param_names[i] << "\t";
         }
-        writer_SA << endl; 
-    }  
+        writer_SA << endl;
+    }
 }
 
 
@@ -273,19 +273,19 @@ void KMC_traj :: initialize_sim(int rand_seed){
 ========= Record the current state =========
 */
 void KMC_traj :: record_stats(){
-    
+
     t_trunc = in_data.t_rec[ind_rec] - t_prev;
-        
+
     // Record data in output files
     if(in_data.write_traj_files){
-        
+
         // Record the species numbers
         writer_spec << in_data.t_rec[ind_rec] << "\t";
         for(int j = 0; j < in_data.n_specs; j++){
             writer_spec << N[j] << "\t";
         }
         writer_spec << endl;
-    
+
         // Record trajectory derivatives
         writer_SA << in_data.t_rec[ind_rec] << "\t";
         for(int k = 0; k < in_data.n_params; k++){
@@ -293,21 +293,21 @@ void KMC_traj :: record_stats(){
         }
         writer_SA << endl;
     }
-    
+
     // Record data in variables
-    
+
     // Record species populations
     for(int j = 0; j < in_data.n_specs; j++){
         spec_profile[ind_rec][j] = (double) N[j];
         }
-    
+
     // Record trajectory derivatives
     for(int k = 0; k < in_data.n_params; k++){
         traj_deriv_profile[ind_rec][k] = W[k] - prop_ders_sum[k] * t_trunc;
         }
-    
+
     ind_rec += 1;
-    
+
 }
 
 double KMC_traj :: get_micro_scale_sens_profile(int i, int j, int k){

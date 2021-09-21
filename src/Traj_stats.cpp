@@ -4,7 +4,7 @@
 # include <fstream>
 # include <random>
 # include <math.h>
-# include "myHeader.h"
+# include "Traj_stats.hpp"
 #ifdef MPI
 # include <mpi.h>
 #endif
