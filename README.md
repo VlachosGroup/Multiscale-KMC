@@ -1,27 +1,52 @@
 # Multiscale-KMC
 
-Kinetic Monte Carlo code which simulates a reaction setwork in either one or two time scales. Likelihood ratio
-sensitivity analysis is used so that the sensitivties of species populations with respect to the rate constants
-are computed without the need for additional runs.
+Kinetic Monte Carlo code which simulates a reaction network in either one or two time scales. The chemical model is well-mixed mass action kinetric. The Likelihood ratio sensitivity analysis method is used so that the sensitivties of species populations with respect to the rate constants are computed without the need for additional runs wth parametric perturbations. Replicate trajectories can be parallelized with message passing interface (MPI). The simulaion uses an input/Output file interface.
 
 ![Imgur](http://i.imgur.com/5ROh9m1.png)
 
-## Features
-* Implemented in C++
-* Replicate trajectories parallelized with MPI
-* Input/output file interface
-* Mass action kinetics, well mixed
-* One and two time-scale options (two time-scale version under development)
 
-## Getting started
-* Download or clone the repository.
-* Navigate to the folder with the version you want to run. Serial_run has the serial version while MPI_run has the parallel version.
-* Type ```make``` to compile. This will generate an executable called MSA-KMC.x
-* (optional) Type ```make clean``` to delete the object files (*.o)
-* Open the input file network.in and modify it to the system you want to run. See the below for details on input file format.
-* Run the executable. The parallel version must be run with ```mpiexec -n MSA-KMC.x```, where ```n``` is the number of processors.
-* On squidward.che.udel.edu, it can be submitted as a batch job using ```qsub submit_serial.qs``` for the serial version or ```qsub mpi_cpp.qs``` for the parallel version.
-* The code will generate output files with average species profiles and sensitivity profiles. See below for details on output file format.
+## Building and running the code
+
+### Serial version
+
+Create a build directory and run cmake to generate the makefile, then build with make.
+
+```
+mkdir build
+cd build
+cmake ..
+make
+```
+
+Navigate to the examples folder and call the generated executable.
+
+```
+cd ../examples
+../build/msa-kmc
+```
+
+### Parallel MPI version
+
+Tell cmake to use the mpiCC compiler and do turn on a flag which is used to set a preprocessor variable.
+
+```
+mkdir build
+cd build
+cmake -D CMAKE_CXX_COMPILER=mpiCC -DMPI=ON ..
+make
+```
+
+To run, use
+
+```
+cd ../examples
+mpiexec -<number of processors> ../build/msa-kmc
+```
+
+### University of Delaware compute cluster
+
+On squidward.che.udel.edu, it can be submitted as a batch job using ```qsub submit_serial.qs``` for the serial version or ```qsub mpi_cpp.qs``` for the parallel version.
+
 
 ## References
 * [A. Hashemi, M. Nunez, P. Plechac, D.G. Vlachos, “Stochastic Averaging and Sensitivity Analysis for Two Scale Reaction Networks” Journal of Chemical Physics 144, 074104 (2016)](http://arxiv.org/abs/1509.03802)  
@@ -59,11 +84,11 @@ Contains a table with the population profiles for each species.
 
 ```
 Time    A       B       C
-0	100	0	0	
+0	100	0	0
 0.1	55.14	37.102	7.758
 ...
-9.9	0.015	0.018	99.967	
-10	0.009	0.023	99.968	
+9.9	0.015	0.018	99.967
+10	0.009	0.023	99.968
 ```
 
 ### sensitivities_out.txt
@@ -73,21 +98,21 @@ Contains a table for each species, with the sensitivity profiles for each parame
 ```
 A
 
-Time 	k1	      k2	  k3	
-0	0	      0	          0	
+Time 	k1	      k2	  k3
+0	0	      0	          0
 0.1	-34.3618      -12.3738	  -3.43272
 ...
-9.9	0.60226	      0.115044	  -0.13159	
+9.9	0.60226	      0.115044	  -0.13159
 10	-0.706654     -0.892604	  -0.05226
 
 B
 
-Time 	k1	      k2	  k3	
-0	0	      0	          0	
+Time 	k1	      k2	  k3
+0	0	      0	          0
 0.1	28.0757	      2.15473	  -3.78631
 ...
-9.9	-0.995014     -0.867165	  -0.156703	
-10	-0.0193514    -0.0513063  -0.2276	
+9.9	-0.995014     -0.867165	  -0.156703
+10	-0.0193514    -0.0513063  -0.2276
 
-...	
+...
 ```
