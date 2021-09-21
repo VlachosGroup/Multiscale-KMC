@@ -159,6 +159,8 @@ void Traj_stats :: run_simulations(){
             }
         }
 
+        delete run;
+
     }
 
 
@@ -238,7 +240,7 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
 
     for(int traj_ind = 0; traj_ind < Npp; traj_ind++){
 
-        KMC_traj* run = NULL;  // initalize the pointer
+        KMC_traj* run = nullptr;  // initalize the pointer
 
         if(in_data.two_time_scale){     // Two time scale
             run = new KMC_traj_TTS;
@@ -273,6 +275,8 @@ void Traj_stats :: run_simulations(){       // add some if statements which will
                 ind2++;
             }
         }
+
+        delete run;
 
     }
 
