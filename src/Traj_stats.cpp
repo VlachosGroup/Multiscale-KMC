@@ -196,21 +196,3 @@ void Traj_stats :: write_sensitivity_output(){
     writer_sensitivities.close();
 
 }
-
-
-// Main function
-int main() {
-
-    //double x = -1.0 / 0.0;
-    //cout << x << endl;
-    //if (not std::isfinite(x)){
-    //    cout << "x is NaN" << endl;
-    //}
-    cout.precision(6);
-	file_reader fr("network.in");               // Read input file
-    Traj_stats sim;
-    sim.in_data = fr;                   // assign input
-    sim.run_simulations();              // run KMC simulations, will execute differently depending on fr.two_time_scale
-
-	return 0;
-}
