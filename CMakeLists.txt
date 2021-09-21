@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 2.8.9)
-project(directory_test)
+cmake_minimum_required(VERSION 3.10.2)
+project(msa_kmc)
 
 include_directories(include)
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 add_executable(msa-kmc ${SOURCES})
