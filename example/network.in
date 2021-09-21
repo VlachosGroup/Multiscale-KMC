@@ -1,5 +1,5 @@
 # Multiscale input file
-    
+
 Number of species
 3
 
@@ -22,8 +22,8 @@ Reactions
   0    -1    1
 
 Rate constants
-200.0
-300.0
+20.0
+30.0
 2.0
 
 Parameter names
