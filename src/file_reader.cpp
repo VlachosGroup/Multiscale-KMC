@@ -29,24 +29,11 @@ string trim_string(const string& string_in){       // remove white spaces from t
 }
 
 
+file_reader :: file_reader(){}      // empty constructor
 
 // Constructor for the file_reader class
 file_reader :: file_reader(string flname){
 
-	// Set default values
-	N_record = 101;
-	N_traj = 1000;
-    write_traj_files = false;
-    rand_seed = 1;
-
-    // Two time scale variables
-    //num_batches = 50;
-	//delta = 0.05;
-    two_time_scale = false;                 // simulation uses one time scale by default
-    n_fast_pairs = 0;                       // number of pairs of fast reactions
-    n_fast_rxns = 0;                        // number of fast reactions
-    n_slow_rxns = 0;                        // number of slow reactions
-    n_micro_steps = 1000;                   // number of Metropolis steps to use for averaging on the micro scale
 
 	ifstream myfile(flname);
 	string line;
@@ -256,11 +243,5 @@ file_reader :: file_reader(string flname){
 		t_rec[i] = (double) i / (N_record-1) * t_final;
 	}
 
-    if(two_time_scale){
-        // check that nothing has been violated
-    }
-
 
 }
-
-file_reader :: file_reader(){}      // empty constructor

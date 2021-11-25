@@ -13,10 +13,9 @@
 
 using namespace std;
 
-/*
-============================ Class to handle many trajectories ============================
+/*!
+Class to collect statistics from multiple KMC trajectories
 */
-
 class Traj_stats {
 
 	private:
