@@ -1,2 +1,6 @@
 build
 *_out.txt
+*.gcg
+*.o
+*.vs
+

@@ -22,7 +22,7 @@ Navigate to the examples folder and call the generated executable.
 
 ```
 cd ../examples
-../build/msa-kmc
+../build/msa-kmc.exe
 ```
 
 ### Parallel MPI version
