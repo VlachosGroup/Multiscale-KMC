@@ -17,9 +17,14 @@ target_compile_options(msa-kmc PRIVATE -pedantic-errors -Wall -Wextra -Wconversi
 target_link_libraries(msa-kmc PRIVATE msa-kmcl) 
 
 # Unit tests
-#add_subdirectory(googletest)
+add_subdirectory(googletest)
+add_executable(unit_tests
+	src/test.cpp
+)
+target_link_libraries(unit_tests PRIVATE gtest_main)
+target_link_libraries(unit_tests PRIVATE msa-kmcl)
+add_test(NAME unit_tests COMMAND unit_tests)	# I don't really know how to use this properly
 
 # Python bindings
-#add_subdirectory(pybind11)
+add_subdirectory(pybind11)
 #pybind11_add_module(msa_kmc binder.cpp)
-
